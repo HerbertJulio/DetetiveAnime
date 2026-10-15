@@ -1,0 +1,11 @@
+{
+  "name": "Detetive Anime",
+  "short_name": "Detetive Anime",
+  "description": "Descubra qualquer personagem de anime e onde assistir oficialmente.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E0A14",
+  "theme_color": "#0E0A14",
+  "lang": "pt-BR",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

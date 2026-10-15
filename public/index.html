@@ -4,8 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Detetive Anime</title>
-<meta name="description" content="Descreva o personagem ou envie um print e descubra de qual anime ele é e onde assistir oficialmente.">
+<meta name="description" content="Pesquise personagens de anime por nome, obra, poder ou descrição, veja fichas completas, o calendário da temporada e onde assistir oficialmente.">
 <meta name="theme-color" content="#0E0A14">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Detetive Anime">
+<meta property="og:title" content="Detetive Anime">
+<meta property="og:description" content="Pesquise por nome, poder ou descrição, descubra o personagem e veja onde assistir oficialmente.">
+<meta property="og:url" content="https://detetive-anime.howlks.com/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
@@ -573,7 +582,7 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .tr-item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tr-item small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tr-item .ct{font-family:var(--mono);font-size:.78rem;color:var(--fg);padding:4px 10px;border-radius:999px;background:var(--surface-2);white-space:nowrap}
-@media (max-width:560px){.tr-item{grid-template-columns:32px 48px minmax(0,1fr)}.tr-item .ct{grid-column:3}.tr-item img,.tr-item .ph{width:48px;height:48px}}
+@media (max-width:560px){.tr-item{grid-template-columns:32px 48px minmax(0,1fr)}.tr-item .ct{grid-column:3;justify-self:start}.tr-item img,.tr-item .ph{width:48px;height:48px}}
 
 /* ---------- Quem ganha? */
 .vs-pick{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:start}
@@ -721,6 +730,82 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .badge-c.on::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.12) 50%,transparent 60%);background-size:250% 100%;animation:sh 3.5s linear infinite;pointer-events:none}
 .badge-c.on .when{font-family:var(--mono);font-size:.68rem;color:#E8A317;margin-top:4px;display:block}
 .toast.ach-t{background:linear-gradient(100deg,#FFE27A,#E8A317);color:#2A1A00;font-weight:700;padding:13px 22px}
+
+/* ---------- Acabamento */
+/* Granulado bem leve por cima de tudo, dá textura de papel/cinema */
+body::after{content:"";position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+[data-mode="light"] body::after{opacity:.035;mix-blend-mode:multiply}
+/* Fora da busca, o título encolhe e o conteúdo sobe */
+.hero h1{transition:font-size .35s cubic-bezier(.2,.8,.2,1)}
+html:not([data-tab="buscar"]) .hero{gap:6px}
+html:not([data-tab="buscar"]) .hero h1{font-size:clamp(1.7rem,4.6vw,2.4rem)}
+html:not([data-tab="buscar"]) .hero .eyebrow{display:none}
+html:not([data-tab="buscar"]) .wrap{gap:28px}
+/* Troca de aba com uma entrada suave */
+.tabpanel:not([hidden]){animation:tabIn .4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* Títulos de seção com um brilho sutil */
+.rhead h2{background:linear-gradient(100deg,var(--fg) 60%,color-mix(in srgb,var(--accent) 70%,var(--fg)));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* Pesquisas recentes */
+.qrecent{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86em;margin-top:-26px}
+.qrecent span{color:var(--muted);margin-right:2px}
+.qrecent button{font:inherit;font-size:.92em;color:var(--muted);background:transparent;border:1px dashed var(--line-strong);border-radius:999px;padding:4px 12px;cursor:pointer}
+.qrecent button:hover{color:var(--fg);border-color:var(--accent)}
+/* Explore */
+.explore{display:flex;flex-direction:column;gap:14px}
+.ex-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ex{position:relative;display:flex;flex-direction:column;gap:4px;padding:18px;border-radius:20px;text-decoration:none;color:var(--fg);overflow:hidden;
+  background:color-mix(in srgb,var(--surface) 86%,transparent);border:1px solid var(--line);transition:transform .2s,border-color .2s,box-shadow .2s}
+.ex::before{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--x1) 55%,transparent),transparent 70%);opacity:.55;transition:transform .4s,opacity .3s}
+.ex:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--x1) 60%,transparent);box-shadow:0 22px 50px -30px var(--x1)}
+.ex:hover::before{transform:scale(1.3);opacity:.85}
+.ex-ic{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:1.35rem;margin-bottom:6px;background:linear-gradient(135deg,var(--x1),var(--x2));box-shadow:0 10px 24px -10px var(--x1)}
+.ex b{position:relative;font-size:1.05em}
+.ex small{position:relative;color:var(--muted);line-height:1.35}
+@media (max-width:720px){.ex-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ex{padding:14px}}
+/* Barra de atalhos no celular */
+.bnav{display:none}
+@media (max-width:720px){
+  .bnav{position:fixed;z-index:25;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px;border-radius:22px;
+    background:color-mix(in srgb,var(--surface) 82%,transparent);border:1px solid var(--line-strong);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 18px 40px -16px rgba(0,0,0,.55)}
+  .bnav a,.bnav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px;border-radius:16px;font:inherit;font-size:.68rem;font-weight:500;color:var(--muted);text-decoration:none;background:transparent;border:0;cursor:pointer}
+  .bnav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .bnav a.on{color:var(--accent-ink);background:var(--grad)}
+  .wrap{padding-bottom:110px}
+  .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+  .menu-btn span{display:none}
+  .menu-btn{padding:0 12px}
+}
+/* Página do personagem: fundo com a própria imagem desfocada */
+.cp-amb{position:fixed;inset:0;z-index:1;pointer-events:none;background-size:cover;background-position:center 20%;filter:blur(70px) saturate(1.2);opacity:.2;transform:scale(1.2);animation:bgIn .8s ease both}
+[data-mode="light"] .cp-amb{opacity:.18}
+.cp-amb::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,transparent 30%,var(--bg) 85%)}
+.cp-img{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.cp-hero:hover .cp-img{transform:rotate(-1.5deg) scale(1.02)}
+.cp-next{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 14px;border-radius:999px;font-size:.88em;font-weight:500;
+  background:color-mix(in srgb,#2FD47C 16%,var(--surface));border:1px solid color-mix(in srgb,#2FD47C 50%,transparent)}
+.cp-next::before{content:"";width:8px;height:8px;border-radius:50%;background:#2FD47C;box-shadow:0 0 0 0 #2FD47C;animation:live 1.6s infinite}
+@keyframes live{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@media (max-width:640px){.cp-next{align-self:center}}
+/* Votação dos fãs */
+.vote{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line)}
+.vote h4{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.15em}
+.vote .vbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vote .vbtns button{font:inherit;font-weight:700;color:var(--fg);padding:12px;border-radius:14px;cursor:pointer;background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line-strong);transition:transform .15s,border-color .15s}
+.vote .vbtns button:hover:not(:disabled){transform:translateY(-2px);border-color:var(--accent)}
+.vote .vbtns button[aria-pressed="true"]{background:var(--grad);color:var(--accent-ink);border-color:transparent}
+.vote .vbtns button:disabled{cursor:default;opacity:1;color:var(--fg)}
+.vote .vbtns button[aria-pressed="true"]:disabled{color:var(--accent-ink)}
+.vbar{display:flex;height:14px;border-radius:8px;overflow:hidden;background:var(--surface)}
+.vbar i{display:block;height:100%;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.vbar i:first-child{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.vbar i:last-child{background:linear-gradient(90deg,#5AA9FF,#9B6BFF)}
+.vleg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+/* Rodapé */
+footer{gap:6px}
+.f-brand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:var(--display-weight);font-size:1.05rem;color:var(--fg)}
+.f-brand img{border-radius:6px}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -975,6 +1060,14 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
 </button>
 
+<nav class="bnav" id="bnav" aria-label="Atalhos">
+  <a href="#buscar" data-t="buscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></a>
+  <a href="#tendencias" data-t="tendencias"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Em alta</span></a>
+  <a href="#calendario" data-t="calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Calendário</span></a>
+  <a href="#comparar" data-t="comparar"><svg viewBox="0 0 24 24"><path d="M4 4l9 9M4 4v4M4 4h4M20 4l-9 9M20 4v4M20 4h-4"/><path d="M7 14l-3 3 3 3M17 14l3 3-3 3"/></svg><span>Lutas</span></a>
+  <button type="button" id="bnavMenu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Mais</span></button>
+</nav>
+
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
@@ -1006,6 +1099,8 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
     <div class="ctiles" id="qList"></div>
     <div id="qObra"></div>
   </section>
+
+  <div class="qrecent" id="qRecent" hidden></div>
 
   <div class="or-line"><span>Não sabe o nome? Descreva ou mande um print</span></div>
 
@@ -1042,6 +1137,18 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
     <div class="rhead"><h2 id="rtitle">Resultados</h2><span id="rtag"></span></div>
     <div class="notes" id="notes"></div>
     <div class="list" id="list"></div>
+  </section>
+
+  <section class="explore" aria-labelledby="exploreH">
+    <h2 class="sec-h" id="exploreH">Explore</h2>
+    <div class="ex-grid">
+      <a class="ex" href="#tendencias" style="--x1:#FF4F9A;--x2:#FF9F45"><span class="ex-ic">📈</span><b>Tendências</b><small>Quem a galera mais procura esta semana</small></a>
+      <a class="ex" href="#calendario" style="--x1:#3FD0FF;--x2:#4F8BFF"><span class="ex-ic">📅</span><b>Calendário</b><small>Episódios novos de cada dia da temporada</small></a>
+      <a class="ex" href="#comparar" style="--x1:#E3122D;--x2:#FF6A2B"><span class="ex-ic">⚔️</span><b>Quem ganha?</b><small>Coloque dois personagens pra lutar</small></a>
+      <a class="ex" href="#jogo" style="--x1:#2FD47C;--x2:#F5CE3A"><span class="ex-ic">🎮</span><b>Jogo</b><small>Adivinhe o personagem pelas pistas</small></a>
+      <a class="ex" href="#colecoes" style="--x1:#9B6BFF;--x2:#FF4F9A"><span class="ex-ic">🗂️</span><b>Coleções</b><small>Monte coleções com os seus favoritos</small></a>
+      <a class="ex" href="#conquistas" style="--x1:#FFD84D;--x2:#E8A317"><span class="ex-ic">🏆</span><b>Conquistas</b><small>Desbloqueie medalhas usando o site</small></a>
+    </div>
   </section>
   </div>
 
@@ -1191,7 +1298,8 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
   </dialog>
 
   <footer>
-    <span>Só mostramos plataformas oficiais.</span>
+    <span class="f-brand"><img src="/icon.svg" alt="" width="22" height="22">Detetive Anime</span>
+    <span>Só mostramos plataformas oficiais. Assista sempre pelos serviços que pagam quem faz os animes.</span>
     <span>Personagens, fotos e aniversários: <a href="https://anilist.co" target="_blank" rel="noopener">AniList</a> · Busca por cena: <a href="https://trace.moe" target="_blank" rel="noopener">trace.moe</a> · Onde assistir: <a href="https://www.justwatch.com/br" target="_blank" rel="noopener">JustWatch</a></span>
   </footer>
 </div>
@@ -2489,7 +2597,8 @@ function route() {
 }
 addEventListener("hashchange", () => { movedInside = true; route(); window.scrollTo({ top: 0, behavior: RM() ? "auto" : "smooth" }); });
 window.onTab = (t) => {
-  if (t !== "personagem") document.title = "Detetive Anime";
+  if (t !== "personagem") { document.title = "Detetive Anime"; setAmbient(null); }
+  document.querySelectorAll("#bnav [data-t]").forEach((a) => a.classList.toggle("on", a.dataset.t === t));
   if (t === "tendencias") loadTrends();
   if (t === "comparar") drawSlots();
   if (t === "colecoes" && !$("tabCol").innerHTML) renderCols(null);
@@ -2558,12 +2667,29 @@ function suggest(input, box, onPick, opts = {}) {
 // ---------- Pesquisa completa
 if (innerWidth < 560) $("q").placeholder = "Nome, obra ou poder";
 const qs = suggest($("q"), $("qSug"), (c) => goTo(`personagem/${c.id}`), { searchAll: (q) => runFind(q) });
+$("bnavMenu").onclick = () => openMenu();
 $("qForm").addEventListener("submit", (e) => { e.preventDefault(); qs.close(); runFind($("q").value.trim()); });
 $("qHints").addEventListener("click", (e) => { const b = e.target.closest("[data-q]"); if (!b) return; $("q").value = b.dataset.q; runFind(b.dataset.q); });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "/" || e.ctrlKey || e.metaKey || /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable) return;
   e.preventDefault(); if ($("tabBuscar").hidden) goTo("buscar"); setTimeout(() => $("q").focus(), 30);
 });
+
+// Pesquisas recentes (só neste navegador)
+const RQKEY = "achei-o-anime:pesquisas";
+const loadRecent = () => { try { return JSON.parse(localStorage.getItem(RQKEY) || "[]"); } catch { return []; } };
+function saveRecent(q) {
+  const l = [q, ...loadRecent().filter((x) => x.toLowerCase() !== q.toLowerCase())].slice(0, 6);
+  try { localStorage.setItem(RQKEY, JSON.stringify(l)); } catch {}
+  drawRecent();
+}
+function drawRecent() {
+  const l = loadRecent();
+  $("qRecent").hidden = !l.length;
+  $("qRecent").innerHTML = `<span>Recentes</span>${l.map((q) => `<button type="button" data-q="${esc(q)}">${esc(q)}</button>`).join("")}`;
+}
+$("qRecent").onclick = (e) => { const b = e.target.closest("[data-q]"); if (b) { $("q").value = b.dataset.q; runFind(b.dataset.q); } };
+drawRecent();
 
 const TITLE = { personagem: "Personagens", apelido: "Esse apelido é de", poder: "Quem tem esse poder", organizacao: "Quem faz parte", caracteristica: "Quem tem isso", obra: "Personagens da obra", sugestao: "Talvez seja algum destes" };
 async function runFind(q) {
@@ -2586,6 +2712,7 @@ async function runFind(q) {
     if (!list.length && !d.obra) $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${d.iaFalhou ? `A IA está ocupada agora e não conseguiu procurar “${esc(q)}”. Espere uns segundos e toque em Pesquisar de novo.` : `Não achei ninguém com “${esc(q)}”. Confira se o nome está certo, ou descreva como o personagem é logo abaixo.`}</div>`;
     Sfx.play(list.length || d.obra ? "achou" : "erro");
     window.Conq?.event("pesquisa");
+    if (list.length || d.obra) saveRecent(q);
   } catch (err) {
     $("qTitle").textContent = "Ops";
     $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${esc(err.message)}</div>`;
@@ -2622,7 +2749,9 @@ function renderChar(d) {
   if (d.cor1) box.style.setProperty("--c1", d.cor1);
   if (d.cor2 || d.cor1) box.style.setProperty("--c2", d.cor2 || d.cor1);
   document.title = `${d.name} · Detetive Anime`;
+  setAmbient(d.image);
   const r = charToResult(d);
+  const nx = d.anime?.next && d.anime.next.airingAt > Date.now() / 1000 ? d.anime.next : null;
   const f = d.facts || {};
   const fact = (k, v) => v ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : "";
   const fans = d.favourites ? `${d.favourites >= 1000 ? (d.favourites / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil" : d.favourites} fãs marcaram como favorito no AniList` : "";
@@ -2635,6 +2764,7 @@ function renderChar(d) {
         <h2>${esc(d.name)}</h2>
         <div class="cp-tags">${d.organizacao ? `<span class="org">${esc(d.organizacao)}</span>` : ""}${[...new Set([...(d.apelidos || []), ...(d.alternative || [])])].slice(0, 6).map((a) => `<span>${esc(a)}</span>`).join("")}</div>
         ${d.resumo ? `<p class="cp-resumo">${esc(d.resumo)}</p>` : ""}
+        ${nx ? `<span class="cp-next">Episódio ${nx.episode} sai ${new Date(nx.airingAt * 1000).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", weekday: "long", hour: "2-digit", minute: "2-digit" })}</span>` : ""}
         <div class="cp-actions">
           <button type="button" class="mini" id="cpFav" aria-pressed="${isFav(r)}">★ ${isFav(r) ? "Favorito" : "Favoritar"}</button>
           <button type="button" class="mini" id="cpCol">＋ Coleção</button>
@@ -2666,6 +2796,12 @@ function renderChar(d) {
   };
 }
 document.addEventListener("click", (e) => { if (e.target.closest("[data-back]")) back(); });
+function setAmbient(src) {
+  let el = document.querySelector(".cp-amb");
+  if (!src) { el?.remove(); return; }
+  if (!el) { el = document.createElement("div"); el.className = "cp-amb"; el.setAttribute("aria-hidden", "true"); document.querySelector(".aurora").after(el); }
+  el.style.backgroundImage = `url("${String(src).replace(/["\\]/g, "")}")`;
+}
 
 // ---------- Tendências
 let trendsAt = 0;
@@ -2751,6 +2887,35 @@ async function fight(idA, idB) {
     $("vsOut").innerHTML = `<div class="empty">${esc(err.message)}</div>`;
   } finally { go.disabled = !(vs.a && vs.b); go.firstElementChild.textContent = "Lutar!"; }
 }
+// Votação dos fãs (um voto por luta neste navegador)
+const VKEY = "achei-o-anime:votos";
+const pairK = (d) => [d.a.id, d.b.id].sort((x, y) => x - y).join("-");
+const myVote = (d) => { try { return JSON.parse(localStorage.getItem(VKEY) || "{}")[pairK(d)] || null; } catch { return null; } };
+function drawVotes(d, v) {
+  const box = $("vsVotes"); if (!box) return;
+  const mine = myVote(d);
+  $("vsVote").querySelectorAll("[data-v]").forEach((b) => { b.setAttribute("aria-pressed", String(Number(b.dataset.v) === mine)); b.disabled = Boolean(mine); });
+  if (!v || !v.ligado) { box.innerHTML = mine ? `<p class="hint" style="margin:0">Voto guardado!</p>` : ""; return; }
+  const A = v.votos[d.a.id] || 0, B = v.votos[d.b.id] || 0, T = A + B;
+  if (!T) { box.innerHTML = `<p class="hint" style="margin:0">Ninguém votou ainda. Seja o primeiro!</p>`; return; }
+  const pa = Math.round((A / T) * 100);
+  box.innerHTML = `<div class="vbar"><i style="width:0"></i><i style="width:0"></i></div><div class="vleg"><span>${esc(d.a.name)} ${pa}%</span><span>${T} ${T === 1 ? "voto" : "votos"}</span><span>${100 - pa}% ${esc(d.b.name)}</span></div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => { const [x, y] = box.querySelectorAll(".vbar i"); x.style.width = pa + "%"; y.style.width = 100 - pa + "%"; }));
+}
+async function loadVotes(d) {
+  drawVotes(d, null);
+  if (!myVote(d)) return; // o placar aparece depois que a pessoa vota, pra não influenciar
+  try { drawVotes(d, await api(`/api/versus?a=${d.a.id}&b=${d.b.id}&votos=1`)); } catch {}
+}
+async function castVote(d, id) {
+  if (myVote(d)) return;
+  try {
+    const v = await api("/api/versus", { a: d.a.id, b: d.b.id, voto: id });
+    try { const all = JSON.parse(localStorage.getItem(VKEY) || "{}"); all[pairK(d)] = id; localStorage.setItem(VKEY, JSON.stringify(all)); } catch {}
+    Sfx.play("pop"); drawVotes(d, v);
+  } catch (err) { toast(err.message); }
+}
+
 const STAT = { forca: "Força", velocidade: "Velocidade", inteligencia: "Inteligência", tecnica: "Técnica", resistencia: "Resistência" };
 function renderFight(d) {
   const face = (c, side) => `<div class="vs-face ${d.vencedor === side ? "win" : d.vencedor === "empate" ? "" : "lose"}">${d.vencedor === side ? `<span class="crown" aria-hidden="true">👑</span>` : ""}${pic(c.image)}<b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small></div>`;
@@ -2762,9 +2927,14 @@ function renderFight(d) {
     ${d.explicacao ? `<p class="cp-text">${esc(d.explicacao)}</p>` : ""}
     ${d.momento_decisivo ? `<div class="vs-key"><b>Momento decisivo:</b> ${esc(d.momento_decisivo)}</div>` : ""}
     <div class="vs-cols"><div><b>Vantagens de ${esc(d.a.name)}</b><ul>${d.a.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div><div><b>Vantagens de ${esc(d.b.name)}</b><ul>${d.b.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div></div>
+    <div class="vote" id="vsVote"><h4>E você, quem acha que ganha?</h4>
+      <div class="vbtns"><button type="button" data-v="${d.a.id}">${esc(d.a.name)}</button><button type="button" data-v="${d.b.id}">${esc(d.b.name)}</button></div>
+      <div id="vsVotes"></div></div>
     <div class="row-btns"><button type="button" class="mini" id="vsShare">↗ Compartilhar luta</button><button type="button" class="mini" id="vsNew">Nova luta</button></div>
     <p class="cp-note">É só uma brincadeira de fã: a IA dá um palpite pelo que aparece nas obras.</p></div>`;
   requestAnimationFrame(() => requestAnimationFrame(() => $("vsOut").querySelectorAll("[data-w]").forEach((i) => { i.style.width = i.dataset.w + "%"; })));
+  loadVotes(d);
+  $("vsVote").querySelector(".vbtns").onclick = (e) => { const b = e.target.closest("[data-v]"); if (b) castVote(d, Number(b.dataset.v)); };
   $("vsShare").onclick = async () => { try { await navigator.clipboard.writeText(location.href); toast("Link da luta copiado!"); } catch { toast(location.href); } };
   $("vsNew").onclick = () => { vs.a = vs.b = null; $("vsOut").innerHTML = ""; history.replaceState(null, "", "#comparar"); drawSlots(); };
 }

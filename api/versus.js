@@ -1,12 +1,38 @@
 import { charactersByIds, liteCard } from "../lib/anilist.js";
 import { askJson } from "../lib/ai.js";
-import { route, clip, needAi } from "../lib/common.js";
+import { route, clip, needAi, readBody } from "../lib/common.js";
+import { trendsEnabled, recordVote, countVotes } from "../lib/trends.js";
 
 const STATS = ["forca", "velocidade", "inteligencia", "tecnica", "resistencia"];
 const num = (v) => Math.max(0, Math.min(100, Math.round(Number(v) || 0)));
 
+const ids = (q) => [Number(q?.a), Number(q?.b)];
+const okIds = (a, b) => Number.isInteger(a) && Number.isInteger(b) && a > 0 && b > 0 && a !== b && a < 1e8 && b < 1e8;
+
+// Votação dos fãs: GET ?a&b&votos=1 mostra o placar; POST {a, b, voto} registra um voto.
+async function votes(req, res) {
+  res.setHeader("Cache-Control", "no-store");
+  const [a, b] = req.method === "POST" ? ids(readBody(req)) : ids(req.query);
+  if (!okIds(a, b)) return res.status(400).json({ error: "Luta inválida." });
+  if (!trendsEnabled()) return res.status(200).json({ ligado: false, votos: { [a]: 0, [b]: 0 } });
+  if (req.method === "POST") {
+    const v = Number(readBody(req).voto);
+    if (v !== a && v !== b) return res.status(400).json({ error: "Voto inválido." });
+    await recordVote(a, b, v);
+  }
+  return res.status(200).json({ ligado: true, votos: await countVotes(a, b) });
+}
+
+export default async function handler(req, res) {
+  if (req.method === "POST" || req.query?.votos) {
+    try { return await votes(req, res); }
+    catch (e) { console.error(e); return res.status(500).json({ error: "A votação não respondeu agora." }); }
+  }
+  return fight(req, res);
+}
+
 // Quem ganharia? ?a=<id AniList>&b=<id AniList>. A mesma dupla sempre recebe a mesma resposta (fica guardada no Vercel).
-export default route("GET", async (req, res) => {
+const fight = route("GET", async (req, res) => {
   needAi();
   let a = Number(req.query?.a), b = Number(req.query?.b);
   if (!Number.isInteger(a) || !Number.isInteger(b) || a <= 0 || b <= 0) return res.status(400).json({ error: "Escolha os dois personagens." });

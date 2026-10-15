@@ -181,3 +181,18 @@ test("calendário traz os episódios da semana sem conteúdo adulto", async () =
   assert.equal(res.body.episodios[0].onde[0].name, "Crunchyroll");
   assert.equal(pages, 2);
 });
+
+test("votação dos fãs conta os votos de cada lado", async () => {
+  process.env.BLOB_READ_WRITE_TOKEN = "x";
+  const saved = [];
+  globalThis.__blobMock = { put: async (p) => { saved.push(p); }, list: async ({ prefix }) => ({ blobs: saved.filter((p) => p.startsWith(prefix)).map((pathname) => ({ pathname })), hasMore: false }) };
+  const { default: handler } = await import("../api/versus.js");
+  for (const voto of [7, 7, 3]) await handler({ method: "POST", query: {}, body: { a: 7, b: 3, voto } }, fakeRes());
+  const res = fakeRes();
+  await handler({ method: "GET", query: { a: "3", b: "7", votos: "1" } }, res);
+  assert.deepEqual(res.body.votos, { 3: 1, 7: 2 });
+  const bad = fakeRes();
+  await handler({ method: "POST", query: {}, body: { a: 7, b: 3, voto: 9 } }, bad);
+  assert.equal(bad.code, 400);
+  delete globalThis.__blobMock; delete process.env.BLOB_READ_WRITE_TOKEN;
+});

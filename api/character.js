@@ -34,7 +34,8 @@ Regras: português do Brasil. Nada de conteúdo adulto nem violência pesada. N�
 
   const p = ai || {};
   const f = charFacts(c);
-  res.setHeader("Cache-Control", "public, s-maxage=604800, stale-while-revalidate=86400");
+  // Ficha completa fica guardada uma semana; sem a parte da IA, só 5 minutos (pra tentar de novo logo).
+  res.setHeader("Cache-Control", ai ? "public, s-maxage=604800, stale-while-revalidate=86400" : "public, s-maxage=300");
   return res.status(200).json({
     id: c.id,
     name,

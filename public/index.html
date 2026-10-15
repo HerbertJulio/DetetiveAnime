@@ -2495,7 +2495,7 @@ async function runFind(q) {
       $("qObra").innerHTML = `<div class="cp-sec" style="margin-top:${list.length ? 18 : 0}px"><div class="show">${d.obra.cover ? `<img src="${esc(d.obra.cover)}" alt="">` : ""}<a href="${esc(d.obra.url)}" target="_blank" rel="noopener">${esc(d.obra.title)}<small>${esc(d.obra.native || "")}</small></a></div>
         <h3>Personagens de ${esc(d.obra.title)}</h3><div class="ctiles">${d.obra.personagens.map(tile).join("")}</div></div>`;
     }
-    if (!list.length && !d.obra) $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">Não achei ninguém com “${esc(q)}”. Confira se o nome está certo, ou descreva como o personagem é logo abaixo.</div>`;
+    if (!list.length && !d.obra) $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${d.iaFalhou ? `A IA está ocupada agora e não conseguiu procurar “${esc(q)}”. Espere uns segundos e toque em Pesquisar de novo.` : `Não achei ninguém com “${esc(q)}”. Confira se o nome está certo, ou descreva como o personagem é logo abaixo.`}</div>`;
     Sfx.play(list.length || d.obra ? "achou" : "erro");
   } catch (err) {
     $("qTitle").textContent = "Ops";

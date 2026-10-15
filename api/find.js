@@ -11,7 +11,9 @@ export default async function handler(req, res) {
     if (q.length < 2) return res.status(400).json({ error: "Digite pelo menos 2 letras." });
     const rapido = req.query?.modo === "rapido";
     const out = await find(q, rapido);
-    res.setHeader("Cache-Control", `public, s-maxage=${rapido ? 3600 : 86400}, stale-while-revalidate=3600`);
+    // Resposta vazia ou com a IA fora do ar não fica guardada, pra a próxima pessoa tentar de novo.
+    const keep = out.resultados.length || out.obra;
+    res.setHeader("Cache-Control", out.iaFalhou || !keep ? "no-store" : `public, s-maxage=${rapido ? 3600 : 86400}, stale-while-revalidate=3600`);
     return res.status(200).json(out);
   } catch (err) {
     console.error(err);
@@ -58,12 +60,13 @@ export async function find(q, rapido) {
   }
 
   // Não é nome nem obra: pode ser poder, técnica, organização ou apelido. A IA ajuda a descobrir quem é.
+  let iaFalhou = false;
   if (aiEnabled()) {
     const ai = await askJson(`Um usuário de um site brasileiro de anime (público jovem) pesquisou: "${q}".
 Isso pode ser nome ou apelido de personagem, nome de obra, um poder/técnica/habilidade, uma organização/clã/grupo/escola, ou uma característica marcante.
 Descubra a quais personagens de anime a pesquisa se refere. Responda SOMENTE com JSON:
 {"tipo":"apelido|poder|organizacao|obra|caracteristica|outro","explicacao":"1 frase em português do Brasil explicando o que é \\"${q}\\"","personagens":[{"nome":"nome completo do personagem em romaji, como no AniList","anime":"nome do anime em romaji","motivo":"por que aparece, ex.: dono da técnica, membro do grupo"}]}
-Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que existem. Nada de conteúdo adulto. Se não souber, "personagens":[].`, { maxTokens: 900 }).catch((e) => { console.error("IA:", e.message); return null; });
+Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que existem. Nada de conteúdo adulto. Se não souber, "personagens":[].`, { maxTokens: 900 }).catch((e) => { console.error("IA:", e.message); iaFalhou = true; return null; });
 
     const guesses = (Array.isArray(ai?.personagens) ? ai.personagens : []).filter((g) => g?.nome).slice(0, 8);
     if (guesses.length) {
@@ -80,5 +83,5 @@ Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que 
     }
   }
 
-  return { q, tipo: "sugestao", explicacao: "", resultados: characters.slice(0, 8).map((c) => liteCard(c)), obra: null };
+  return { q, tipo: "sugestao", explicacao: "", resultados: characters.slice(0, 8).map((c) => liteCard(c)), obra: null, iaFalhou };
 }

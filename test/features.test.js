@@ -129,3 +129,16 @@ test("tendências contam as visitas da semana", async () => {
   assert.equal(bad.code, 400);
   delete globalThis.__blobMock; delete process.env.BLOB_READ_WRITE_TOKEN;
 });
+
+test("se um modelo do Gemini estiver lotado, tenta o próximo", async () => {
+  process.env.GEMINI_API_KEY = "g"; delete process.env.ANTHROPIC_API_KEY; delete process.env.AI_MODEL;
+  const tried = [];
+  globalThis.fetch = async (url) => {
+    const m = String(url).match(/models\/([^:]+)/)[1]; tried.push(m);
+    if (tried.length === 1) return { ok: false, status: 503, json: async () => ({}), text: async () => "busy" };
+    return { ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: '{"ok":1}' }] } }] }), text: async () => "" };
+  };
+  const { askJson } = await import("../lib/ai.js");
+  assert.deepEqual(await askJson("x"), { ok: 1 });
+  assert.deepEqual(tried, ["gemini-flash-latest", "gemini-flash-lite-latest"]);
+});

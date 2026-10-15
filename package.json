@@ -1,0 +1,14 @@
+{
+  "name": "detetive-anime",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Encontre o anime pela descrição do personagem ou por um print, e veja onde assistir oficialmente.",
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

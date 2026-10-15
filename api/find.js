@@ -105,7 +105,7 @@ Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que 
 async function anilistUser(req, res) {
   const name = clip(req.query.usuario, 40);
   if (!/^[\w-]{2,40}$/.test(name)) return res.status(400).json({ error: "Nome de usuário inválido." });
-  const u = await anilistUserProfile(name).catch(() => null);
+  const u = await anilistUserProfile(name).catch((e) => { console.error("AniList usuário:", e.message); return null; });
   if (!u) return res.status(404).json({ error: "Não encontrei esse usuário no AniList." });
   res.setHeader("Cache-Control", "public, s-maxage=3600");
   return res.status(200).json(u);

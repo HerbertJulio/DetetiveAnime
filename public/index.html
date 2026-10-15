@@ -809,6 +809,21 @@ html:not([data-tab="buscar"]) .wrap{gap:28px}
 footer{gap:6px}
 .f-brand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:var(--display-weight);font-size:1.05rem;color:var(--fg)}
 .f-brand img{border-radius:6px}
+
+/* ---------- Domínio do tema Corte Carmesim (santuário original sob a lua de sangue) */
+.domain{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.domain svg{width:100%;height:100%;display:block}
+[data-skin="carmesim"] .domain{display:block;animation:bgIn 1s ease both}
+[data-skin="carmesim"][data-mode="light"] .domain{opacity:.28}
+[data-skin="carmesim"] .aurora i{opacity:.12}
+[data-skin="carmesim"] .aurora::before{opacity:.5}
+.domain .d-moon,.domain .d-halo{transform-box:fill-box;transform-origin:center;animation:moonPulse 6s ease-in-out infinite}
+.domain .d-mist{animation:mist 14s ease-in-out infinite alternate}
+.domain .d-rip{animation:rip 4s ease-in-out infinite}
+@keyframes moonPulse{50%{transform:scale(1.04);filter:brightness(1.15)}}
+@keyframes mist{to{transform:translateX(60px)}}
+@keyframes rip{50%{opacity:.4;transform:translateY(3px)}}
+[data-aurora="off"] .domain *{animation:none!important}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1032,6 +1047,28 @@ footer{gap:6px}
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="daily-bg" id="dailyBg" aria-hidden="true" hidden><canvas id="dailyBgFx"></canvas></div>
 <div class="flash" id="flash" aria-hidden="true"></div>
+<div class="domain" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="dSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0002"/><stop offset=".45" stop-color="#3A0008"/><stop offset=".68" stop-color="#7A0A14"/><stop offset=".69" stop-color="#14000A"/><stop offset="1" stop-color="#050003"/></linearGradient>
+<radialGradient id="dMoon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF8A6B"/><stop offset=".55" stop-color="#E3122D"/><stop offset="1" stop-color="#5A0010"/></radialGradient>
+<radialGradient id="dHalo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF2E3F" stop-opacity=".55"/><stop offset="1" stop-color="#FF2E3F" stop-opacity="0"/></radialGradient>
+<linearGradient id="dGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF6A2B"/><stop offset="1" stop-color="#C3001C"/></linearGradient>
+<linearGradient id="dFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<mask id="dRefl"><rect x="0" y="620" width="1600" height="280" fill="url(#dFade)"/></mask>
+<filter id="dBlur"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#dSky)"/>
+<circle class="d-halo" cx="800" cy="330" r="420" fill="url(#dHalo)"/>
+<circle class="d-moon" cx="800" cy="330" r="230" fill="url(#dMoon)"/>
+<path d="M0 612 L120 560 L240 590 L380 520 L520 585 L600 560 L700 612 Z M900 612 L1010 570 L1120 590 L1240 510 L1380 575 L1480 545 L1600 590 L1600 612 Z" fill="#2A0007" opacity=".85"/>
+<g id="dScene" fill="#060002"><rect x="470" y="606" width="660" height="18"/><rect x="500" y="590" width="600" height="18"/><rect x="600" y="520" width="400" height="72"/><path d="M500 494 Q554.0 528 614.0 530 L986.0 530 Q1046.0 528 1100 494 Q986.0 508 902.0 474 L698.0 474 Q614.0 508 500 494 Z"/><rect x="660" y="440" width="280" height="52"/><path d="M580 416 Q619.6 450 663.6 452 L936.4 452 Q980.4 450 1020 416 Q936.4 430 874.8 396 L725.2 396 Q663.6 430 580 416 Z"/><rect x="710" y="366" width="180" height="48"/><path d="M650 344 Q677.0 378 707.0 380 L893.0 380 Q923.0 378 950 344 Q893.0 358 851.0 324 L749.0 324 Q707.0 358 650 344 Z"/><rect x="794" y="250" width="12" height="80"/><rect x="784" y="262" width="32" height="4"/><rect x="787" y="278" width="26" height="4"/><rect x="790" y="294" width="20" height="4"/><rect x="793" y="310" width="14" height="4"/><rect x="650" y="534" width="50" height="58" fill="url(#dGlow)"/><rect x="775" y="530" width="50" height="62" fill="url(#dGlow)"/><rect x="900" y="534" width="50" height="58" fill="url(#dGlow)"/><rect x="730" y="452" width="40" height="36" fill="url(#dGlow)" opacity=".7"/><rect x="830" y="452" width="40" height="36" fill="url(#dGlow)" opacity=".7"/><g><rect x="427" y="540" width="6" height="70"/><rect x="416" y="520" width="28" height="24" rx="4" fill="url(#dGlow)"/><path d="M410 522 L430 506 L450 522 Z"/></g><g><rect x="1167" y="540" width="6" height="70"/><rect x="1156" y="520" width="28" height="24" rx="4" fill="url(#dGlow)"/><path d="M1150 522 L1170 506 L1190 522 Z"/></g><g transform="translate(250 610) scale(0.9)"><path d="M-110 -150 Q0 -170 110 -150 L104 -138 Q0 -156 -104 -138 Z"/><rect x="-96" y="-124" width="192" height="10"/><rect x="-82" y="-142" width="12" height="142"/><rect x="70" y="-142" width="12" height="142"/></g><g transform="translate(1350 610) scale(0.9)"><path d="M-110 -150 Q0 -170 110 -150 L104 -138 Q0 -156 -104 -138 Z"/><rect x="-96" y="-124" width="192" height="10"/><rect x="-82" y="-142" width="12" height="142"/><rect x="70" y="-142" width="12" height="142"/></g></g>
+<rect y="618" width="1600" height="282" fill="#0A0004"/>
+<g mask="url(#dRefl)" filter="url(#dBlur)"><use href="#dScene" transform="translate(0 1236) scale(1 -1)"/><circle cx="800" cy="906" r="230" fill="url(#dMoon)" opacity=".5"/></g>
+<g class="d-rip" stroke="#FF3B4E" stroke-linecap="round">
+<line x1="560" y1="660" x2="1040" y2="660" stroke-width="1.2" opacity=".35"/><line x1="460" y1="700" x2="1140" y2="700" stroke-width="1" opacity=".25"/>
+<line x1="620" y1="745" x2="980" y2="745" stroke-width="1" opacity=".2"/><line x1="380" y1="800" x2="1220" y2="800" stroke-width=".8" opacity=".15"/></g>
+<g class="d-mist" fill="#5A000E"><ellipse cx="300" cy="610" rx="420" ry="26" opacity=".55"/><ellipse cx="1300" cy="605" rx="460" ry="24" opacity=".5"/><ellipse cx="800" cy="628" rx="620" ry="18" opacity=".45"/></g>
+</svg></div>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <button class="menu-btn" id="openMenu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
@@ -1394,7 +1431,7 @@ footer{gap:6px}
 
   function count(amount) {
     const area = Math.min(1.4, (W * H) / (1440 * 900));
-    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 6, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100, vazio: 220 }[kind] || 0;
+    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 46, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100, vazio: 220 }[kind] || 0;
     return Math.round(max * (amount / 100) * Math.max(0.35, area));
   }
 
@@ -1414,10 +1451,20 @@ footer{gap:6px}
         Object.assign(p, { y: initial ? rnd(0, H) : H + 10, s: rnd(1.5, 3.2), vx: rnd(-0.3, 0.3), vy: rnd(-0.35, -0.08), tw: rnd(0.01, 0.03), c: Math.random() < 0.5 ? "a" : "b" });
         break;
       case "cortes": {
-        const ang = rnd(-0.9, 0.9) + (Math.random() < 0.5 ? 0 : Math.PI / 2);
-        const len = rnd(0.35, 0.9) * Math.hypot(W, H);
-        Object.assign(p, { x: rnd(W * 0.1, W * 0.9), y: rnd(H * 0.1, H * 0.9), ang, len, life: 0, delay: initial ? rnd(0, 240) : rnd(40, 260),
-          lines: Math.random() < 0.35 ? 3 : Math.random() < 0.5 ? 2 : 1, gap: rnd(10, 22) });
+        // Brasas subindo o tempo todo; de vez em quando, um corte (sozinho, em X ou uma rajada de cortes pequenos)
+        if (Math.random() < 0.84) {
+          Object.assign(p, { k: "brasa", y: initial ? rnd(0, H) : H + 10, s: rnd(0.6, 2.2), vx: rnd(-0.25, 0.25), vy: rnd(-1.1, -0.3), life: rnd(0.5, 1), c: Math.random() < 0.7 ? "a" : "b" });
+          break;
+        }
+        const r = Math.random();
+        const mode = r < 0.5 ? "corte" : r < 0.75 ? "cruz" : "rajada";
+        const big = Math.hypot(W, H);
+        const cuts = [];
+        const cx = rnd(W * 0.15, W * 0.85), cy = rnd(H * 0.15, H * 0.85);
+        if (mode === "corte") cuts.push({ ang: rnd(-0.8, 0.8) + (Math.random() < 0.5 ? 0 : Math.PI / 2), len: rnd(0.45, 0.95) * big, w: rnd(5, 9), at: 0, x: cx, y: cy });
+        else if (mode === "cruz") { const a0 = rnd(0.5, 1.0); cuts.push({ ang: a0, len: rnd(0.35, 0.6) * big, w: 7, at: 0, x: cx, y: cy }, { ang: -a0, len: rnd(0.35, 0.6) * big, w: 7, at: 10, x: cx, y: cy }); }
+        else for (let k = 0, n = Math.round(rnd(5, 9)); k < n; k++) cuts.push({ ang: rnd(0, Math.PI), len: rnd(0.08, 0.2) * big, w: rnd(2.5, 4.5), at: k * rnd(3, 6), x: cx + rnd(-90, 90), y: cy + rnd(-70, 70) });
+        Object.assign(p, { k: "golpe", mode, cuts, t: 0, delay: initial ? rnd(0, 220) : rnd(30, 200), sparks: [] });
         break;
       }
       case "faiscas":
@@ -1608,28 +1655,51 @@ footer{gap:6px}
           break;
         }
         case "cortes": {
-          if (p.delay > 0) { p.delay -= dt; break; }
-          if (p.life === 0 && document.getElementById("flash")) { const f = document.getElementById("flash"); f.classList.add("on"); requestAnimationFrame(() => f.classList.remove("on")); }
-          p.life += 0.035 * dt;
-          const grow = Math.min(1, p.life * 4);          // o corte "risca" a tela rápido
-          const fade = p.life < 0.25 ? 1 : Math.max(0, 1 - (p.life - 0.25) / 0.75);
-          const dx = Math.cos(p.ang), dy = Math.sin(p.ang), nx = -dy, ny = dx;
-          for (let k = 0; k < p.lines; k++) {
-            const off = (k - (p.lines - 1) / 2) * p.gap;
-            const cx = p.x + nx * off, cy = p.y + ny * off;
-            const h = (p.len / 2) * grow;
-            const x1 = cx - dx * h, y1 = cy - dy * h, x2 = cx + dx * h, y2 = cy + dy * h;
-            const g = ctx.createLinearGradient(x1, y1, x2, y2);
-            g.addColorStop(0, "transparent"); g.addColorStop(0.5, colors.a); g.addColorStop(1, "transparent");
-            ctx.globalAlpha = fade * 0.55; ctx.strokeStyle = g; ctx.lineWidth = 7; ctx.lineCap = "round";
-            ctx.shadowColor = colors.a; ctx.shadowBlur = 18;
-            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-            const g2 = ctx.createLinearGradient(x1, y1, x2, y2);
-            g2.addColorStop(0, "transparent"); g2.addColorStop(0.5, dark ? "#FFF4F0" : "#2A0005"); g2.addColorStop(1, "transparent");
-            ctx.globalAlpha = fade; ctx.strokeStyle = g2; ctx.lineWidth = 1.6; ctx.shadowBlur = 0;
-            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+          if (p.k === "brasa") {
+            p.x += (p.vx + Math.sin(p.t * 2) * 0.25) * dt; p.y += p.vy * dt; p.life -= 0.0025 * dt;
+            const a = Math.max(0, p.life) * (0.5 + 0.5 * Math.abs(Math.sin(p.t * 6)));
+            glow(p.x, p.y, p.s, pc, a * 0.45);
+            ctx.globalAlpha = a; ctx.fillStyle = dark ? "#FFD2B8" : pc; ctx.beginPath(); ctx.arc(p.x, p.y, p.s * 0.6, 0, 6.283); ctx.fill();
+            if (p.life <= 0 || p.y < -10) parts[i] = spawn(false);
+            break;
           }
-          if (p.life >= 1) parts[i] = spawn(false);
+          if (p.delay > 0) { p.delay -= dt; break; }
+          if (p.t === 0 && p.mode !== "rajada") { const f = document.getElementById("flash"); if (f) { f.classList.add("on"); requestAnimationFrame(() => f.classList.remove("on")); } }
+          p.t += dt;
+          let alive = false;
+          for (const c of p.cuts) {
+            const tt = p.t - c.at;
+            if (tt < 0) { alive = true; continue; }
+            const grow = Math.min(1, tt / 6);                 // risca a tela em ~6 quadros
+            const fade = tt < 14 ? 1 : Math.max(0, 1 - (tt - 14) / 46);
+            if (fade > 0) alive = true;
+            const dx = Math.cos(c.ang), dy = Math.sin(c.ang), nx = -dy, ny = dx;
+            const half = c.len / 2;
+            const sx = c.x - dx * half, sy = c.y - dy * half;
+            const ex = sx + dx * c.len * grow, ey = sy + dy * c.len * grow;
+            // Lâmina afinando nas pontas
+            const steps = 18;
+            ctx.beginPath();
+            for (let k = 0; k <= steps; k++) { const u = k / steps, w = Math.sin(Math.PI * u) * c.w * (0.6 + 0.4 * fade); ctx.lineTo(sx + (ex - sx) * u + nx * w, sy + (ey - sy) * u + ny * w); }
+            for (let k = steps; k >= 0; k--) { const u = k / steps, w = Math.sin(Math.PI * u) * c.w * 0.25; ctx.lineTo(sx + (ex - sx) * u - nx * w, sy + (ey - sy) * u - ny * w); }
+            ctx.closePath();
+            ctx.globalAlpha = fade * 0.9; ctx.fillStyle = colors.a; ctx.shadowColor = colors.a; ctx.shadowBlur = 26; ctx.fill();
+            ctx.shadowBlur = 0; ctx.globalAlpha = fade; ctx.strokeStyle = dark ? "#FFF6F2" : "#2A0005"; ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+            // O espaço "abre" depois do corte: duas bordas se afastando
+            if (grow >= 1 && fade > 0) {
+              const sep = Math.min(10, (tt - 6) * 0.6) * (c.w / 7);
+              ctx.globalAlpha = fade * 0.5; ctx.strokeStyle = colors.b; ctx.lineWidth = 1;
+              for (const sg of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx + nx * sep * sg, sy + ny * sep * sg); ctx.lineTo(ex + nx * sep * sg, ey + ny * sep * sg); ctx.stroke(); }
+            }
+            // Faíscas saindo da ponta enquanto corta
+            if (grow < 1 && p.sparks.length < 120) for (let k = 0; k < 3; k++) p.sparks.push({ x: ex, y: ey, vx: dx * rnd(1, 4) + rnd(-2, 2), vy: dy * rnd(1, 4) + rnd(-2, 2), l: 1 });
+          }
+          for (const sp of p.sparks) {
+            sp.x += sp.vx * dt; sp.y += sp.vy * dt; sp.vy += 0.08 * dt; sp.l -= 0.035 * dt;
+            if (sp.l > 0) { alive = true; ctx.globalAlpha = sp.l; ctx.fillStyle = sp.l > 0.6 ? "#FFF1E6" : colors.b; ctx.fillRect(sp.x, sp.y, 2, 2); }
+          }
+          if (!alive) parts[i] = spawn(false);
           break;
         }
         case "faiscas": {

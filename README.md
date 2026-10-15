@@ -8,6 +8,8 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 - **Página do personagem**: foto, nome, anime, poderes, personalidade, frases marcantes, curiosidades, personagens relacionados e onde assistir.
 - **Tendências da comunidade**: os personagens mais procurados da semana no site e os que estão em alta no mundo.
 - **Quem ganha?**: escolha dois personagens e a IA diz quem venceria a luta.
+- **Calendário da temporada**: episódios novos dos próximos 7 dias, com horário de Brasília e contagem regressiva dos animes que você acompanha.
+- **Conquistas**: 25 medalhas para desbloquear usando o site.
 - **Coleções**: crie coleções com o nome que quiser e guarde seus personagens.
 - **Buscar pela descrição**: descreva o personagem ou mande um print. A IA dá os palpites e o AniList confirma com foto, aniversário, idade e gênero oficiais. Com print, o trace.moe acha o episódio e o minuto.
 - **Personagem do dia**: o aniversariante de hoje mais querido no AniList (data oficial), com curiosidades, cores e um efeito especial escolhidos pela IA.
@@ -28,6 +30,7 @@ api/find.js        pesquisa por nome, obra, apelido, poder ou organização
 api/character.js   página do personagem
 api/versus.js      quem ganha a luta
 api/trends.js      tendências da semana
+api/schedule.js    calendário da temporada
 api/daily.js       personagem do dia (aniversariantes do AniList)
 api/game.js        rodada do jogo
 api/quiz.js        resultado do teste

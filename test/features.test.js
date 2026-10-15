@@ -164,3 +164,20 @@ test("nome pouco conhecido também pergunta pra IA (ex.: organização Akatsuki)
   assert.equal(r.outros[0].name, "Akatsuki");
   assert.equal(r.obra, null);
 });
+
+test("calendário traz os episódios da semana sem conteúdo adulto", async () => {
+  const sched = (id, adult, at) => ({ airingAt: at, episode: 3, media: { id, isAdult: adult, siteUrl: "u", episodes: 12, popularity: 9000, title: { romaji: "R" + id }, coverImage: { large: "c" }, externalLinks: [{ site: "Crunchyroll", url: "https://cr", type: "STREAMING" }] } });
+  let pages = 0;
+  globalThis.fetch = fakeFetch((u, o) => {
+    pages++;
+    const { page } = JSON.parse(o.body).variables;
+    return { data: { Page: { pageInfo: { hasNextPage: page < 2 }, airingSchedules: page === 1 ? [sched(1, false, 100), sched(2, true, 200)] : [sched(3, false, 300)] } } };
+  });
+  const { default: handler } = await import("../api/schedule.js");
+  const res = fakeRes();
+  await handler({ method: "GET", query: {} }, res);
+  assert.equal(res.code, 200);
+  assert.deepEqual(res.body.episodios.map((e) => e.id), [1, 3]);
+  assert.equal(res.body.episodios[0].onde[0].name, "Crunchyroll");
+  assert.equal(pages, 2);
+});

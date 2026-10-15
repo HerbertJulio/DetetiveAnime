@@ -566,7 +566,7 @@ input[type=range]:disabled{opacity:.4}
 .cwrap .rm:hover{background:#C81E3A}
 [data-tab="personagem"] .hero{display:none}
 html:not([data-tab="buscar"]) .hero .sub{display:none}
-#qRes,#tabChar,#vsOut{scroll-margin-top:80px}
+#findRes,#tabChar,#vsOut{scroll-margin-top:80px}
 @media (max-width:560px){.qbox{padding-left:14px}.qbox .go{padding:10px 14px;font-size:.92em}.qbox input{font-size:1em}}
 .tr-ph{height:76px;border-radius:18px}
 .tr-item img,.tr-item .ph{width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--surface-2)}
@@ -660,6 +660,67 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .toast{position:fixed;z-index:40;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
   padding:11px 18px;border-radius:999px;background:var(--fg);color:var(--bg);font-weight:500;font-size:.92rem;box-shadow:0 18px 40px -16px rgba(0,0,0,.5);transition:all .25s;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Calendário */
+.cal{gap:22px}
+.cal-next{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.cal-next:empty{display:none}
+.cal-next .hint{margin:0}
+.nx{flex:none;width:240px;display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;padding:12px;border-radius:18px;text-decoration:none;color:var(--fg);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c,var(--accent)) 28%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--c,var(--accent)) 50%,transparent);animation:rise .4s both}
+.nx img,.nx .ph{width:56px;height:76px;border-radius:10px;object-fit:cover;background:var(--surface-2)}
+.nx b{display:block;font-size:.92em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nx small{color:var(--muted);font-size:.8em}
+.nx .cd{display:block;font-family:var(--mono);font-size:1.05rem;font-weight:500;margin-top:4px;font-variant-numeric:tabular-nums}
+.cal-days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cal-days::-webkit-scrollbar{display:none}
+.cal-days button{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:74px;padding:10px 12px;border-radius:16px;font:inherit;color:var(--fg);cursor:pointer;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line)}
+.cal-days button b{font-size:.95em}
+.cal-days button small{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.cal-days button[aria-selected="true"]{background:var(--grad);color:var(--accent-ink);border-color:transparent}
+.cal-days button[aria-selected="true"] small{color:inherit;opacity:.8}
+.cal-tools{display:flex;flex-wrap:wrap;gap:10px 22px}
+.cal-list{display:flex;flex-direction:column;gap:10px}
+.ep{display:grid;grid-template-columns:62px 54px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px;border-radius:18px;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .35s both;animation-delay:calc(var(--i,0) * 25ms)}
+.ep.mine{border-color:color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 14px 34px -24px var(--glow)}
+.ep.past{opacity:.6}
+.ep .hr{font-family:var(--mono);font-size:1.05rem;font-weight:500;text-align:center;font-variant-numeric:tabular-nums}
+.ep .hr small{display:block;font-size:.66rem;color:var(--muted);font-weight:400}
+.ep img,.ep .ph{width:54px;height:74px;border-radius:10px;object-fit:cover;background:var(--surface-2)}
+.ep .t{min-width:0;display:flex;flex-direction:column;gap:3px}
+.ep .t a{font-weight:700;text-decoration:none;line-height:1.25;overflow-wrap:anywhere}
+.ep .t a:hover{color:var(--accent)}
+.ep .t small{color:var(--muted);font-size:.84em}
+.ep .t .pl{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ep .t .pl a{font-size:.74em;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.ep .new{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#2FD47C;color:#06210F;align-self:flex-start}
+.follow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:1.2rem;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);transition:transform .15s,border-color .15s}
+.follow:hover{transform:scale(1.08);border-color:var(--accent)}
+.follow[aria-pressed="true"]{color:var(--accent-2);border-color:var(--accent-2)}
+@media (max-width:560px){.ep{grid-template-columns:52px 46px minmax(0,1fr) auto;gap:10px}.ep img,.ep .ph{width:46px;height:64px}.ep .hr{font-size:.92rem}}
+
+/* ---------- Conquistas */
+.ach{gap:22px}
+.ach-bar{display:flex;align-items:center;gap:14px}
+.ach-bar .bar{flex:1;height:12px;border-radius:8px;background:var(--surface-2);overflow:hidden}
+.ach-bar .bar i{display:block;height:100%;width:0;border-radius:8px;background:var(--grad);box-shadow:0 0 14px var(--glow);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.ach-bar b{font-family:var(--mono);font-size:.9rem}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.badge-c{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;padding:14px;border-radius:18px;position:relative;overflow:hidden;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .4s both;animation-delay:calc(var(--i,0) * 30ms)}
+.badge-c .ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;background:var(--surface-2);filter:grayscale(1);opacity:.55}
+.badge-c b{display:block;line-height:1.2}
+.badge-c p{margin:2px 0 0;font-size:.84em;color:var(--muted);line-height:1.35}
+.badge-c .pg{display:flex;align-items:center;gap:8px;margin-top:6px;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.badge-c .pg span{flex:1;height:5px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.badge-c .pg i{display:block;height:100%;background:var(--grad)}
+.badge-c.on{border-color:color-mix(in srgb,#FFD84D 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,#FFD84D 12%,var(--surface)),var(--surface))}
+.badge-c.on .ic{filter:none;opacity:1;background:radial-gradient(circle at 35% 30%,#FFF3B0,#FFD84D 45%,#E8A317);box-shadow:0 8px 24px -8px #E8A317}
+.badge-c.on::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.12) 50%,transparent 60%);background-size:250% 100%;animation:sh 3.5s linear infinite;pointer-events:none}
+.badge-c.on .when{font-family:var(--mono);font-size:.68rem;color:#E8A317;margin-top:4px;display:block}
+.toast.ach-t{background:linear-gradient(100deg,#FFE27A,#E8A317);color:#2A1A00;font-weight:700;padding:13px 22px}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -898,12 +959,14 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
   <nav class="m-list" role="tablist" aria-label="Seções">
     <button type="button" role="tab" id="tabBtnBuscar" aria-selected="true" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
     <button type="button" role="tab" id="tabBtnTrend" aria-selected="false" aria-controls="tabTrend"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Tendências</span></button>
+    <button type="button" role="tab" id="tabBtnCal" aria-selected="false" aria-controls="tabCal"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.2"/></svg><span>Calendário</span></button>
     <button type="button" role="tab" id="tabBtnDaily" aria-selected="false" aria-controls="tabDaily"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg><span>Personagem do dia</span></button>
     <button type="button" role="tab" id="tabBtnVs" aria-selected="false" aria-controls="tabVs"><svg viewBox="0 0 24 24"><path d="M4 4l9 9M4 4v4M4 4h4M20 4l-9 9M20 4v4M20 4h-4"/><path d="M7 14l-3 3 3 3M17 14l3 3-3 3"/></svg><span>Quem ganha?</span></button>
     <button type="button" role="tab" id="tabBtnJogo" aria-selected="false" aria-controls="tabJogo"><svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r=".6"/><circle cx="18" cy="13.5" r=".6"/></svg><span>Jogo</span></button>
     <button type="button" role="tab" id="tabBtnTeste" aria-selected="false" aria-controls="tabTeste"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6"/></svg><span>Teste</span></button>
     <button type="button" role="tab" id="tabBtnRank" aria-selected="false" aria-controls="tabRank"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></svg><span>Ranking e Tier List</span><span class="count" id="rankCount"></span></button>
     <button type="button" role="tab" id="tabBtnCol" aria-selected="false" aria-controls="tabCol"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="2"/><rect x="14" y="5" width="7" height="14" rx="2"/><path d="M6.5 9h0M17.5 9h0"/></svg><span>Coleções</span><span class="count" id="colCount"></span></button>
+    <button type="button" role="tab" id="tabBtnAch" aria-selected="false" aria-controls="tabAch"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 21l5-2.5 5 2.5-1.5-7.5"/><path d="m12 6 .9 1.9 2.1.3-1.5 1.5.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.5 2.1-.3z"/></svg><span>Conquistas</span><span class="count" id="achCount"></span></button>
     <button type="button" role="tab" id="tabBtnFav" aria-selected="false" aria-controls="tabFav"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Favoritos</span><span class="count" id="favCount"></span></button>
     <button type="button" role="tab" id="tabBtnHist" aria-selected="false" aria-controls="tabHist"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Últimas buscas</span><span class="count" id="histCount"></span></button>
   </nav>
@@ -937,7 +1000,7 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
     </div>
   </div>
 
-  <section class="qres" id="qRes" hidden aria-live="polite">
+  <section class="qres" id="findRes" hidden aria-live="polite">
     <div class="rhead"><h2 id="qTitle">Resultados</h2><span id="qTag"></span></div>
     <p class="qexp" id="qExp" hidden></p>
     <div class="ctiles" id="qList"></div>
@@ -1097,6 +1160,25 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
     </div>
     <div class="row-btns vs-go"><button type="button" class="go" id="vsGo" disabled><span>Lutar!</span></button><button type="button" class="ghost" id="vsRand">Sortear uma luta</button><span class="status" id="vsMsg" role="status" aria-live="polite"></span></div>
     <div id="vsOut"></div>
+  </section>
+
+  <section id="tabCal" role="tabpanel" aria-labelledby="tabBtnCal" class="tabpanel cal" hidden>
+    <div class="rhead"><h2>Calendário da temporada</h2><span id="calTag"></span></div>
+    <div class="cal-next" id="calNext"></div>
+    <div class="cal-days" id="calDays" role="tablist" aria-label="Dias da semana"></div>
+    <div class="cal-tools">
+      <label class="toggle"><input type="checkbox" id="calMine"> <span>Só os que eu acompanho</span></label>
+      <label class="toggle"><input type="checkbox" id="calAll"> <span>Mostrar também os menos conhecidos</span></label>
+    </div>
+    <div class="cal-list" id="calList"></div>
+    <p class="cp-note">Horários de Brasília, segundo o AniList. O episódio pode chegar nas plataformas brasileiras algumas horas depois.</p>
+  </section>
+
+  <section id="tabAch" role="tabpanel" aria-labelledby="tabBtnAch" class="tabpanel ach" hidden>
+    <div class="rhead"><h2>Conquistas</h2><span id="achTag"></span></div>
+    <div class="ach-bar"><span class="bar"><i id="achFill"></i></span><b id="achPct"></b></div>
+    <div class="ach-grid" id="achGrid"></div>
+    <p class="cp-note">As conquistas ficam salvas só neste navegador.</p>
   </section>
 
   <section id="tabCol" role="tabpanel" aria-labelledby="tabBtnCol" class="tabpanel col" hidden></section>
@@ -1774,6 +1856,7 @@ $("form").addEventListener("submit", async (e) => {
     Sfx.play(items.length ? "achou" : "erro");
     saveHistory({ q: description, print: Boolean(imageFile), at: Date.now(), results: items });
     if (items[0]?.character?.id) window.countView?.(items[0].character.id);
+    window.Conq?.event(imageFile ? "print" : "busca");
     $("out").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   } catch (err) {
     $("out").hidden = true;
@@ -2199,6 +2282,7 @@ async function revealDaily() {
     r.fromAniList = true;
     try { localStorage.setItem(DKEY, JSON.stringify({ day: today(), data: r })); } catch {}
     drawDaily(r);
+    window.Conq?.event("diario");
   } catch (err) {
     btn.disabled = false; btn.firstElementChild.textContent = "Tentar de novo";
     $("dailyIn").querySelector(".status")?.remove();
@@ -2284,6 +2368,7 @@ function answer(o) {
   if (o === g.resposta) {
     g.done = true; g.won = true;
     game.score += Math.max(1, 4 - g.shown); game.streak += 1;
+    window.Conq?.event("acerto", game.streak);
     const record = game.score > game.best;
     if (record) game.best = game.score;
     Sfx.play(record ? "recorde" : "plim");
@@ -2343,6 +2428,7 @@ async function quizResult() {
     c.querySelector(".meter")?.remove();
     $("qRes").appendChild(c);
     Sfx.play("recorde");
+    window.Conq?.event("teste");
     $("qAgain").onclick = () => { quiz.i = 0; quiz.answers = []; drawQuestion(); };
   } catch (err) {
     st.innerHTML = `<p class="status err">${esc(err.message || "Não consegui ver o resultado. Tente de novo.")}</p><button type="button" class="go" id="qRetry"><span>Tentar de novo</span></button>`;
@@ -2383,6 +2469,7 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("on");
   clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 2400);
 }
+window.toast = toast;
 const pic = (src, cls = "ph") => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="${cls}"></span>`;
 const tile = (c, i = 0) => `<a class="ctile" href="#personagem/${Number(c.id)}" style="--i:${i}">${c.role && ROLE[c.role] ? `<span class="badge">${ROLE[c.role]}</span>` : ""}
   <div class="im">${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy">` : `<div class="ini">${esc((c.name || "?").charAt(0))}</div>`}</div>
@@ -2481,9 +2568,9 @@ document.addEventListener("keydown", (e) => {
 const TITLE = { personagem: "Personagens", apelido: "Esse apelido é de", poder: "Quem tem esse poder", organizacao: "Quem faz parte", caracteristica: "Quem tem isso", obra: "Personagens da obra", sugestao: "Talvez seja algum destes" };
 async function runFind(q) {
   if (q.length < 2) { toast("Digite pelo menos 2 letras."); $("q").focus(); return; }
-  $("qRes").hidden = false; $("qTitle").textContent = "Procurando…"; $("qTag").textContent = ""; $("qExp").hidden = true;
+  $("findRes").hidden = false; $("qTitle").textContent = "Procurando…"; $("qTag").textContent = ""; $("qExp").hidden = true;
   $("qList").innerHTML = skelTiles(6); $("qObra").innerHTML = "";
-  $("qRes").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
+  $("findRes").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
   try {
     const d = await api(`/api/find?q=${encodeURIComponent(q)}`);
     const list = d.resultados || [];
@@ -2498,6 +2585,7 @@ async function runFind(q) {
     }
     if (!list.length && !d.obra) $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${d.iaFalhou ? `A IA está ocupada agora e não conseguiu procurar “${esc(q)}”. Espere uns segundos e toque em Pesquisar de novo.` : `Não achei ninguém com “${esc(q)}”. Confira se o nome está certo, ou descreva como o personagem é logo abaixo.`}</div>`;
     Sfx.play(list.length || d.obra ? "achou" : "erro");
+    window.Conq?.event("pesquisa");
   } catch (err) {
     $("qTitle").textContent = "Ops";
     $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${esc(err.message)}</div>`;
@@ -2521,6 +2609,7 @@ async function loadChar(id) {
     if (decodeURIComponent(location.hash).split("/")[1] != id) return;
     renderChar(d);
     countView(id);
+    window.Conq?.event("ficha", id);
   } catch (err) {
     box.innerHTML = `<button type="button" class="ghost cp-back" data-back>← Voltar</button><div class="empty">${esc(err.message)}</div>`;
   }
@@ -2657,6 +2746,7 @@ async function fight(idA, idB) {
     history.replaceState(null, "", `#comparar/${idA}-${idB}`);
     renderFight(d);
     Sfx.play("recorde");
+    window.Conq?.event("luta");
   } catch (err) {
     $("vsOut").innerHTML = `<div class="empty">${esc(err.message)}</div>`;
   } finally { go.disabled = !(vs.a && vs.b); go.firstElementChild.textContent = "Lutar!"; }
@@ -2754,6 +2844,188 @@ function openColDialog(item) {
 saveCols(loadCols());
 
 route();
+})();
+</script>
+<script>
+// ---------- Calendário da temporada e conquistas
+(() => {
+const TZ = "America/Sao_Paulo";
+const pic = (src) => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="ph"></span>`;
+TABS.calendario = ["tabBtnCal", "tabCal"];
+TABS.conquistas = ["tabBtnAch", "tabAch"];
+for (const k of ["calendario", "conquistas"]) $(TABS[k][0]).onclick = () => { closeMenu(); goTo(k); };
+const prevTab = window.onTab;
+window.onTab = (t) => { prevTab?.(t); if (t === "calendario") loadCal(); if (t === "conquistas") renderAch(); };
+
+// ---------- Calendário
+const FKEY2 = "achei-o-anime:acompanhando";
+function loadFollow() { try { return JSON.parse(localStorage.getItem(FKEY2) || "[]"); } catch { return []; } }
+function saveFollow(l) { try { localStorage.setItem(FKEY2, JSON.stringify(l)); } catch {} }
+const dayKey = (ts) => new Date(ts * 1000).toLocaleDateString("en-CA", { timeZone: TZ });
+const hhmm = (ts) => new Date(ts * 1000).toLocaleTimeString("pt-BR", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
+function until(ts) {
+  let s = Math.max(0, Math.round(ts - Date.now() / 1000));
+  const d = Math.floor(s / 86400); s -= d * 86400;
+  const h = Math.floor(s / 3600); s -= h * 3600;
+  const m = Math.floor(s / 60); s -= m * 60;
+  if (d) return `${d}d ${h}h ${String(m).padStart(2, "0")}min`;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+let cal = null, calAt = 0, calSel = 0, tick = 0;
+async function loadCal() {
+  clearInterval(tick); tick = setInterval(liveTimes, 1000);
+  if (cal && Date.now() - calAt < 15 * 60000) { drawCal(); return; }
+  $("calList").innerHTML = Array.from({ length: 5 }, () => `<div class="tr-ph shim"></div>`).join("");
+  try {
+    cal = await api("/api/schedule"); calAt = Date.now();
+    drawCal();
+  } catch (err) { $("calList").innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
+}
+function visible(list) {
+  const mine = new Set(loadFollow().map((f) => f.id));
+  return list.filter((e) => mine.has(e.id) || (!$("calMine").checked && ($("calAll").checked || e.popular >= 3000 || e.pais === "JP" && e.popular >= 1500)));
+}
+function drawCal() {
+  if (!cal) return;
+  const now = Date.now() / 1000, mine = new Set(loadFollow().map((f) => f.id));
+  const days = Array.from({ length: 7 }, (_, i) => dayKey(now + i * 86400));
+  const shown = visible(cal.episodios);
+  $("calTag").textContent = `${shown.length} episódios esta semana`;
+  $("calDays").innerHTML = days.map((k, i) => {
+    const d = new Date(k + "T12:00:00");
+    const name = i === 0 ? "Hoje" : i === 1 ? "Amanhã" : d.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "");
+    const n = shown.filter((e) => dayKey(e.at) === k).length;
+    return `<button type="button" role="tab" data-d="${i}" aria-selected="${i === calSel}"><b>${name.charAt(0).toUpperCase() + name.slice(1)}</b><small>${d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })} · ${n}</small></button>`;
+  }).join("");
+  const today = shown.filter((e) => dayKey(e.at) === days[calSel]);
+  $("calList").innerHTML = today.length ? today.map((e, i) => {
+    const past = e.at <= now, last = e.total && e.ep === e.total;
+    return `<div class="ep${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i}">
+      <span class="hr">${hhmm(e.at)}<small data-at="${e.at}">${past ? "já saiu" : until(e.at)}</small></span>
+      ${pic(e.cover)}
+      <span class="t">${last ? `<span class="new">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : ""}
+        <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
+        <small>Episódio ${e.ep}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
+        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name)}</a>`).join("")}</span>` : ""}</span>
+      <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button></div>`;
+  }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;
+  drawNext();
+}
+function drawNext() {
+  const now = Date.now() / 1000, follow = loadFollow();
+  if (!follow.length) { $("calNext").innerHTML = `<p class="hint">Toque na ☆ de um anime pra acompanhar. A contagem regressiva do próximo episódio aparece aqui.</p>`; return; }
+  const next = follow.map((f) => ({ f, e: cal?.episodios.find((e) => e.id === f.id && e.at > now) })).sort((a, b) => (a.e?.at || 9e12) - (b.e?.at || 9e12));
+  $("calNext").innerHTML = next.map(({ f, e }) => `<a class="nx" href="${esc(f.url || "#")}" target="_blank" rel="noopener" style="--c:${esc(e?.color || f.color || "var(--accent)")}">${pic(f.cover)}<span><b>${esc(f.title)}</b><small>${e ? `Ep. ${e.ep} · ${new Date(e.at * 1000).toLocaleDateString("pt-BR", { timeZone: TZ, weekday: "short" })} ${hhmm(e.at)}` : "Sem episódio nesta semana"}</small>${e ? `<span class="cd" data-at="${e.at}">${until(e.at)}</span>` : ""}</span></a>`).join("");
+}
+function liveTimes() {
+  if ($("tabCal").hidden) { clearInterval(tick); return; }
+  const now = Date.now() / 1000;
+  document.querySelectorAll("#tabCal [data-at]").forEach((el) => { const at = Number(el.dataset.at); el.textContent = at <= now ? "já saiu" : until(at); });
+}
+$("calDays").onclick = (e) => { const b = e.target.closest("[data-d]"); if (b) { calSel = Number(b.dataset.d); drawCal(); } };
+$("calMine").onchange = drawCal;
+$("calAll").onchange = drawCal;
+$("calList").onclick = (e) => {
+  const b = e.target.closest("[data-f]"); if (!b) return;
+  const id = Number(b.dataset.f), ep = cal.episodios.find((x) => x.id === id);
+  let l = loadFollow();
+  const on = !l.some((f) => f.id === id);
+  l = on ? [...l, { id, title: ep.title, cover: ep.cover, url: ep.url, color: ep.color }].slice(-40) : l.filter((f) => f.id !== id);
+  saveFollow(l); Sfx.play(on ? "fav" : "desfav");
+  if (on) toast(`Acompanhando ${ep.title}`);
+  drawCal(); Conq.check(true);
+};
+
+// ---------- Conquistas
+const AKEY = "achei-o-anime:conquistas";
+const st = (() => { try { return { n: {}, fichas: [], seq: 0, days: [], temas: [], unlocked: {}, ...JSON.parse(localStorage.getItem(AKEY) || "{}") }; } catch { return { n: {}, fichas: [], seq: 0, days: [], temas: [], unlocked: {} }; } })();
+const saveSt = () => { try { localStorage.setItem(AKEY, JSON.stringify(st)); } catch {} };
+const n = (k) => st.n[k] || 0;
+const safe = (f) => { try { return f(); } catch { return 0; } };
+function dayStreak() {
+  const set = new Set(st.days); let d = new Date(), c = 0;
+  while (set.has(d.toLocaleDateString("en-CA", { timeZone: TZ }))) { c++; d = new Date(d.getTime() - 86400000); }
+  return c;
+}
+const tierPlaced = () => safe(() => { const t = loadTier(); return TIERS.reduce((a, [k]) => a + (t.rows[k] || []).length, 0); });
+const DEFS = [
+  ["caso1", "🔎", "Primeiro caso", "Faça sua primeira pesquisa.", 1, () => n("pesquisa") + n("busca") + n("print")],
+  ["det10", "🕵️", "Detetive júnior", "Faça 10 pesquisas.", 10, () => n("pesquisa") + n("busca") + n("print")],
+  ["det50", "🧠", "Detetive lendário", "Faça 50 pesquisas.", 50, () => n("pesquisa") + n("busca") + n("print")],
+  ["descr", "🗣️", "Retrato falado", "Ache 5 personagens só pela descrição.", 5, () => n("busca") + n("print")],
+  ["print", "📸", "Olho de águia", "Faça uma busca usando um print.", 1, () => n("print")],
+  ["ficha5", "📖", "Leitor de fichas", "Abra a página de 5 personagens.", 5, () => st.fichas.length],
+  ["ficha30", "📚", "Enciclopédia ambulante", "Abra a página de 30 personagens.", 30, () => st.fichas.length],
+  ["fav1", "⭐", "Primeiro favorito", "Favorite um personagem.", 1, () => safe(() => loadFavs().length)],
+  ["fav15", "💖", "Coração otaku", "Tenha 15 favoritos.", 15, () => safe(() => loadFavs().length)],
+  ["col1", "🗂️", "Colecionador", "Crie sua primeira coleção.", 1, () => safe(() => loadCols().length)],
+  ["col25", "🏛️", "Curador do museu", "Guarde 25 personagens nas coleções.", 25, () => safe(() => loadCols().reduce((a, c) => a + c.itens.length, 0))],
+  ["rank10", "🏆", "Meu top 10", "Complete o ranking com 10 personagens.", 10, () => safe(() => loadRank().length)],
+  ["tier10", "📊", "Juiz das tiers", "Coloque 10 personagens nas fileiras da tier list.", 10, tierPlaced],
+  ["luta1", "⚔️", "Que comece a luta", "Faça a primeira luta no Quem ganha?.", 1, () => n("luta")],
+  ["luta15", "🥊", "Narrador de batalhas", "Faça 15 lutas.", 15, () => n("luta")],
+  ["jogo1", "🎮", "Na mosca", "Acerte um personagem no jogo.", 1, () => n("acerto")],
+  ["jogo5", "🔥", "Em chamas", "Acerte 5 seguidas no jogo.", 5, () => st.seq],
+  ["jogo15", "👑", "Imparável", "Acerte 15 seguidas no jogo.", 15, () => st.seq],
+  ["teste", "🪞", "Autoconhecimento", "Descubra qual personagem você é no Teste.", 1, () => n("teste")],
+  ["diario", "🎂", "Parabéns pra você", "Revele o personagem do dia.", 1, () => n("diario")],
+  ["dias3", "📅", "Visitante fiel", "Abra o site 3 dias seguidos.", 3, dayStreak],
+  ["dias7", "🗓️", "Uma semana inteira", "Abra o site 7 dias seguidos.", 7, dayStreak],
+  ["dominio", "🌀", "Expansão de domínio", "Use o tema Vazio Infinito ou Corte Carmesim.", 1, () => st.temas.filter((t) => t === "vazio" || t === "carmesim").length],
+  ["temas5", "🎨", "Estilista", "Experimente 5 temas diferentes.", 5, () => st.temas.length],
+  ["seguir3", "📺", "Em dia com a temporada", "Acompanhe 3 animes no Calendário.", 3, () => loadFollow().length],
+];
+let queue = [], showing = false;
+function popNext() {
+  if (showing || !queue.length) return;
+  showing = true;
+  const d = queue.shift();
+  toast(`${d[1]} Conquista desbloqueada: ${d[2]}`);
+  const t = document.querySelector(".toast"); t?.classList.add("ach-t");
+  Sfx.play("recorde");
+  setTimeout(() => { t?.classList.remove("ach-t"); showing = false; popNext(); }, 2700);
+}
+function check(notify) {
+  let changed = false;
+  for (const d of DEFS) {
+    if (st.unlocked[d[0]]) continue;
+    if (d[5]() >= d[4]) { st.unlocked[d[0]] = Date.now(); changed = true; if (notify) queue.push(d); }
+  }
+  if (changed) saveSt();
+  $("achCount").textContent = Object.keys(st.unlocked).length || "";
+  if (!$("tabAch").hidden) renderAch();
+  popNext();
+}
+function renderAch() {
+  const got = DEFS.filter((d) => st.unlocked[d[0]]).length;
+  $("achTag").textContent = `${got} de ${DEFS.length}`;
+  $("achPct").textContent = `${Math.round((got / DEFS.length) * 100)}%`;
+  requestAnimationFrame(() => { $("achFill").style.width = `${(got / DEFS.length) * 100}%`; });
+  const order = [...DEFS].sort((a, b) => Boolean(st.unlocked[b[0]]) - Boolean(st.unlocked[a[0]]));
+  $("achGrid").innerHTML = order.map((d, i) => {
+    const on = st.unlocked[d[0]], v = Math.min(d[4], d[5]());
+    return `<div class="badge-c${on ? " on" : ""}" style="--i:${i}"><span class="ic" aria-hidden="true">${d[1]}</span><span><b>${esc(d[2])}</b><p>${esc(d[3])}</p>
+      ${on ? `<span class="when">desbloqueada em ${new Date(on).toLocaleDateString("pt-BR")}</span>` : d[4] > 1 ? `<span class="pg"><span><i style="width:${(v / d[4]) * 100}%"></i></span>${v}/${d[4]}</span>` : ""}</span></div>`;
+  }).join("");
+}
+function event(name, v) {
+  if (name === "ficha") { if (v && !st.fichas.includes(v)) st.fichas = [...st.fichas, v].slice(-500); }
+  else { st.n[name] = n(name) + 1; if (name === "acerto") st.seq = Math.max(st.seq, Number(v) || 0); }
+  saveSt(); check(true);
+}
+function noteTheme(cfg) { if (cfg?.theme && !st.temas.includes(cfg.theme)) { st.temas.push(cfg.theme); saveSt(); } }
+const today = new Date().toLocaleDateString("en-CA", { timeZone: TZ });
+if (!st.days.includes(today)) st.days = [...st.days, today].slice(-60);
+noteTheme(window.Config?.get?.());
+const first = !st.init;
+st.init = true; saveSt();
+check(!first);   // na primeira vez, desbloqueia em silêncio o que a pessoa já tinha feito
+addEventListener("config", (e) => { noteTheme(e.detail); check(true); });
+// Favoritos, ranking, tier list e coleções são conferidos quando a pessoa mexe neles
+document.addEventListener("click", () => setTimeout(() => check(true), 300));
+window.Conq = { event, check };
+const k0 = location.hash.slice(1);
+if (k0 === "calendario" || k0 === "conquistas") showTab(k0);
 })();
 </script>
 </body>

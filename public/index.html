@@ -1867,7 +1867,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
         <div class="pf-badges" id="pfBadges"></div>
       </div>
     </div>
-    <div class="stage pf-photo" id="pfPhoto" hidden>
+    <div class="stage pf-photo" id="pfPhoto">
       <h3 class="sec-h">Foto do perfil</h3>
       <div class="pf-opts">
         <label class="mini pf-pick"><input type="file" id="pfFile" accept="image/png,image/jpeg,image/webp,image/gif"> 💻 Do computador</label>
@@ -4447,7 +4447,7 @@ function drawProfile() {
 }
 function safe(f) { try { return f() || []; } catch { return []; } }
 const pmsg = (t, err) => { $("pfMsg").textContent = t; $("pfMsg").classList.toggle("err", Boolean(err)); };
-$("pfAv").onclick = () => { $("pfPhoto").hidden = !$("pfPhoto").hidden; };
+$("pfAv").onclick = () => { $("pfPhoto").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => $("pfAni").focus({ preventScroll: true }), 350); };
 $("pfName").addEventListener("input", (e) => { const p = loadP(); p.nome = e.target.value.slice(0, 24); saveP(p); drawMenuProfile(); });
 $("pfName").addEventListener("change", () => { window.Sfx?.play("plim"); drawProfile(); });
 async function squareBlob(file) {

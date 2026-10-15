@@ -47,6 +47,14 @@ a{color:inherit}
 [data-skin="carmesim"] .aurora::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.65))}
 [data-skin="carmesim"][data-mode="light"] .aurora::after{display:none}
 [data-aurora="off"] .aurora::before{animation:none}
+[data-skin="vazio"] .aurora::before{content:"";position:absolute;inset:-20%;
+  background:radial-gradient(circle at 50% 42%,transparent 0 3%,rgba(255,255,255,.18) 4%,rgba(63,208,255,.22) 7%,rgba(155,107,255,.16) 16%,transparent 34%),
+    conic-gradient(from 0deg at 50% 42%,rgba(63,208,255,.12),rgba(155,107,255,.18),rgba(255,255,255,.05),rgba(63,208,255,.14),rgba(155,107,255,.12),rgba(63,208,255,.12));
+  filter:blur(18px);animation:voidSpin 60s linear infinite}
+[data-skin="vazio"] .aurora::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,transparent 40%,rgba(0,0,6,.75))}
+[data-skin="vazio"][data-mode="light"] .aurora::after{display:none}
+[data-skin="vazio"] .aurora i{opacity:.22}
+@keyframes voidSpin{to{transform:rotate(360deg)}}
 @keyframes ember{50%{opacity:.6;transform:translateX(-50%) scale(1.06)}}
 .flash{position:fixed;inset:0;z-index:1;pointer-events:none;background:rgba(227,18,45,.10);opacity:0;transition:opacity .35s}
 .flash.on{opacity:1;transition:none}
@@ -439,6 +447,219 @@ input[type=range]:disabled{opacity:.4}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* ---------- Pesquisa rápida */
+.qsearch{position:relative;display:flex;flex-direction:column;gap:12px}
+.qbox{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 18px;border-radius:999px;
+  background:linear-gradient(color-mix(in srgb,var(--surface) 88%,transparent),color-mix(in srgb,var(--surface) 88%,transparent)) padding-box,var(--grad) border-box;
+  border:1.5px solid transparent;box-shadow:0 24px 60px -34px var(--glow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.qbox svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+.qbox input{flex:1;min-width:0;font:inherit;font-size:1.12em;color:var(--fg);background:transparent;border:0;outline:0;padding:8px 0}
+.qbox input::placeholder{color:var(--muted);opacity:.8}
+.qbox input::-webkit-search-cancel-button{filter:grayscale(1)}
+.qbox kbd{font-family:var(--mono);font-size:.72rem;color:var(--muted);border:1px solid var(--line-strong);border-radius:6px;padding:1px 7px}
+.qbox .go{padding:11px 22px}
+.qbox:focus-within{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent),0 24px 60px -34px var(--glow)}
+@media (max-width:560px){.qbox kbd{display:none}.qbox .go{padding:11px 16px}}
+.qsug{position:absolute;z-index:6;top:62px;left:0;right:0;padding:6px;border-radius:20px;background:color-mix(in srgb,var(--surface) 97%,transparent);
+  border:1px solid var(--line-strong);box-shadow:0 30px 70px -20px rgba(0,0,0,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);max-height:60vh;overflow-y:auto}
+.sug{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;color:var(--fg);background:transparent;border:0;border-radius:14px;padding:7px 10px;cursor:pointer}
+.sug:hover,.sug[aria-selected="true"]{background:var(--surface-2)}
+.sug img,.sug .ph{width:42px;height:42px;border-radius:12px;object-fit:cover;background:var(--surface-2)}
+.sug b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sug small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sug .k{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.sug-h{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:8px 10px 4px}
+.qhints{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.86em}
+.qhints span{color:var(--muted);margin-right:2px}
+.qhints button,.mini{font:inherit;font-size:.92em;color:var(--fg);background:color-mix(in srgb,var(--surface-2) 85%,transparent);border:1px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;transition:border-color .15s,transform .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.qhints button:hover,.mini:hover{border-color:var(--accent);transform:translateY(-1px)}
+.qres{display:flex;flex-direction:column;gap:16px}
+.qexp{margin:0;padding:12px 16px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.or-line{display:flex;align-items:center;gap:14px;color:var(--muted);font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:-8px 0 -16px}
+.or-line::before,.or-line::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+.or-line span{text-align:center}
+
+/* Fichas pequenas de personagem (grade) */
+.ctiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.ctiles:empty{display:none}
+.ctile{position:relative;display:flex;flex-direction:column;text-align:left;font:inherit;color:var(--fg);padding:0;border-radius:18px;overflow:hidden;cursor:pointer;text-decoration:none;
+  background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);animation:rise .45s both;animation-delay:calc(var(--i,0) * 45ms);transition:transform .2s,border-color .2s,box-shadow .2s}
+.ctile:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 22px 50px -30px var(--glow)}
+.ctile .im{aspect-ratio:3/4;background:var(--surface-2);position:relative;overflow:hidden}
+.ctile .im img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.ctile:hover .im img{transform:scale(1.06)}
+.ctile .im .ini{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:var(--display-weight);font-size:3rem;color:var(--accent-ink);background:var(--grad)}
+.ctile .tx{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ctile b{font-size:.98em;line-height:1.25;overflow-wrap:anywhere}
+.ctile small{color:var(--muted);font-size:.8em;line-height:1.3}
+.ctile .why{font-size:.78em;color:var(--fg);opacity:.85;margin-top:4px}
+.ctile .badge{position:absolute;left:8px;top:8px;z-index:1;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;backdrop-filter:blur(6px)}
+.ctile .rm{position:absolute;right:8px;top:8px;z-index:2;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:1rem;line-height:1}
+.ctiles.small{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.ctiles.small .tx{padding:8px 10px 10px}
+@media (max-width:560px){.ctiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ctiles.small{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.sec-h{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.35em}
+.hint{margin:-6px 0 0;color:var(--muted);font-size:.88em}
+.card .more{align-self:flex-start;font-weight:700;text-decoration:none;color:var(--accent);font-size:.92em}
+.card .more:hover{text-decoration:underline}
+
+/* ---------- Página do personagem */
+.charpage{gap:28px;--c1:var(--accent);--c2:var(--accent-2)}
+.cp-back{align-self:flex-start}
+.cp-hero{position:relative;display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:26px;padding:22px;border-radius:calc(var(--r) + 10px);overflow:hidden;
+  background:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--c1) 34%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--c2) 26%,var(--surface)));
+  border:1px solid color-mix(in srgb,var(--c1) 50%,transparent);box-shadow:0 40px 90px -50px var(--c1)}
+.cp-img{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:3/4;background:var(--surface-2);box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
+.cp-img img{width:100%;height:100%;object-fit:cover}
+.cp-img .vert{position:absolute;right:10px;top:12px;writing-mode:vertical-rl;font-family:var(--display);font-weight:var(--display-weight);letter-spacing:.14em;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.cp-head{display:flex;flex-direction:column;gap:12px;min-width:0;justify-content:center}
+.cp-kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cp-kicker a{color:var(--c1);text-decoration:none;font-weight:500}
+.cp-head h2{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(2.1rem,6vw,3.4rem);line-height:1;text-wrap:balance}
+.cp-tags{display:flex;flex-wrap:wrap;gap:6px}
+.cp-tags span{font-size:.82em;padding:4px 11px;border-radius:999px;background:color-mix(in srgb,var(--surface-2) 85%,transparent);border:1px solid var(--line)}
+.cp-tags .org{background:linear-gradient(100deg,var(--c1),var(--c2));color:#fff;border:0;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.cp-resumo{margin:0;font-size:1.06em}
+.cp-actions{display:flex;flex-wrap:wrap;gap:8px}
+.cp-actions .mini[aria-pressed="true"]{border-color:var(--c1)!important;background:color-mix(in srgb,var(--c1) 22%,var(--surface-2))!important}
+.cp-fans{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.cp-sec{display:flex;flex-direction:column;gap:14px}
+.cp-sec > h3{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.45em;display:flex;align-items:center;gap:10px}
+.cp-sec > h3::before{content:"";width:8px;height:22px;border-radius:4px;background:linear-gradient(var(--c1),var(--c2))}
+.powers{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.power{padding:16px;border-radius:18px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);position:relative;overflow:hidden;animation:rise .45s both;animation-delay:calc(var(--i,0) * 60ms)}
+.power::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(var(--c1),transparent 70%);opacity:.35}
+.power b{display:block;font-size:1.05em;margin-bottom:4px;color:var(--c1)}
+.power p{margin:0;font-size:.92em;color:var(--fg);opacity:.9}
+.cp-text{margin:0;font-size:1.02em;max-width:68ch}
+.quotes{display:flex;flex-direction:column;gap:10px}
+.quotes blockquote{margin:0;padding:16px 20px;border-radius:18px;font-family:var(--display);font-weight:var(--display-weight);font-size:1.18em;line-height:1.35;
+  background:color-mix(in srgb,var(--c1) 10%,var(--surface));border-left:4px solid var(--c1)}
+.quotes blockquote::before{content:"“";color:var(--c1);margin-right:2px}
+.quotes blockquote::after{content:"”";color:var(--c1)}
+.works{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.work{flex:none;width:110px;display:flex;flex-direction:column;gap:6px;text-decoration:none;font-size:.82em}
+.work img,.work .ph{width:110px;height:156px;border-radius:12px;object-fit:cover;background:var(--surface-2);border:1px solid var(--line)}
+.work small{color:var(--muted)}
+.cp-note{margin:0;font-size:.78rem;color:var(--muted)}
+.cp-skel{display:grid;grid-template-columns:260px 1fr;gap:26px}
+.cp-skel .p{aspect-ratio:3/4;border-radius:20px}
+.cp-skel .l{display:flex;flex-direction:column;gap:14px;justify-content:center}
+.cp-skel .p,.cp-skel i{background:linear-gradient(90deg,var(--surface-2) 0%,color-mix(in srgb,var(--accent) 14%,var(--surface-2)) 50%,var(--surface-2) 100%);background-size:200% 100%;animation:sh 1.3s linear infinite}
+.cp-skel i{display:block;height:16px;border-radius:8px}
+@media (max-width:640px){.cp-hero,.cp-skel{grid-template-columns:1fr}.cp-img,.cp-skel .p{max-width:240px;width:70%;margin:0 auto}.cp-head{text-align:center;align-items:center}.cp-tags,.cp-actions{justify-content:center}}
+
+/* ---------- Tendências */
+.trend{gap:30px}
+.tr-block{display:flex;flex-direction:column;gap:14px}
+.tr-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.tr-item{display:grid;grid-template-columns:44px 56px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 16px 10px 10px;border-radius:18px;cursor:pointer;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .4s both;animation-delay:calc(var(--i,0) * 50ms);transition:transform .15s,border-color .15s;text-decoration:none;color:var(--fg)}
+.tr-item:hover{transform:translateX(4px);border-color:var(--accent)}
+.tr-item .n{font-family:var(--display);font-weight:var(--display-weight);font-size:1.5rem;text-align:center;color:var(--muted)}
+.tr-list li:nth-child(1) .n{color:#E8A317}.tr-list li:nth-child(2) .n{color:#A7AFBD}.tr-list li:nth-child(3) .n{color:#B8692E}
+.shim{background:linear-gradient(90deg,var(--surface-2) 0%,color-mix(in srgb,var(--accent) 14%,var(--surface-2)) 50%,var(--surface-2) 100%)!important;background-size:200% 100%!important;animation:sh 1.3s linear infinite}
+.cwrap{position:relative;display:flex}
+.cwrap .ctile{flex:1}
+.cwrap .rm{position:absolute;right:8px;top:8px;z-index:2;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:1.1rem;line-height:1;display:grid;place-items:center}
+.cwrap .rm:hover{background:#C81E3A}
+[data-tab="personagem"] .hero{display:none}
+html:not([data-tab="buscar"]) .hero .sub{display:none}
+#qRes,#tabChar,#vsOut{scroll-margin-top:80px}
+@media (max-width:560px){.qbox{padding-left:14px}.qbox .go{padding:10px 14px;font-size:.92em}.qbox input{font-size:1em}}
+.tr-ph{height:76px;border-radius:18px}
+.tr-item img,.tr-item .ph{width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--surface-2)}
+.tr-item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-item small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-item .ct{font-family:var(--mono);font-size:.78rem;color:var(--fg);padding:4px 10px;border-radius:999px;background:var(--surface-2);white-space:nowrap}
+@media (max-width:560px){.tr-item{grid-template-columns:32px 48px minmax(0,1fr)}.tr-item .ct{grid-column:3}.tr-item img,.tr-item .ph{width:48px;height:48px}}
+
+/* ---------- Quem ganha? */
+.vs-pick{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:start}
+.vs-mark{align-self:center;font-family:var(--display);font-weight:var(--display-weight);font-size:2.2rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;animation:float 2.4s ease-in-out infinite}
+.slot{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:22px;background:color-mix(in srgb,var(--surface) 86%,transparent);border:1px dashed var(--line-strong);min-height:120px}
+.slot.full{border-style:solid;border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.slot input{font:inherit;width:100%;color:var(--fg);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;outline:0}
+.slot input:focus{border-color:var(--accent)}
+.slot .qsug{top:64px;left:8px;right:8px}
+.slot .pick{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.slot .pick img,.slot .pick .ph{width:min(150px,100%);aspect-ratio:3/4;border-radius:16px;object-fit:cover;background:var(--surface-2);box-shadow:0 18px 40px -20px var(--glow)}
+.slot .pick b{font-size:1.05em;line-height:1.2}
+.slot .pick small{color:var(--muted)}
+.slot .quick{display:flex;flex-wrap:wrap;gap:6px}
+.slot .quick:empty{display:none}
+.slot .quick button{font:inherit;font-size:.8em;color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+.slot .quick button:hover{border-color:var(--accent)}
+.vs-go{justify-content:center}
+.vs-res{display:flex;flex-direction:column;gap:18px;padding:22px;border-radius:calc(var(--r) + 8px);background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);animation:rise .5s both}
+.vs-head{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;text-align:center}
+.vs-face{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.vs-face img,.vs-face .ph{width:min(140px,100%);aspect-ratio:1;border-radius:50%;object-fit:cover;object-position:center 20%;border:3px solid var(--line-strong);background:var(--surface-2)}
+.vs-face.win img,.vs-face.win .ph{border-color:#FFD84D;box-shadow:0 0 0 6px rgba(255,216,77,.18),0 20px 50px -18px #FFD84D;animation:pop .6s}
+.vs-face.lose{opacity:.75}
+.vs-face .crown{position:absolute;top:-18px;font-size:1.8rem;animation:float 2s ease-in-out infinite}
+.vs-face b{font-size:1.05em;line-height:1.2}
+.vs-banner{text-align:center;display:flex;flex-direction:column;gap:6px}
+.vs-banner h3{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(1.5rem,4.5vw,2.1rem);line-height:1.1;text-wrap:balance}
+.vs-banner p{margin:0;color:var(--muted)}
+.stats{display:flex;flex-direction:column;gap:10px}
+.stat{display:grid;grid-template-columns:40px minmax(0,1fr) 92px minmax(0,1fr) 40px;gap:8px;align-items:center;font-family:var(--mono);font-size:.78rem}
+.stat .lb{text-align:center;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:.68rem}
+.stat .bar{height:10px;border-radius:6px;background:var(--surface-2);overflow:hidden;display:flex}
+.stat .bar.l{justify-content:flex-end}
+.stat .bar i{display:block;height:100%;border-radius:6px;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.stat .bar.l i{background:linear-gradient(270deg,var(--accent),var(--accent-2))}
+.stat .bar.r i{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.stat .v{text-align:center}
+.vs-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vs-cols div{padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.vs-cols b{font-size:.86em}
+.vs-cols ul{margin:6px 0 0;padding-left:18px;font-size:.9em}
+.vs-key{padding:14px 16px;border-radius:14px;border:1px solid color-mix(in srgb,#FFD84D 50%,transparent);background:color-mix(in srgb,#FFD84D 10%,var(--surface))}
+@media (max-width:560px){.vs-pick{grid-template-columns:1fr}.vs-mark{text-align:center}.vs-cols{grid-template-columns:1fr}.stat{grid-template-columns:30px minmax(0,1fr) 70px minmax(0,1fr) 30px}}
+
+/* ---------- Coleções */
+.col{gap:24px}
+.col-new{display:flex;flex-direction:column;gap:12px}
+.col-new .rowin{display:flex;gap:10px;flex-wrap:wrap}
+.col-new input{flex:1 1 220px;font:inherit;color:var(--fg);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;outline:0}
+.col-new input:focus{border-color:var(--accent)}
+.emojis{display:flex;flex-wrap:wrap;gap:6px}
+.emojis button{width:40px;height:40px;border-radius:12px;font-size:1.25rem;background:var(--surface-2);border:1px solid var(--line);cursor:pointer}
+.col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.col-card{display:flex;flex-direction:column;gap:12px;text-align:left;font:inherit;color:var(--fg);padding:16px;border-radius:20px;cursor:pointer;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .4s both;animation-delay:calc(var(--i,0) * 50ms);transition:transform .2s,border-color .2s}
+.col-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.col-card .top{display:flex;align-items:center;gap:10px}
+.col-card .em{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--grad)}
+.col-card b{font-size:1.1em;display:block;overflow-wrap:anywhere}
+.col-card small{color:var(--muted)}
+.stack{display:flex;padding-left:10px}
+.stack img,.stack span{width:44px;height:44px;border-radius:50%;object-fit:cover;margin-left:-10px;border:2px solid var(--surface);background:var(--surface-2)}
+.stack span{display:grid;place-items:center;font-size:.75rem;font-family:var(--mono);color:var(--muted)}
+.col-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.col-head h2{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.9em;flex:1;min-width:0;overflow-wrap:anywhere}
+.col-head .em{font-size:2rem}
+.col-add{position:relative;max-width:520px}
+.col-add input{width:100%;font:inherit;color:var(--fg);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:12px;padding:11px 14px;outline:0}
+.col-add .qsug{top:52px}
+
+/* Janela de escolher coleção */
+.sheet{border:0;padding:0;background:transparent;color:var(--fg);max-width:min(440px,94vw);width:100%}
+.sheet::backdrop{background:rgba(5,3,8,.55);backdrop-filter:blur(3px)}
+.sheet-in{border-radius:24px;overflow:hidden;background:color-mix(in srgb,var(--surface) 97%,transparent);border:1px solid var(--line-strong);box-shadow:0 40px 100px -30px rgba(0,0,0,.7)}
+.sheet-body{padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto}
+.pickcol{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);cursor:pointer;font:inherit;color:var(--fg);text-align:left;width:100%}
+.pickcol .em{font-size:1.3rem}
+.pickcol span{flex:1}
+.pickcol[aria-pressed="true"]{border-color:var(--accent)}
+.pickcol[aria-pressed="true"]::after{content:"✓";color:var(--accent);font-weight:700}
+.sheet .rowin{display:flex;gap:8px}
+.sheet .rowin input{flex:1;min-width:0;font:inherit;color:var(--fg);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;outline:0}
+.toast{position:fixed;z-index:40;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  padding:11px 18px;border-radius:999px;background:var(--fg);color:var(--bg);font-weight:500;font-size:.92rem;box-shadow:0 18px 40px -16px rgba(0,0,0,.5);transition:all .25s;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -454,7 +675,8 @@ input[type=range]:disabled{opacity:.4}
     sunset:   { name: "Pôr do sol",   a: "#FF7A1A", b: "#FF2E63", effect: "vagalumes" },
     ghibli:   { name: "Floresta",     a: "#2FD47C", b: "#F5CE3A", effect: "vagalumes" },
     gelo:     { name: "Inverno",      a: "#7FD8FF", b: "#C6B8FF", effect: "neve" },
-    carmesim: { name: "Corte Carmesim", a: "#E3122D", b: "#FF6A2B", effect: "cortes", deep: true },
+    carmesim: { name: "Corte Carmesim", a: "#E3122D", b: "#FF6A2B", effect: "cortes", deep: "#070304" },
+    vazio:    { name: "Vazio Infinito", a: "#3FD0FF", b: "#9B6BFF", effect: "vazio", deep: "#02030A" },
     custom:   { name: "Minhas cores", a: "#FF4F9A", b: "#4F8BFF", effect: null },
   };
 
@@ -486,6 +708,7 @@ input[type=range]:disabled{opacity:.4}
     vento:     "Vento",
     energia:   "Energia",
     confete:   "Confete",
+    vazio:     "Vazio infinito",
   };
 
   const DEFAULTS = { theme: "sakura", c1: "#FF4F9A", c2: "#4F8BFF", mode: "dark", title: "mincho", body: "zen", size: 16, effect: "sakura", amount: 50, aurora: true, sound: true, volume: 60 };
@@ -534,7 +757,7 @@ input[type=range]:disabled{opacity:.4}
     set("--accent", a);
     set("--accent-2", b);
     set("--accent-ink", inkFor(mix(a, b, 0.5)));
-    set("--bg", dark ? (t.deep && cfg.theme !== "custom" ? "#070304" : mix(a, "#08070C", 0.05)) : mix(a, "#FFFFFF", 0.035));
+    set("--bg", dark ? (t.deep && cfg.theme !== "custom" ? t.deep : mix(a, "#08070C", 0.05)) : mix(a, "#FFFFFF", 0.035));
     document.documentElement.dataset.skin = cfg.theme;
     set("--surface", dark ? mix(a, "#14111B", 0.06) : "#FFFFFF");
     set("--surface-2", dark ? mix(a, "#1D1926", 0.08) : mix(a, "#F6F3F8", 0.06));
@@ -674,10 +897,13 @@ input[type=range]:disabled{opacity:.4}
   </div>
   <nav class="m-list" role="tablist" aria-label="Seções">
     <button type="button" role="tab" id="tabBtnBuscar" aria-selected="true" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
+    <button type="button" role="tab" id="tabBtnTrend" aria-selected="false" aria-controls="tabTrend"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Tendências</span></button>
     <button type="button" role="tab" id="tabBtnDaily" aria-selected="false" aria-controls="tabDaily"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg><span>Personagem do dia</span></button>
+    <button type="button" role="tab" id="tabBtnVs" aria-selected="false" aria-controls="tabVs"><svg viewBox="0 0 24 24"><path d="M4 4l9 9M4 4v4M4 4h4M20 4l-9 9M20 4v4M20 4h-4"/><path d="M7 14l-3 3 3 3M17 14l3 3-3 3"/></svg><span>Quem ganha?</span></button>
     <button type="button" role="tab" id="tabBtnJogo" aria-selected="false" aria-controls="tabJogo"><svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r=".6"/><circle cx="18" cy="13.5" r=".6"/></svg><span>Jogo</span></button>
     <button type="button" role="tab" id="tabBtnTeste" aria-selected="false" aria-controls="tabTeste"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6"/></svg><span>Teste</span></button>
     <button type="button" role="tab" id="tabBtnRank" aria-selected="false" aria-controls="tabRank"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></svg><span>Ranking e Tier List</span><span class="count" id="rankCount"></span></button>
+    <button type="button" role="tab" id="tabBtnCol" aria-selected="false" aria-controls="tabCol"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="2"/><rect x="14" y="5" width="7" height="14" rx="2"/><path d="M6.5 9h0M17.5 9h0"/></svg><span>Coleções</span><span class="count" id="colCount"></span></button>
     <button type="button" role="tab" id="tabBtnFav" aria-selected="false" aria-controls="tabFav"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Favoritos</span><span class="count" id="favCount"></span></button>
     <button type="button" role="tab" id="tabBtnHist" aria-selected="false" aria-controls="tabHist"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Últimas buscas</span><span class="count" id="histCount"></span></button>
   </nav>
@@ -690,12 +916,35 @@ input[type=range]:disabled{opacity:.4}
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
     <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Detetive Anime"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Detetive <em>Anime</em></h1>
-    <p class="sub">Descreva o personagem do jeito que lembrar, ou mande um print da cena. A gente descobre quem é, de qual anime, e onde assistir oficialmente.</p>
+    <p class="sub">Pesquise pelo nome, obra, apelido ou poder. Não lembra o nome? Descreva o personagem ou mande um print da cena. A gente descobre quem é, de qual anime, e onde assistir oficialmente.</p>
   </header>
 
 
   <div id="tabBuscar" role="tabpanel" aria-labelledby="tabBtnBuscar" class="tabpanel">
 
+  <div class="qsearch" id="qsearch">
+    <form class="qbox" id="qForm" role="search" novalidate>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" enterkeyhint="search" maxlength="80" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="qSug" aria-autocomplete="list"
+        aria-label="Pesquisar personagem" placeholder="Nome, obra, apelido, poder ou organização">
+      <kbd aria-hidden="true">/</kbd>
+      <button class="go" type="submit"><span>Pesquisar</span></button>
+    </form>
+    <div class="qsug" id="qSug" role="listbox" aria-label="Sugestões" hidden></div>
+    <div class="qhints" id="qHints"><span>Experimente</span>
+      <button type="button" data-q="Gojo">Gojo</button><button type="button" data-q="Jujutsu Kaisen">Jujutsu Kaisen</button><button type="button" data-q="Seis Olhos">Seis Olhos</button>
+      <button type="button" data-q="Akatsuki">Akatsuki</button><button type="button" data-q="Deku">Deku</button><button type="button" data-q="Respiração da Água">Respiração da Água</button>
+    </div>
+  </div>
+
+  <section class="qres" id="qRes" hidden aria-live="polite">
+    <div class="rhead"><h2 id="qTitle">Resultados</h2><span id="qTag"></span></div>
+    <p class="qexp" id="qExp" hidden></p>
+    <div class="ctiles" id="qList"></div>
+    <div id="qObra"></div>
+  </section>
+
+  <div class="or-line"><span>Não sabe o nome? Descreva ou mande um print</span></div>
 
   <form class="search" id="form" novalidate>
     <div class="field">
@@ -824,6 +1073,41 @@ input[type=range]:disabled{opacity:.4}
     <div class="hist-list" id="histList"></div>
   </section>
 
+  <section id="tabChar" class="tabpanel charpage" hidden aria-live="polite"></section>
+
+  <section id="tabTrend" role="tabpanel" aria-labelledby="tabBtnTrend" class="tabpanel trend" hidden>
+    <div class="rhead"><h2>Tendências da comunidade</h2><span id="trWeek"></span></div>
+    <div class="tr-block">
+      <h3 class="sec-h">Mais procurados aqui esta semana</h3>
+      <ol class="tr-list" id="trLocal"></ol>
+    </div>
+    <div class="tr-block">
+      <h3 class="sec-h">Em alta no mundo agora</h3>
+      <p class="hint">Personagens principais dos animes mais comentados no AniList.</p>
+      <div class="ctiles" id="trWorld"></div>
+    </div>
+  </section>
+
+  <section id="tabVs" role="tabpanel" aria-labelledby="tabBtnVs" class="tabpanel vs" hidden>
+    <div class="rhead"><h2>Quem ganha?</h2><span>a IA decide a luta</span></div>
+    <div class="vs-pick">
+      <div class="slot" id="vsA"></div>
+      <div class="vs-mark" aria-hidden="true">VS</div>
+      <div class="slot" id="vsB"></div>
+    </div>
+    <div class="row-btns vs-go"><button type="button" class="go" id="vsGo" disabled><span>Lutar!</span></button><button type="button" class="ghost" id="vsRand">Sortear uma luta</button><span class="status" id="vsMsg" role="status" aria-live="polite"></span></div>
+    <div id="vsOut"></div>
+  </section>
+
+  <section id="tabCol" role="tabpanel" aria-labelledby="tabBtnCol" class="tabpanel col" hidden></section>
+
+  <dialog class="sheet" id="colDialog" aria-labelledby="colDlgTitle">
+    <form method="dialog" class="sheet-in">
+      <div class="s-head"><h2 id="colDlgTitle">Guardar na coleção</h2><button class="x" value="close" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+      <div class="sheet-body" id="colDlgBody"></div>
+    </form>
+  </dialog>
+
   <footer>
     <span>Só mostramos plataformas oficiais.</span>
     <span>Personagens, fotos e aniversários: <a href="https://anilist.co" target="_blank" rel="noopener">AniList</a> · Busca por cena: <a href="https://trace.moe" target="_blank" rel="noopener">trace.moe</a> · Onde assistir: <a href="https://www.justwatch.com/br" target="_blank" rel="noopener">JustWatch</a></span>
@@ -917,7 +1201,7 @@ input[type=range]:disabled{opacity:.4}
 
   function count(amount) {
     const area = Math.min(1.4, (W * H) / (1440 * 900));
-    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 6, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100 }[kind] || 0;
+    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 6, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100, vazio: 220 }[kind] || 0;
     return Math.round(max * (amount / 100) * Math.max(0.35, area));
   }
 
@@ -967,6 +1251,12 @@ input[type=range]:disabled{opacity:.4}
       case "energia":
         Object.assign(p, { a: rnd(0, 6.28), rx: rnd(0.15, 0.48) * W, ry: rnd(0.12, 0.42) * H, sp: rnd(0.002, 0.008) * (Math.random() < 0.5 ? 1 : -1), s: rnd(1.5, 3.5), c: Math.random() < 0.5 ? "a" : "b" });
         break;
+      case "vazio": {
+        const R = Math.hypot(W, H) * 0.62;
+        Object.assign(p, { a: rnd(0, 6.283), r: initial ? rnd(0, R) : rnd(4, 60), v: rnd(0.25, 0.9), R, w: rnd(0.4, 1.6),
+          c: Math.random() < 0.68 ? "w" : Math.random() < 0.5 ? "a" : "b" });
+        break;
+      }
       case "confete":
         Object.assign(p, { s: rnd(5, 10), vy: rnd(0.8, 2), vx: rnd(-0.6, 0.6), rot: rnd(0, 6.28), vr: rnd(-0.1, 0.1), col: ["#FFD84D", "#FF7AB6", "#5BE08F", "#5AA9FF", "a", "b"][Math.floor(rnd(0, 6))] });
         break;
@@ -1072,6 +1362,20 @@ input[type=range]:disabled{opacity:.4}
           ctx.globalAlpha = 0.9; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x, y, p.s * 0.45, 0, 6.283); ctx.fill();
           break;
         }
+        case "vazio": {
+          // O espaço infinito: estrelas escapando do centro cada vez mais rápido, como se a tela não tivesse fim
+          const cx = W / 2, cy = H * 0.42;
+          p.v *= 1 + 0.018 * dt; p.r += p.v * dt;
+          const k = Math.min(1, p.r / (p.R * 0.35));
+          const tail = Math.min(p.r, 3 + p.v * 5);
+          const x1 = cx + Math.cos(p.a) * (p.r - tail), y1 = cy + Math.sin(p.a) * (p.r - tail);
+          const x2 = cx + Math.cos(p.a) * p.r, y2 = cy + Math.sin(p.a) * p.r;
+          const col = p.c === "a" ? colors.a : p.c === "b" ? colors.b : dark ? "#FFFFFF" : "#3A3F6B";
+          ctx.globalAlpha = 0.15 + 0.85 * k; ctx.strokeStyle = col; ctx.lineWidth = p.w * (0.5 + k * 1.4); ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+          if (p.r > p.R) parts[i] = spawn(false);
+          break;
+        }
         case "confete":
           p.y += p.vy * dt; p.x += (p.vx + Math.sin(p.t * 2) * 0.5) * dt; p.rot += p.vr * dt;
           ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(Math.cos(p.t * 3), 1); ctx.globalAlpha = 0.9;
@@ -1147,6 +1451,18 @@ input[type=range]:disabled{opacity:.4}
       }
     }
 
+    // Vazio infinito: um anel de luz respirando no centro
+    if (kind === "vazio") {
+      const cx = W / 2, cy = H * 0.42, base = Math.min(W, H) * 0.085, br = 1 + Math.sin(now / 900) * 0.06;
+      const g = ctx.createRadialGradient(cx, cy, base * 0.55 * br, cx, cy, base * 2.6 * br);
+      g.addColorStop(0, dark ? "rgba(255,255,255,.0)" : "rgba(255,255,255,0)");
+      g.addColorStop(0.18, dark ? "rgba(255,255,255,.55)" : colors.a);
+      g.addColorStop(0.3, colors.a); g.addColorStop(0.55, colors.b); g.addColorStop(1, "transparent");
+      ctx.globalAlpha = dark ? 0.32 : 0.18; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, base * 2.6 * br, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = dark ? 0.9 : 0.5; ctx.fillStyle = dark ? "#000" : "#0B0D1E";
+      ctx.beginPath(); ctx.arc(cx, cy, base * 0.55 * br, 0, 6.283); ctx.fill();
+    }
     // Estrela cadente de vez em quando
     if (kind === "estrelas") {
       if (!shooting && Math.random() < 0.003 * dt) shooting = { x: rnd(W * 0.2, W), y: rnd(0, H * 0.4), l: 1 };
@@ -1287,14 +1603,15 @@ function card(r, i) {
     <div class="portrait">${portrait}${c?.native ? `<span class="vert">${esc(c.native)}</span>` : ""}${c?.photo ? `<a class="photo" href="${esc(c.photo)}" target="_blank" rel="noopener">Ver foto ↗</a>` : ""}</div>
     <div class="info">
       <button type="button" class="fav" data-fav="${esc(favKey(r))}" aria-pressed="${isFav(r)}" aria-label="${isFav(r) ? "Tirar dos favoritos" : "Salvar nos favoritos"}"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></button>
-      <div class="rank">${r.source === "teste" ? "<b>Seu resultado</b>" : r.source === "print" ? "<b>Pelo print</b>" : `Palpite <b>${String(i + 1).padStart(2, "0")}</b>`}</div>
+      <div class="rank">${r.source === "teste" ? "<b>Seu resultado</b>" : r.source === "print" ? "<b>Pelo print</b>" : r.source === "pagina" ? "<b>Personagem</b>" : `Palpite <b>${String(i + 1).padStart(2, "0")}</b>`}</div>
       <h3>${esc(c?.name || a.title)}</h3>
       ${c ? `<div class="show">${a.cover ? `<img src="${esc(a.cover)}" alt="" loading="lazy">` : ""}${show}</div>` : ""}
-      <div class="meter"><span class="bar"><i style="width:${pct}%"></i></span><span>${pct}% ${r.source === "print" ? "de semelhança" : "de chance"}</span></div>
+      ${r.source === "pagina" ? "" : `<div class="meter"><span class="bar"><i style="width:${pct}%"></i></span><span>${pct}% ${r.source === "print" ? "de semelhança" : "de chance"}</span></div>`}
       ${factsHtml(r.facts)}
       ${r.why ? `<p class="why">${esc(r.why)}</p>` : ""}
       ${r.sceneText ? `<div class="scene"><p>${esc(r.sceneText)}</p></div>` : ""}
       ${r.scene ? `<div class="scene">${r.scene.video && c ? `<video src="${esc(r.scene.video)}" autoplay muted loop playsinline></video>` : ""}<p>${r.scene.episode ? `Episódio ${esc(r.scene.episode)} · ` : ""}aos ${esc(r.scene.time)}</p></div>` : ""}
+      ${c?.id ? `<a class="more" href="#personagem/${Number(c.id)}">Ver página completa do personagem →</a>` : ""}
       <div class="watch"><span class="lbl">Onde assistir</span>${platformLinks(r)}</div>
     </div>`;
   return el;
@@ -1456,6 +1773,7 @@ $("form").addEventListener("submit", async (e) => {
     render({ results: items, notes: data.notes || [] });
     Sfx.play(items.length ? "achou" : "erro");
     saveHistory({ q: description, print: Boolean(imageFile), at: Date.now(), results: items });
+    if (items[0]?.character?.id) window.countView?.(items[0].character.id);
     $("out").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   } catch (err) {
     $("out").hidden = true;
@@ -1512,11 +1830,14 @@ document.addEventListener("click", (e) => {
 });
 const TABS = { buscar: ["tabBtnBuscar", "tabBuscar"], jogo: ["tabBtnJogo", "tabJogo"], teste: ["tabBtnTeste", "tabTeste"], diario: ["tabBtnDaily", "tabDaily"], ranking: ["tabBtnRank", ["tabRank", "tabTier"]], favoritos: ["tabBtnFav", "tabFav"], historico: ["tabBtnHist", "tabHist"] };
 function showTab(t) {
+  if (!TABS[t]) t = "buscar";
   for (const [k, [btn, panels]] of Object.entries(TABS)) {
     for (const panel of [].concat(panels)) $(panel).hidden = k !== t;
-    $(btn).setAttribute("aria-selected", String(k === t));
+    if (btn) $(btn).setAttribute("aria-selected", String(k === t));
   }
-  $("menuLabel").textContent = $(TABS[t][0]).querySelector("span").textContent;
+  $("menuLabel").textContent = TABS[t][0] ? $(TABS[t][0]).querySelector("span").textContent : "Personagem";
+  document.documentElement.dataset.tab = t;
+  window.onTab?.(t);
   if (t === "historico") renderHistory();
   if (t === "favoritos") renderFavs();
   if (t === "ranking") renderRank();
@@ -1525,7 +1846,7 @@ function showTab(t) {
   applyDailyBg();
   if (t === "teste" && !quiz.started) quizIntro();
 }
-for (const [k, [btn]] of Object.entries(TABS)) $(btn).onclick = () => { showTab(k); closeMenu(); window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
+for (const [k, [btn]] of Object.entries(TABS)) if (btn) $(btn).onclick = () => { closeMenu(); if (window.goTo) goTo(k); else showTab(k); window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
 function openMenu() {
   $("menuScrim").hidden = false;
   requestAnimationFrame(() => { $("menu").classList.add("open"); $("menuScrim").classList.add("open"); });
@@ -2029,13 +2350,6 @@ async function quizResult() {
   }
 }
 
-// Exemplo para a página não abrir vazia
-render({ results: [toResult({ personagem: "Satoru Gojo", nome_japones: "五条悟", anime: "Jujutsu Kaisen", anime_romaji: "Jujutsu Kaisen", titulo_original: "呪術廻戦", confianca: 97,
-  por_que: "Cabelo branco, olhos azuis e a venda preta nos olhos são a marca registrada dele.", cena: "Aparece desde o primeiro episódio da 1ª temporada.", altura: "Mais de 1,90 m", idade: "28 anos", genero: "Masculino", aniversario: "7 de dezembro", criador: "Gege Akutami", plataformas: ["Crunchyroll", "Netflix"] })], notes: [] });
-$("rtitle").textContent = "Exemplo de resultado"; $("rtag").textContent = "exemplo";
-$("out").hidden = false;
-
-
 // Confere se o servidor (pasta api) está no ar e se a chave da IA foi cadastrada
 (async () => {
   if (location.protocol === "file:") return;
@@ -2046,10 +2360,399 @@ $("out").hidden = false;
     if (!ok) msg = `<b>O servidor da busca não está no ar.</b> O Vercel publicou a página, mas não achou a pasta <code>api</code>. Confira se as pastas <code>api</code> e <code>lib</code> e o arquivo <code>package.json</code> estão no GitHub, no mesmo lugar que a pasta <code>public</code>, e faça um Redeploy.`;
     else {
       const h = await r.json();
-      if (!h.descricao) msg = `<b>Falta a chave da IA.</b> Cadastre a <code>ANTHROPIC_API_KEY</code> no Vercel em Settings → Environment Variables e faça um Redeploy. Sem ela, a busca por descrição, o jogo e o teste não funcionam.`;
+      if (!h.descricao) msg = `<b>Falta a chave da IA.</b> Cadastre a <code>GEMINI_API_KEY</code> no Vercel em Settings → Environment Variables e faça um Redeploy. Sem ela, a busca por descrição, o jogo e o teste não funcionam.`;
     }
   } catch { msg = "<b>Não consegui falar com o servidor.</b> Confira a internet e recarregue a página."; }
   if (msg) document.querySelector(".wrap").insertAdjacentHTML("afterbegin", `<p class="server-alert" role="alert">${msg}</p>`);
+})();
+</script>
+<script>
+// ---------- Pesquisa por nome/obra/poder, página do personagem, tendências, "Quem ganha?" e coleções
+(() => {
+const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ROLE = { MAIN: "Principal", SUPPORTING: "Coadjuvante", BACKGROUND: "Figurante" };
+TABS.personagem = [null, "tabChar"];
+TABS.tendencias = ["tabBtnTrend", "tabTrend"];
+TABS.comparar = ["tabBtnVs", "tabVs"];
+TABS.colecoes = ["tabBtnCol", "tabCol"];
+for (const k of ["tendencias", "comparar", "colecoes"]) $(TABS[k][0]).onclick = () => { closeMenu(); goTo(k); };
+
+function toast(msg) {
+  let t = document.querySelector(".toast");
+  if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 2400);
+}
+const pic = (src, cls = "ph") => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="${cls}"></span>`;
+const tile = (c, i = 0) => `<a class="ctile" href="#personagem/${Number(c.id)}" style="--i:${i}">${c.role && ROLE[c.role] ? `<span class="badge">${ROLE[c.role]}</span>` : ""}
+  <div class="im">${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy">` : `<div class="ini">${esc((c.name || "?").charAt(0))}</div>`}</div>
+  <div class="tx"><b>${esc(c.name)}</b>${c.anime ? `<small>${esc(c.anime)}</small>` : ""}${c.motivo ? `<span class="why">${esc(c.motivo)}</span>` : ""}</div></a>`;
+const skelTiles = (n) => Array.from({ length: n }, (_, i) => `<div class="ctile" style="--i:${i}"><div class="im shim"></div><div class="tx"><b class="shim" style="height:14px;border-radius:6px">&nbsp;</b></div></div>`).join("");
+const lite = (d) => ({ id: d.id, name: d.name, image: d.image, anime: d.anime?.title || d.anime || "" });
+
+// ---------- Endereços (#personagem/123, #comparar, #colecoes...) — o botão voltar funciona
+let movedInside = false;
+window.goTo = (path) => { if (location.hash === "#" + path) route(); else location.hash = path; };
+function route() {
+  const [k, arg] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (k === "personagem" && Number(arg)) { showTab("personagem"); loadChar(Number(arg)); return; }
+  if (k === "comparar") { showTab("comparar"); if (arg) vsFromPath(arg); return; }
+  if (k === "colecoes") { showTab("colecoes"); renderCols(arg || null); return; }
+  showTab(TABS[k] ? k : "buscar");
+}
+addEventListener("hashchange", () => { movedInside = true; route(); window.scrollTo({ top: 0, behavior: RM() ? "auto" : "smooth" }); });
+window.onTab = (t) => {
+  if (t !== "personagem") document.title = "Detetive Anime";
+  if (t === "tendencias") loadTrends();
+  if (t === "comparar") drawSlots();
+  if (t === "colecoes" && !$("tabCol").innerHTML) renderCols(null);
+};
+const back = (fallback = "buscar") => (movedInside ? history.back() : goTo(fallback));
+
+// Conta uma visita pras tendências (uma vez por dia por personagem neste navegador)
+window.countView = (id) => {
+  try {
+    const k = "achei-o-anime:vistos", d = new Date().toISOString().slice(0, 10);
+    let v = JSON.parse(localStorage.getItem(k) || "{}");
+    if (v.d !== d) v = { d, ids: [] };
+    if (v.ids.includes(id)) return;
+    v.ids.push(id); localStorage.setItem(k, JSON.stringify(v));
+  } catch {}
+  if (location.protocol === "file:") return;
+  fetch("/api/trends", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }).catch(() => {});
+};
+
+// ---------- Sugestões enquanto digita (AniList, sem IA)
+function suggest(input, box, onPick, opts = {}) {
+  let t = 0, ctl = null, items = [], idx = -1;
+  const close = () => { box.hidden = true; input.setAttribute("aria-expanded", "false"); idx = -1; };
+  const mark = () => box.querySelectorAll(".sug").forEach((b, i) => b.setAttribute("aria-selected", String(i === idx)));
+  function draw(q) {
+    const rows = items.map((c, i) => `<button type="button" class="sug" role="option" data-i="${i}" aria-selected="false">${pic(c.image)}<span><b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small></span><span class="k">${c._obra ? "obra" : ""}</span></button>`).join("");
+    const all = opts.searchAll ? `<button type="button" class="sug" role="option" data-all="1"><span class="ph" style="display:grid;place-items:center">🔎</span><span><b>Pesquisar “${esc(q)}”</b><small>Também procura por poder, apelido e organização</small></span><span></span></button>` : "";
+    box.innerHTML = (rows ? `<div class="sug-h">Personagens</div>${rows}` : `<div class="sug-h">Nenhum nome parecido</div>`) + all;
+    box.hidden = false; input.setAttribute("aria-expanded", "true");
+  }
+  async function load(q) {
+    ctl?.abort(); ctl = new AbortController();
+    try {
+      const r = await fetch(`/api/find?modo=rapido&q=${encodeURIComponent(q)}`, { signal: ctl.signal });
+      if (!r.ok) return;
+      const d = await r.json();
+      if (input.value.trim() !== q || document.activeElement !== input) return;
+      items = [...(d.resultados || [])];
+      for (const c of d.obra?.personagens || []) if (items.length < 8 && !items.some((x) => x.id === c.id)) items.push(c);
+      idx = -1; draw(q);
+    } catch {}
+  }
+  input.addEventListener("input", () => {
+    clearTimeout(t);
+    const q = input.value.trim();
+    if (q.length < 2 || location.protocol === "file:") { close(); return; }
+    t = setTimeout(() => load(q), 220);
+  });
+  input.addEventListener("keydown", (e) => {
+    const n = box.querySelectorAll(".sug").length;
+    if (e.key === "ArrowDown" && !box.hidden) { e.preventDefault(); idx = (idx + 1) % n; mark(); }
+    else if (e.key === "ArrowUp" && !box.hidden) { e.preventDefault(); idx = (idx - 1 + n) % n; mark(); }
+    else if (e.key === "Escape") close();
+    else if (e.key === "Enter" && !box.hidden && idx >= 0) { e.preventDefault(); box.querySelectorAll(".sug")[idx].click(); }
+  });
+  box.addEventListener("mousedown", (e) => e.preventDefault());
+  box.addEventListener("click", (e) => {
+    const b = e.target.closest(".sug"); if (!b) return;
+    close();
+    if (b.dataset.all) opts.searchAll(input.value.trim()); else onPick(items[Number(b.dataset.i)]);
+  });
+  input.addEventListener("blur", () => setTimeout(close, 120));
+  return { close };
+}
+
+// ---------- Pesquisa completa
+if (innerWidth < 560) $("q").placeholder = "Nome, obra ou poder";
+const qs = suggest($("q"), $("qSug"), (c) => goTo(`personagem/${c.id}`), { searchAll: (q) => runFind(q) });
+$("qForm").addEventListener("submit", (e) => { e.preventDefault(); qs.close(); runFind($("q").value.trim()); });
+$("qHints").addEventListener("click", (e) => { const b = e.target.closest("[data-q]"); if (!b) return; $("q").value = b.dataset.q; runFind(b.dataset.q); });
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "/" || e.ctrlKey || e.metaKey || /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable) return;
+  e.preventDefault(); if ($("tabBuscar").hidden) goTo("buscar"); setTimeout(() => $("q").focus(), 30);
+});
+
+const TITLE = { personagem: "Personagens", apelido: "Esse apelido é de", poder: "Quem tem esse poder", organizacao: "Quem faz parte", caracteristica: "Quem tem isso", obra: "Personagens da obra", sugestao: "Talvez seja algum destes" };
+async function runFind(q) {
+  if (q.length < 2) { toast("Digite pelo menos 2 letras."); $("q").focus(); return; }
+  $("qRes").hidden = false; $("qTitle").textContent = "Procurando…"; $("qTag").textContent = ""; $("qExp").hidden = true;
+  $("qList").innerHTML = skelTiles(6); $("qObra").innerHTML = "";
+  $("qRes").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
+  try {
+    const d = await api(`/api/find?q=${encodeURIComponent(q)}`);
+    const list = d.resultados || [];
+    $("qTitle").textContent = list.length ? TITLE[d.tipo] || "Resultados" : d.obra ? d.obra.title : "Nada encontrado";
+    $("qTag").textContent = list.length ? `${list.length} ${list.length === 1 ? "encontrado" : "encontrados"} para “${q}”` : "";
+    if (d.explicacao) { $("qExp").textContent = d.explicacao; $("qExp").hidden = false; }
+    $("qList").innerHTML = list.map(tile).join("");
+    if (d.obra) {
+      $("qObra").innerHTML = `<div class="cp-sec" style="margin-top:${list.length ? 18 : 0}px"><div class="show">${d.obra.cover ? `<img src="${esc(d.obra.cover)}" alt="">` : ""}<a href="${esc(d.obra.url)}" target="_blank" rel="noopener">${esc(d.obra.title)}<small>${esc(d.obra.native || "")}</small></a></div>
+        <h3>Personagens de ${esc(d.obra.title)}</h3><div class="ctiles">${d.obra.personagens.map(tile).join("")}</div></div>`;
+    }
+    if (!list.length && !d.obra) $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">Não achei ninguém com “${esc(q)}”. Confira se o nome está certo, ou descreva como o personagem é logo abaixo.</div>`;
+    Sfx.play(list.length || d.obra ? "achou" : "erro");
+  } catch (err) {
+    $("qTitle").textContent = "Ops";
+    $("qList").innerHTML = `<div class="empty" style="grid-column:1/-1">${esc(err.message)}</div>`;
+  }
+}
+
+// ---------- Página do personagem
+const charCache = new Map();
+async function getChar(id) {
+  if (!charCache.has(id)) charCache.set(id, api(`/api/character?id=${id}`).catch((e) => { charCache.delete(id); throw e; }));
+  return charCache.get(id);
+}
+async function loadChar(id) {
+  const box = $("tabChar");
+  box.style.removeProperty("--c1"); box.style.removeProperty("--c2");
+  box.innerHTML = `<button type="button" class="ghost cp-back" data-back>← Voltar</button>
+    <div class="cp-skel"><div class="p"></div><div class="l"><i style="width:35%"></i><i style="width:70%;height:40px"></i><i style="width:55%"></i><i style="width:90%"></i><i style="width:80%"></i></div></div>
+    <p class="hint" style="margin:0">Montando a ficha completa… na primeira vez pode levar alguns segundos.</p>`;
+  try {
+    const d = await getChar(id);
+    if (decodeURIComponent(location.hash).split("/")[1] != id) return;
+    renderChar(d);
+    countView(id);
+  } catch (err) {
+    box.innerHTML = `<button type="button" class="ghost cp-back" data-back>← Voltar</button><div class="empty">${esc(err.message)}</div>`;
+  }
+}
+function charToResult(d) {
+  return { source: "pagina", character: { id: d.id, name: d.name, native: d.native, image: d.image, photo: d.url }, anime: { ...d.anime }, confidence: 100, why: d.resumo, facts: { ...d.facts }, watch: d.watch };
+}
+function renderChar(d) {
+  const box = $("tabChar");
+  if (d.cor1) box.style.setProperty("--c1", d.cor1);
+  if (d.cor2 || d.cor1) box.style.setProperty("--c2", d.cor2 || d.cor1);
+  document.title = `${d.name} · Detetive Anime`;
+  const r = charToResult(d);
+  const f = d.facts || {};
+  const fact = (k, v) => v ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : "";
+  const fans = d.favourites ? `${d.favourites >= 1000 ? (d.favourites / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil" : d.favourites} fãs marcaram como favorito no AniList` : "";
+  box.innerHTML = `
+    <button type="button" class="ghost cp-back" data-back>← Voltar</button>
+    <div class="cp-hero">
+      <div class="cp-img">${d.image ? `<img src="${esc(d.image)}" alt="${esc(d.name)}">` : ""}${d.native ? `<span class="vert">${esc(d.native)}</span>` : ""}</div>
+      <div class="cp-head">
+        <span class="cp-kicker"><a href="${esc(d.anime.url)}" target="_blank" rel="noopener">${esc(d.anime.title)}</a></span>
+        <h2>${esc(d.name)}</h2>
+        <div class="cp-tags">${d.organizacao ? `<span class="org">${esc(d.organizacao)}</span>` : ""}${[...new Set([...(d.apelidos || []), ...(d.alternative || [])])].slice(0, 6).map((a) => `<span>${esc(a)}</span>`).join("")}</div>
+        ${d.resumo ? `<p class="cp-resumo">${esc(d.resumo)}</p>` : ""}
+        <div class="cp-actions">
+          <button type="button" class="mini" id="cpFav" aria-pressed="${isFav(r)}">★ ${isFav(r) ? "Favorito" : "Favoritar"}</button>
+          <button type="button" class="mini" id="cpCol">＋ Coleção</button>
+          <button type="button" class="mini" id="cpVs">⚔ Quem ganha?</button>
+          <button type="button" class="mini" id="cpRank">🏆 Ranking</button>
+          <button type="button" class="mini" id="cpShare">↗ Compartilhar</button>
+        </div>
+        ${fans ? `<span class="cp-fans">♥ ${fans}</span>` : ""}
+      </div>
+    </div>
+    <dl class="facts">${fact("Aniversário", f.aniversario)}${fact("Idade", f.idade)}${fact("Gênero", f.genero)}${fact("Altura", f.altura)}${fact("Criador da obra", f.criador)}</dl>
+    ${d.poderes?.length ? `<section class="cp-sec"><h3>Poderes e habilidades</h3><div class="powers">${d.poderes.map((p, i) => `<div class="power" style="--i:${i}"><b>${esc(p.nome)}</b>${p.descricao ? `<p>${esc(p.descricao)}</p>` : ""}</div>`).join("")}</div></section>` : ""}
+    ${d.personalidade || d.tracos?.length ? `<section class="cp-sec"><h3>Personalidade</h3>${d.tracos?.length ? `<div class="traits">${d.tracos.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}${d.personalidade ? `<p class="cp-text">${esc(d.personalidade)}</p>` : ""}</section>` : ""}
+    ${d.frases?.length ? `<section class="cp-sec"><h3>Frases marcantes</h3><div class="quotes">${d.frases.map((q) => `<blockquote>${esc(q.replace(/^["“”']+|["“”']+$/g, ""))}</blockquote>`).join("")}</div></section>` : ""}
+    ${d.curiosidades?.length ? `<section class="cp-sec"><h3>Curiosidades</h3><ul class="facts-list">${d.curiosidades.map((c) => `<li>${esc(c)}</li>`).join("")}</ul></section>` : ""}
+    ${d.related?.length ? `<section class="cp-sec"><h3>Personagens relacionados</h3><div class="ctiles small">${d.related.map((c, i) => tile({ ...c, anime: ROLE[c.role] || "" }, i)).join("")}</div></section>` : ""}
+    ${d.works?.length > 1 ? `<section class="cp-sec"><h3>Aparece em</h3><div class="works">${d.works.map((w) => `<a class="work" href="https://anilist.co/${w.type === "MANGA" ? "manga" : "anime"}/${w.id}" target="_blank" rel="noopener">${pic(w.cover)}<span>${esc(w.title)}</span><small>${w.type === "MANGA" ? "Mangá" : "Anime"}${w.year ? " · " + w.year : ""}</small></a>`).join("")}</div></section>` : ""}
+    <section class="cp-sec"><h3>Onde assistir</h3>${platformLinks(r)}</section>
+    <p class="cp-note">Foto, nome, aniversário, idade e personagens relacionados vêm do <a href="${esc(d.url)}" target="_blank" rel="noopener">AniList</a>. ${d.ai ? "Poderes, personalidade, frases e curiosidades foram escritos pela IA e podem ter erros." : "A ficha com poderes e curiosidades aparece quando a IA estiver ligada no servidor."}</p>`;
+
+  $("cpFav").onclick = (e) => { const on = toggleFav(r); Sfx.play(on ? "fav" : "desfav"); e.currentTarget.setAttribute("aria-pressed", String(on)); e.currentTarget.textContent = `★ ${on ? "Favorito" : "Favoritar"}`; };
+  $("cpCol").onclick = () => openColDialog(lite(d));
+  $("cpVs").onclick = () => { vs.a = lite(d); vs.b = vs.b?.id === d.id ? null : vs.b; $("vsOut").innerHTML = ""; goTo("comparar"); };
+  $("cpRank").onclick = () => { const ok = addToRank(d.name, d.anime.title); toast(ok ? `${d.name} entrou no seu ranking!` : $("rankMsg").textContent || "Não deu pra adicionar."); if (ok) Sfx.play("pop"); };
+  $("cpShare").onclick = async () => {
+    const url = location.href;
+    try { if (navigator.share) { await navigator.share({ title: `${d.name} · Detetive Anime`, url }); return; } } catch { return; }
+    try { await navigator.clipboard.writeText(url); toast("Link copiado!"); } catch { toast(url); }
+  };
+}
+document.addEventListener("click", (e) => { if (e.target.closest("[data-back]")) back(); });
+
+// ---------- Tendências
+let trendsAt = 0;
+async function loadTrends() {
+  if (Date.now() - trendsAt < 120000) return;
+  $("trLocal").innerHTML = Array.from({ length: 4 }, () => `<li class="tr-ph shim"></li>`).join("");
+  $("trWorld").innerHTML = skelTiles(8);
+  try {
+    const d = await api("/api/trends");
+    trendsAt = Date.now();
+    $("trWeek").textContent = d.semana ? `semana ${Number(d.semana.split("-W")[1])} de ${d.semana.slice(0, 4)}` : "";
+    if (!d.local?.length) {
+      $("trLocal").innerHTML = `<li class="empty">${d.local ? "Ninguém procurou personagens ainda esta semana. Abra a página de um personagem e ele entra no placar!" : "O placar da comunidade ainda não está ligado no servidor. Enquanto isso, veja quem está em alta no mundo."}</li>`;
+    } else {
+      $("trLocal").innerHTML = d.local.map((c, i) => `<li><a class="tr-item" href="#personagem/${Number(c.id)}" style="--i:${i}"><span class="n">${i + 1}</span>${pic(c.image)}<span><b>${esc(c.name)}</b><small>${esc(c.anime)}</small></span><span class="ct">${c.count} ${c.count === 1 ? "visita" : "visitas"}</span></a></li>`).join("");
+    }
+    $("trWorld").innerHTML = (d.mundo || []).map(tile).join("") || `<div class="empty">O AniList não respondeu agora.</div>`;
+    window._world = d.mundo || [];
+  } catch (err) {
+    $("trLocal").innerHTML = `<li class="empty">${esc(err.message)}</li>`; $("trWorld").innerHTML = "";
+  }
+}
+
+// ---------- Quem ganha?
+const vs = { a: null, b: null };
+function quickPicks(side) {
+  const other = vs[side === "a" ? "b" : "a"]?.id;
+  const seen = new Set();
+  const pool = [...loadFavs().map((f) => f.character?.id ? { id: f.character.id, name: f.character.name, image: f.character.image, anime: f.anime?.title } : null),
+    ...loadCols().flatMap((c) => c.itens)].filter((x) => x && x.id !== other && !seen.has(x.id) && seen.add(x.id));
+  return pool.slice(0, 5);
+}
+function drawSlots() {
+  for (const side of ["a", "b"]) {
+    const el = $(side === "a" ? "vsA" : "vsB"), c = vs[side];
+    el.classList.toggle("full", Boolean(c));
+    if (c) {
+      el.innerHTML = `<div class="pick">${pic(c.image)}<b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small><button type="button" class="ghost" data-clear="${side}">Trocar</button></div>`;
+    } else {
+      const picks = quickPicks(side);
+      el.innerHTML = `<input type="search" placeholder="${side === "a" ? "Primeiro lutador" : "Segundo lutador"}: digite o nome" autocomplete="off" aria-label="${side === "a" ? "Primeiro" : "Segundo"} personagem"><div class="qsug" hidden role="listbox"></div>
+        <div class="quick">${picks.map((p, i) => `<button type="button" data-q="${i}">${esc(p.name)}</button>`).join("")}</div>`;
+      suggest(el.querySelector("input"), el.querySelector(".qsug"), (pick) => { vs[side] = pick; drawSlots(); });
+      el.querySelector(".quick").onclick = (e) => { const b = e.target.closest("[data-q]"); if (b) { vs[side] = picks[Number(b.dataset.q)]; drawSlots(); } };
+    }
+  }
+  $("vsGo").disabled = !(vs.a && vs.b);
+  $("vsMsg").textContent = vs.a && vs.b ? "" : "Escolha os dois lutadores.";
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-clear]"); if (b) { vs[b.dataset.clear] = null; $("vsOut").innerHTML = ""; drawSlots(); } });
+$("vsGo").onclick = () => fight();
+$("vsRand").onclick = async () => {
+  try {
+    if (!window._world?.length) { const d = await api("/api/trends"); window._world = d.mundo || []; }
+    const w = [...window._world].sort(() => Math.random() - 0.5);
+    if (w.length < 2) throw new Error();
+    vs.a = w[0]; vs.b = w.find((x) => x.id !== w[0].id); drawSlots(); fight();
+  } catch { toast("Não consegui sortear agora."); }
+};
+async function vsFromPath(arg) {
+  const [a, b] = arg.split("-").map(Number);
+  if (a && b) {
+    if (vs.a?.id === a && vs.b?.id === b && $("vsOut").innerHTML) return;
+    fight(a, b);
+  } else if (a) {
+    try { vs.a = lite(await getChar(a)); drawSlots(); } catch {}
+  }
+}
+async function fight(idA, idB) {
+  idA = idA || vs.a?.id; idB = idB || vs.b?.id;
+  if (!idA || !idB) return;
+  if (idA === idB) { toast("Escolha dois personagens diferentes."); return; }
+  const go = $("vsGo"); go.disabled = true; go.firstElementChild.textContent = "Lutando…";
+  $("vsOut").innerHTML = `<div class="vs-res"><div class="vs-banner"><h3>A IA está analisando a luta…</h3><p>Comparando poderes, técnicas e feitos.</p></div></div>`;
+  try {
+    const d = await api(`/api/versus?a=${idA}&b=${idB}`);
+    vs.a = d.a; vs.b = d.b; drawSlots();
+    history.replaceState(null, "", `#comparar/${idA}-${idB}`);
+    renderFight(d);
+    Sfx.play("recorde");
+  } catch (err) {
+    $("vsOut").innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+  } finally { go.disabled = !(vs.a && vs.b); go.firstElementChild.textContent = "Lutar!"; }
+}
+const STAT = { forca: "Força", velocidade: "Velocidade", inteligencia: "Inteligência", tecnica: "Técnica", resistencia: "Resistência" };
+function renderFight(d) {
+  const face = (c, side) => `<div class="vs-face ${d.vencedor === side ? "win" : d.vencedor === "empate" ? "" : "lose"}">${d.vencedor === side ? `<span class="crown" aria-hidden="true">👑</span>` : ""}${pic(c.image)}<b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small></div>`;
+  const win = d.vencedor === "empate" ? null : d[d.vencedor];
+  $("vsOut").innerHTML = `<div class="vs-res">
+    <div class="vs-head">${face(d.a, "a")}<div class="vs-mark">VS</div>${face(d.b, "b")}</div>
+    <div class="vs-banner"><h3>${win ? `${esc(win.name)} vence!` : "Empate!"}</h3><p>${esc(d.manchete || "")}${d.manchete ? " · " : ""}${d.confianca}% de certeza</p></div>
+    <div class="stats">${Object.entries(STAT).map(([k, n]) => `<div class="stat"><span class="v">${d.a.stats[k]}</span><span class="bar l"><i data-w="${d.a.stats[k]}"></i></span><span class="lb">${n}</span><span class="bar r"><i data-w="${d.b.stats[k]}"></i></span><span class="v">${d.b.stats[k]}</span></div>`).join("")}</div>
+    ${d.explicacao ? `<p class="cp-text">${esc(d.explicacao)}</p>` : ""}
+    ${d.momento_decisivo ? `<div class="vs-key"><b>Momento decisivo:</b> ${esc(d.momento_decisivo)}</div>` : ""}
+    <div class="vs-cols"><div><b>Vantagens de ${esc(d.a.name)}</b><ul>${d.a.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div><div><b>Vantagens de ${esc(d.b.name)}</b><ul>${d.b.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div></div>
+    <div class="row-btns"><button type="button" class="mini" id="vsShare">↗ Compartilhar luta</button><button type="button" class="mini" id="vsNew">Nova luta</button></div>
+    <p class="cp-note">É só uma brincadeira de fã: a IA dá um palpite pelo que aparece nas obras.</p></div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => $("vsOut").querySelectorAll("[data-w]").forEach((i) => { i.style.width = i.dataset.w + "%"; })));
+  $("vsShare").onclick = async () => { try { await navigator.clipboard.writeText(location.href); toast("Link da luta copiado!"); } catch { toast(location.href); } };
+  $("vsNew").onclick = () => { vs.a = vs.b = null; $("vsOut").innerHTML = ""; history.replaceState(null, "", "#comparar"); drawSlots(); };
+}
+
+// ---------- Coleções (ficam só neste navegador)
+const CKEY = "achei-o-anime:colecoes";
+const EMOJIS = ["⚡", "🔥", "🌸", "👑", "🗡️", "🌀", "💙", "🐉", "⭐", "🍥", "👻", "🏆"];
+function loadCols() { try { return JSON.parse(localStorage.getItem(CKEY) || "[]"); } catch { return []; } }
+function saveCols(list) { try { localStorage.setItem(CKEY, JSON.stringify(list)); } catch {} $("colCount").textContent = list.length || ""; }
+window.loadCols = loadCols;
+function newCol(nome, emoji) {
+  nome = String(nome || "").trim().slice(0, 30);
+  if (!nome) { toast("Dê um nome pra coleção."); return null; }
+  const list = loadCols();
+  if (list.length >= 30) { toast("Você já tem 30 coleções. Apague alguma pra criar outra."); return null; }
+  const col = { id: "c" + Date.now().toString(36), nome, emoji: emoji || EMOJIS[list.length % EMOJIS.length], itens: [], at: Date.now() };
+  saveCols([col, ...list]);
+  Sfx.play("pop");
+  return col;
+}
+function toggleInCol(colId, item) {
+  const list = loadCols(), col = list.find((c) => c.id === colId);
+  if (!col) return false;
+  const has = col.itens.some((x) => x.id === item.id);
+  if (!has && col.itens.length >= 60) { toast("Essa coleção já tem 60 personagens."); return true; }
+  col.itens = has ? col.itens.filter((x) => x.id !== item.id) : [...col.itens, { id: item.id, name: item.name, image: item.image, anime: item.anime || "" }];
+  saveCols(list);
+  return !has;
+}
+let pickEmoji = EMOJIS[0];
+function renderCols(openId) {
+  const box = $("tabCol"), list = loadCols();
+  const col = openId && list.find((c) => c.id === openId);
+  if (col) {
+    box.innerHTML = `<button type="button" class="ghost cp-back" data-go-col>← Coleções</button>
+      <div class="col-head"><span class="em">${esc(col.emoji)}</span><h2>${esc(col.nome)}</h2><button type="button" class="mini" id="colRen">Renomear</button><button type="button" class="mini" id="colCopy">Copiar lista</button><button type="button" class="mini" id="colDel">Apagar</button></div>
+      <div class="col-add"><input type="search" id="colAddIn" placeholder="Adicionar personagem: digite o nome" autocomplete="off" aria-label="Adicionar personagem"><div class="qsug" id="colAddSug" hidden role="listbox"></div></div>
+      <div class="ctiles">${col.itens.map((c, i) => `<div class="cwrap">${tile(c, i)}<button type="button" class="rm" data-rm="${Number(c.id)}" aria-label="Tirar ${esc(c.name)} da coleção">×</button></div>`).join("")}</div>
+      ${col.itens.length ? "" : `<div class="empty">Coleção vazia. Digite um nome aqui em cima, ou abra a página de um personagem e toque em ＋ Coleção.</div>`}`;
+    suggest($("colAddIn"), $("colAddSug"), (c) => { if (!col.itens.some((x) => x.id === c.id)) { toggleInCol(col.id, c); Sfx.play("fav"); } renderCols(col.id); setTimeout(() => $("colAddIn")?.focus(), 30); });
+    box.querySelectorAll("[data-rm]").forEach((b) => b.onclick = () => { toggleInCol(col.id, { id: Number(b.dataset.rm) }); Sfx.play("desfav"); renderCols(col.id); });
+    $("colRen").onclick = () => { const n = prompt("Novo nome da coleção:", col.nome); if (n && n.trim()) { const l = loadCols(); l.find((c) => c.id === col.id).nome = n.trim().slice(0, 30); saveCols(l); renderCols(col.id); } };
+    $("colDel").onclick = () => { if (confirm(`Apagar a coleção “${col.nome}”?`)) { saveCols(loadCols().filter((c) => c.id !== col.id)); Sfx.play("lixo"); goTo("colecoes"); } };
+    $("colCopy").onclick = async () => { const t = `${col.emoji} ${col.nome}\n` + col.itens.map((c, i) => `${i + 1}. ${c.name}${c.anime ? ` (${c.anime})` : ""}`).join("\n") + "\n\nFeito no Detetive Anime"; try { await navigator.clipboard.writeText(t); toast("Lista copiada!"); } catch { toast("Não consegui copiar."); } };
+    return;
+  }
+  box.innerHTML = `<div class="rhead"><h2>Minhas coleções</h2><span>${list.length ? `${list.length} ${list.length === 1 ? "coleção" : "coleções"}` : ""}</span></div>
+    <form class="stage col-new" id="colNew" novalidate>
+      <h3 class="sec-h">Nova coleção</h3>
+      <div class="rowin"><input id="colName" maxlength="30" autocomplete="off" placeholder="Ex.: Os mais fortes, Vilões favoritos, Meu time dos sonhos" aria-label="Nome da coleção"><button class="go" type="submit"><span>Criar</span></button></div>
+      <div class="emojis" role="radiogroup" aria-label="Ícone">${EMOJIS.map((e) => `<button type="button" role="radio" data-e="${e}" aria-pressed="${e === pickEmoji}">${e}</button>`).join("")}</div>
+    </form>
+    ${list.length ? `<div class="col-grid">${list.map((c, i) => `<button type="button" class="col-card" data-open="${esc(c.id)}" style="--i:${i}"><span class="top"><span class="em">${esc(c.emoji)}</span><span><b>${esc(c.nome)}</b><small>${c.itens.length} ${c.itens.length === 1 ? "personagem" : "personagens"}</small></span></span>
+      <span class="stack">${c.itens.slice(0, 5).map((x) => x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy">` : `<span>${esc(x.name.charAt(0))}</span>`).join("")}${c.itens.length > 5 ? `<span>+${c.itens.length - 5}</span>` : ""}</span></button>`).join("")}</div>`
+      : `<div class="empty">Crie coleções com os nomes que quiser e guarde seus personagens nelas.</div>`}`;
+  $("colNew").onsubmit = (e) => { e.preventDefault(); const c = newCol($("colName").value, pickEmoji); if (c) goTo(`colecoes/${c.id}`); };
+  box.querySelector(".emojis").onclick = (e) => { const b = e.target.closest("[data-e]"); if (!b) return; pickEmoji = b.dataset.e; box.querySelectorAll(".emojis button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); };
+  box.querySelectorAll("[data-open]").forEach((b) => b.onclick = () => goTo(`colecoes/${b.dataset.open}`));
+}
+document.addEventListener("click", (e) => { if (e.target.closest("[data-go-col]")) goTo("colecoes"); });
+
+function openColDialog(item) {
+  const dlg = $("colDialog"), body = $("colDlgBody");
+  const draw = () => {
+    const list = loadCols();
+    body.innerHTML = `${list.map((c) => `<button type="button" class="pickcol" data-c="${esc(c.id)}" aria-pressed="${c.itens.some((x) => x.id === item.id)}"><span class="em">${esc(c.emoji)}</span><span>${esc(c.nome)}</span></button>`).join("") || `<p class="hint" style="margin:0">Você ainda não tem coleções. Crie a primeira:</p>`}
+      <div class="rowin"><input id="colDlgNew" maxlength="30" placeholder="Nova coleção" aria-label="Nome da nova coleção"><button type="button" class="go" id="colDlgAdd"><span>Criar</span></button></div>`;
+    body.querySelectorAll("[data-c]").forEach((b) => b.onclick = () => { const on = toggleInCol(b.dataset.c, item); Sfx.play(on ? "fav" : "desfav"); draw(); });
+    const add = () => { const c = newCol($("colDlgNew").value); if (c) { toggleInCol(c.id, item); toast(`${item.name} foi pra “${c.nome}”.`); draw(); } };
+    $("colDlgAdd").onclick = add;
+    $("colDlgNew").onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); add(); } };
+  };
+  $("colDlgTitle").textContent = `Guardar ${item.name}`;
+  draw();
+  if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+}
+saveCols(loadCols());
+
+route();
 })();
 </script>
 </body>

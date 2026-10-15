@@ -4,13 +4,18 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 
 ## O que o site faz
 
-- **Buscar**: descreva o personagem ou mande um print. A IA dá os palpites e o AniList confirma com foto, aniversário, idade e gênero oficiais. Com print, o trace.moe acha o episódio e o minuto.
+- **Pesquisar**: por nome, obra, apelido, poder ou organização ("Gojo", "Jujutsu Kaisen", "Seis Olhos"), com sugestões enquanto digita.
+- **Página do personagem**: foto, nome, anime, poderes, personalidade, frases marcantes, curiosidades, personagens relacionados e onde assistir.
+- **Tendências da comunidade**: os personagens mais procurados da semana no site e os que estão em alta no mundo.
+- **Quem ganha?**: escolha dois personagens e a IA diz quem venceria a luta.
+- **Coleções**: crie coleções com o nome que quiser e guarde seus personagens.
+- **Buscar pela descrição**: descreva o personagem ou mande um print. A IA dá os palpites e o AniList confirma com foto, aniversário, idade e gênero oficiais. Com print, o trace.moe acha o episódio e o minuto.
 - **Personagem do dia**: o aniversariante de hoje mais querido no AniList (data oficial), com curiosidades, cores e um efeito especial escolhidos pela IA.
 - **Jogo**: "Quem é esse personagem?" com 3 pistas, 4 opções, pontos, sequência e recorde.
 - **Teste**: "Qual personagem você é?" com 8 perguntas.
 - **Ranking e Tier List**: monte o seu top 10 e a sua tier list S, A, B, C e D.
 - **Favoritos** e **Últimas buscas**.
-- **Configurações**: temas de cores, modo claro/escuro, fontes, 15 efeitos de fundo e sons.
+- **Configurações**: temas de cores (incluindo Corte Carmesim e Vazio Infinito), modo claro/escuro, fontes, 15 efeitos de fundo e sons.
 
 Só aparecem plataformas oficiais. Conteúdo adulto é filtrado.
 
@@ -19,6 +24,10 @@ Só aparecem plataformas oficiais. Conteúdo adulto é filtrado.
 ```
 public/index.html   o site inteiro (visual, efeitos, sons e telas)
 api/search.js      busca por descrição e por print
+api/find.js        pesquisa por nome, obra, apelido, poder ou organização
+api/character.js   página do personagem
+api/versus.js      quem ganha a luta
+api/trends.js      tendências da semana
 api/daily.js       personagem do dia (aniversariantes do AniList)
 api/game.js        rodada do jogo
 api/quiz.js        resultado do teste
@@ -32,6 +41,7 @@ test/               testes
 1. Suba o conteúdo desta pasta (não a pasta em si) para um repositório no GitHub e importe no Vercel, com Framework Preset "Other".
 2. Em **Settings → Environment Variables**, cadastre:
    - `GEMINI_API_KEY` (ou `ANTHROPIC_API_KEY`) para a busca por descrição, o jogo, o teste e os textos do personagem do dia
+   - `BLOB_READ_WRITE_TOKEN` para as tendências da comunidade (o Vercel cria sozinho quando um Blob store é ligado ao projeto)
    - `TMDB_TOKEN` (opcional) para mostrar os logos das plataformas no Brasil
    - `TRACE_MOE_KEY` (opcional) para mais buscas por print
 3. Faça um novo deploy (Deployments → ⋯ → Redeploy).

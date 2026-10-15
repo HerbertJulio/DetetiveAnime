@@ -11,6 +11,9 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 - **O que assistir**: diga um anime que curtiu (ou escolha um estilo) e receba indicações parecidas, com o motivo e onde assistir.
 - **Torneio** (dentro do Quem ganha?): 4 ou 8 lutadores em chaveamento até sair o campeão.
 - **Ranking da comunidade** (dentro de Tendências): os rankings de todo mundo somados.
+- **Desafio do dia**: um personagem misterioso igual pra todo mundo; 6 tentativas com pistas e resultado pra compartilhar.
+- **Meu perfil**: foto (do computador, do AniList ou de um personagem), apelido, nível, estatísticas e gêneros favoritos.
+- **English**: o site inteiro pode ser trocado pra inglês nas configurações ou no menu (a IA também responde em inglês).
 - **Calendário da temporada**: episódios novos dos próximos 7 dias, com horário de Brasília e contagem regressiva dos animes que você acompanha.
 - **Conquistas**: 25 medalhas para desbloquear usando o site.
 - **Coleções**: crie coleções com o nome que quiser e guarde seus personagens.
@@ -35,6 +38,7 @@ api/versus.js      quem ganha a luta
 api/trends.js      tendências da semana
 api/schedule.js    calendário da temporada
 api/recommend.js   o que assistir
+api/desafio.js     desafio do dia
 api/daily.js       personagem do dia (aniversariantes do AniList)
 api/game.js        rodada do jogo
 api/quiz.js        resultado do teste

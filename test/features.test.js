@@ -241,3 +241,43 @@ test("ranking da comunidade soma os pontos dos rankings enviados", async () => {
   assert.deepEqual(res.body.comunidade.top.map((c) => [c.name, c.pontos]), [["Luffy Monkey", 20], ["Satoru Gojou", 17], ["Naruto Uzumaki", 17]]);
   delete globalThis.__blobMock; delete process.env.BLOB_READ_WRITE_TOKEN;
 });
+
+test("desafio do dia confere o palpite no servidor e só revela no fim", async () => {
+  const mk = (id, gender, age, animeId, year, genres, fav) => ({ id, favourites: fav, gender, age: String(age), name: { full: "P" + id }, image: { large: "i" },
+    media: { nodes: [{ id: animeId, isAdult: false, title: { romaji: "A" + animeId }, genres, startDate: { year } }] } });
+  const people = { 1: mk(1, "Male", 28, 10, 2020, ["Action", "Supernatural"], 9000), 2: mk(2, "Female", 16, 20, 2015, ["Action"], 4000) };
+  globalThis.fetch = fakeFetch((u, o) => {
+    const { query, variables } = JSON.parse(o.body);
+    if (query.includes("FAVOURITES_DESC")) return { data: { Page: { characters: [{ id: 1 }] } } };
+    return { data: { Character: people[variables.id] } };
+  });
+  const { default: handler, compare } = await import("../api/desafio.js");
+  const r1 = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 1 } }, r1);
+  assert.equal(r1.body.acertou, false);
+  assert.equal(r1.body.resposta, null);
+  assert.deepEqual(r1.body.comparacao, { anime: "errado", genero: "errado", idade: "mais", estreia: "mais", generos: "perto", generosIguais: ["Action"], fama: "mais" });
+  const r3 = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 5 } }, r3);
+  assert.equal(r3.body.dicas.length, 2);
+  const win = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 1, tentativa: 2 } }, win);
+  assert.equal(win.body.acertou, true);
+  assert.equal(win.body.resposta.id, 1);
+  const en = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 3, lang: "en" } }, en);
+  assert.match(en.body.dicas[0], /^The anime's genres/);
+});
+
+test("com lang=en a IA recebe o pedido pra responder em inglês", async () => {
+  process.env.GEMINI_API_KEY = "g";
+  let sent = "";
+  globalThis.fetch = fakeFetch((u, o) => { if (u.includes("generativelanguage")) { sent = JSON.parse(o.body).contents[0].parts.at(-1).text; return gemini({ motivos: {} }); }
+    return { data: { Media: { id: 1, type: "ANIME", isAdult: false, title: { english: "X" }, genres: [], coverImage: {}, externalLinks: [], recommendations: { nodes: [{ mediaRecommendation: { id: 2, type: "ANIME", isAdult: false, title: { english: "Y" }, genres: [], coverImage: {}, externalLinks: [] } }] } } } }; });
+  const { default: handler } = await import("../api/recommend.js");
+  await handler({ method: "GET", query: { id: "1", lang: "en" } }, fakeRes());
+  assert.match(sent, /Write every text value of the JSON in natural English/);
+  await handler({ method: "GET", query: { id: "1" } }, fakeRes());
+  assert.doesNotMatch(sent, /natural English/);
+});
+

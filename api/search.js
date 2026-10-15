@@ -19,7 +19,10 @@ function mediaCard(media, fallbackName) {
   };
 }
 
-export default async function handler(req, res) {
+import { withLang } from "../lib/lang.js";
+
+export default withLang(handler);
+async function handler(req, res) {
   try {
     return await search(req, res);
   } catch (err) {

@@ -1,12 +1,16 @@
-import { quickSearch, searchMany, liteCard, normalize, sameName, titleMatches } from "../lib/anilist.js";
+import { quickSearch, searchMany, liteCard, normalize, sameName, titleMatches, anilistUserProfile } from "../lib/anilist.js";
 import { askJson, aiEnabled } from "../lib/ai.js";
 import { clip } from "../lib/common.js";
 
 // Pesquisa por nome, apelido, obra, poder/técnica ou organização.
 // ?q=texto            -> busca completa (usa a IA quando o nome não bate)
 // ?q=texto&modo=rapido -> só AniList, pra sugestões enquanto a pessoa digita
-export default async function handler(req, res) {
+import { withLang } from "../lib/lang.js";
+
+export default withLang(handler);
+async function handler(req, res) {
   try {
+    if (req.query?.usuario) return await anilistUser(req, res);
     const q = clip(req.query?.q, 80);
     if (q.length < 2) return res.status(400).json({ error: "Digite pelo menos 2 letras." });
     const rapido = req.query?.modo === "rapido";
@@ -95,4 +99,14 @@ Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que 
 
   if (byName.length) return { q, tipo: "personagem", explicacao: "", resultados: byName, obra: null, iaFalhou };
   return { q, tipo: "sugestao", explicacao: "", resultados: characters.slice(0, 8).map((c) => liteCard(c)), obra: null, iaFalhou };
+}
+
+// Perfil: busca a foto e os personagens favoritos de uma conta pública do AniList.
+async function anilistUser(req, res) {
+  const name = clip(req.query.usuario, 40);
+  if (!/^[\w-]{2,40}$/.test(name)) return res.status(400).json({ error: "Nome de usuário inválido." });
+  const u = await anilistUserProfile(name).catch(() => null);
+  if (!u) return res.status(404).json({ error: "Não encontrei esse usuário no AniList." });
+  res.setHeader("Cache-Control", "public, s-maxage=3600");
+  return res.status(200).json(u);
 }

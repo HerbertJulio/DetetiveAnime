@@ -51,6 +51,7 @@ Regras: português do Brasil. Nada de conteúdo adulto nem violência pesada. N�
     url: c.siteUrl,
     favourites: c.favourites || 0,
     anime: { id: main.id, title: anime, romaji: main.title?.romaji, native: main.title?.native, cover: main.coverImage?.large || null, url: main.siteUrl,
+      genres: (main.genres || []).slice(0, 5),
       next: (works.map((w) => w.media).find((m) => m.type === "ANIME" && m.nextAiringEpisode) || {}).nextAiringEpisode || null },
     works: works.slice(0, 8).map((w) => ({ id: w.media.id, title: w.media.title?.english || w.media.title?.romaji, type: w.media.type, cover: w.media.coverImage?.large || null, role: w.role, year: w.media.startDate?.year || null })),
     facts: { aniversario: f.aniversario, idade: f.idade, genero: f.genero, altura: clip(p.altura, 30) || dfacts.height, criador: clip(p.criador, 60) },

@@ -2,6 +2,7 @@ import { charactersByIds, liteCard } from "../lib/anilist.js";
 import { askJson } from "../lib/ai.js";
 import { route, clip, needAi, readBody } from "../lib/common.js";
 import { trendsEnabled, recordVote, countVotes } from "../lib/trends.js";
+import { withLang } from "../lib/lang.js";
 
 const STATS = ["forca", "velocidade", "inteligencia", "tecnica", "resistencia"];
 const num = (v) => Math.max(0, Math.min(100, Math.round(Number(v) || 0)));
@@ -23,7 +24,8 @@ async function votes(req, res) {
   return res.status(200).json({ ligado: true, votos: await countVotes(a, b) });
 }
 
-export default async function handler(req, res) {
+export default withLang(handler);
+async function handler(req, res) {
   if (req.method === "POST" || req.query?.votos) {
     try { return await votes(req, res); }
     catch (e) { console.error(e); return res.status(500).json({ error: "A votação não respondeu agora." }); }

@@ -923,7 +923,90 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 .cbg-hint{margin:0;font-size:.8rem;color:var(--muted)}
 .cbg-hint.err{color:var(--warn)}
 .cbg-where{grid-template-columns:repeat(2,1fr)}
+.lang-seg{grid-template-columns:repeat(2,1fr)}
+.m-lang{margin:auto 14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.m-lang button{font:inherit;font-size:.86rem;color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:9px;cursor:pointer}
 .cbg-hint:empty{display:none}
+
+/* ---------- Desafio do dia */
+.des{gap:18px}
+.des-intro{margin:-6px 0 0}
+.des-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.82em;color:var(--muted)}
+.des-legend span{display:inline-flex;align-items:center;gap:6px}
+.st{display:inline-block;width:14px;height:14px;border-radius:4px}
+.st.certo,.dc.certo{background:#22B573;color:#fff}
+.st.perto,.dc.perto{background:#E8B923;color:#231800}
+.st.errado,.dc.errado{background:#C63A4F;color:#fff}
+.des-ask{max-width:none}
+.des-left{margin:-6px 0 0;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.des-board{overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.des-grid{display:grid;grid-template-columns:minmax(150px,1.6fr) repeat(6,minmax(84px,1fr));gap:6px;min-width:720px}
+.des-grid .h{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;padding:2px}
+.des-grid .h:first-child{text-align:left}
+.dc{min-height:62px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px;text-align:center;font-size:.8em;font-weight:600;line-height:1.2;
+  background:var(--surface-2);border:1px solid var(--line);animation:flip .5s both;animation-delay:calc(var(--k,0) * 110ms)}
+.dc small{font-weight:500;font-size:.85em;opacity:.85}
+.dc .ar{font-size:1.15rem;line-height:1}
+.dc.q{background:var(--surface-2);color:var(--muted)}
+.dc.who{flex-direction:row;justify-content:flex-start;gap:8px;text-align:left;background:color-mix(in srgb,var(--surface) 90%,transparent);animation:rise .4s both}
+.dc.who img,.dc.who .ph{width:44px;height:44px;border-radius:10px;object-fit:cover;object-position:center 20%;flex:none;background:var(--surface-2)}
+@keyframes flip{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}
+.des-hint{padding:10px 14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);font-size:.92em;margin-bottom:8px;animation:rise .4s both}
+.des-end{display:grid;grid-template-columns:110px minmax(0,1fr);gap:18px;align-items:center;padding:18px;border-radius:calc(var(--r) + 6px);animation:rise .5s both;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+.des-end img{width:110px;aspect-ratio:3/4;border-radius:14px;object-fit:cover;box-shadow:0 14px 34px -14px var(--glow)}
+.des-end h3{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.5em;line-height:1.15}
+.des-end p{margin:4px 0 0;color:var(--muted)}
+.des-end .row-btns{margin-top:12px}
+.des-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.des-stats div{padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--surface) 86%,transparent);border:1px solid var(--line);text-align:center}
+.des-stats b{display:block;font-family:var(--display);font-weight:var(--display-weight);font-size:1.6rem;line-height:1.1}
+.des-stats small{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.m-list .count.dot{background:#22B573;color:#fff;width:10px;height:10px;padding:0;min-width:0}
+@media (max-width:560px){.des-end{grid-template-columns:80px minmax(0,1fr)}.des-end img{width:80px}.des-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- Perfil */
+.perf{gap:24px}
+.m-profile{display:flex;align-items:center;gap:12px;margin:14px 14px 0;padding:10px 12px;border-radius:16px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font:inherit;color:var(--fg);text-align:left}
+.m-profile:hover{border-color:var(--accent)}
+.m-av,.pf-av-in{display:grid;place-items:center;border-radius:50%;overflow:hidden;background:var(--grad);color:var(--accent-ink);font-family:var(--display);font-weight:var(--display-weight)}
+.m-av{width:44px;height:44px;flex:none;font-size:1.2rem}
+.m-av img,.pf-av-in img{width:100%;height:100%;object-fit:cover}
+.m-profile b{display:block;font-size:.98em}
+.m-profile small{display:block;color:var(--muted);font-size:.78em}
+.pf-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;padding:22px;border-radius:calc(var(--r) + 10px);position:relative;overflow:hidden;
+  background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--accent) 28%,var(--surface)),var(--surface) 55%,color-mix(in srgb,var(--accent-2) 22%,var(--surface)));border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
+.pf-av{position:relative;width:132px;height:132px;border-radius:50%;padding:4px;border:0;cursor:pointer;background:none}
+.pf-av::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent));animation:spinRing 8s linear infinite}
+.pf-av-in{position:relative;width:100%;height:100%;font-size:3rem;border:4px solid var(--surface)}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.pf-cam{position:absolute;right:2px;bottom:6px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line-strong);font-size:1rem;z-index:1}
+.pf-id{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pf-id input{font:inherit;font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(1.8rem,5vw,2.6rem);color:var(--fg);background:transparent;border:0;border-bottom:1px dashed transparent;outline:0;padding:0;width:100%}
+.pf-id input:hover,.pf-id input:focus{border-bottom-color:var(--line-strong)}
+.pf-title{align-self:flex-start;font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:var(--grad);color:var(--accent-ink)}
+.pf-badges{display:flex;flex-wrap:wrap;gap:4px;font-size:1.2rem}
+.pf-badges span{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF3B0,#FFD84D 45%,#E8A317)}
+.pf-opts{display:flex;flex-direction:column;gap:12px}
+.pf-pick{cursor:pointer;align-self:flex-start}
+.pf-pick input{position:absolute;opacity:0;width:1px;height:1px}
+.pf-ani{display:flex;gap:8px;flex-wrap:wrap}
+.pf-ani input,.pf-opts .col-add input{flex:1 1 200px;font:inherit;color:var(--fg);background:var(--surface-2);border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;outline:0}
+.pf-opts .col-add{max-width:none}
+.pf-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pf-stat{padding:14px;border-radius:18px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .4s both;animation-delay:calc(var(--i,0) * 40ms)}
+.pf-stat .ic{font-size:1.2rem}
+.pf-stat b{display:block;font-family:var(--display);font-weight:var(--display-weight);font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.pf-stat small{color:var(--muted);font-size:.82em}
+.pf-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar-r{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:.86em}
+.bar-r span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-r .tr{height:12px;border-radius:7px;background:var(--surface-2);overflow:hidden}
+.bar-r .tr i{display:block;height:100%;width:0;border-radius:7px;background:var(--grad);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar-r b{font-family:var(--mono);font-size:.78rem;text-align:right;color:var(--muted)}
+.bars .empty{padding:14px;font-size:.88em}
+@media (max-width:640px){.pf-hero{grid-template-columns:1fr;justify-items:center;text-align:center}.pf-title{align-self:center}.pf-badges{justify-content:center}.pf-stats{grid-template-columns:repeat(2,1fr)}.pf-charts{grid-template-columns:1fr}.pf-id input{text-align:center}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1149,6 +1232,279 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
   });
 })();
 </script>
+<script>
+// ---------- Idioma: português (padrão) ou inglês. Em inglês, troca os textos da tela e pede pra IA responder em inglês.
+(() => {
+  const lang = (window.Config?.get?.().lang === "en") ? "en" : "pt";
+  window.Lang = { get: () => lang, set: (l) => { window.Config.set({ lang: l }); location.reload(); } };
+  document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+  if (lang !== "en") return;
+
+  const D = {
+    // Menu e abas
+    "Buscar": "Search", "Tendências": "Trends", "O que assistir": "What to watch", "Calendário": "Calendar", "Personagem do dia": "Character of the day",
+    "Desafio do dia": "Daily challenge", "Quem ganha?": "Who wins?", "Jogo": "Game", "Teste": "Quiz", "Ranking e Tier List": "Ranking & Tier List",
+    "Coleções": "Collections", "Conquistas": "Achievements", "Favoritos": "Favorites", "Últimas buscas": "Recent searches", "Menu": "Menu", "Seções": "Sections",
+    "Meu perfil": "My profile", "Perfil": "Profile", "Personagem": "Character", "Em alta": "Trending", "Lutas": "Fights", "Mais": "More", "Atalhos": "Shortcuts",
+    "Abrir menu": "Open menu", "Fechar menu": "Close menu", "Abrir configurações": "Open settings", "Fechar configurações": "Close settings", "Fechar": "Close",
+    "busca por personagem": "character finder", "Logo do Detetive Anime": "Detetive Anime logo",
+    "Pesquise pelo nome, obra, apelido ou poder. Não lembra o nome? Descreva o personagem ou mande um print da cena. A gente descobre quem é, de qual anime, e onde assistir oficialmente.":
+      "Search by name, series, nickname or power. Don't remember the name? Describe the character or send a screenshot. We'll find who it is, which anime, and where to watch it officially.",
+    // Busca
+    "Nome, obra, apelido, poder ou organização": "Name, series, nickname, power or group", "Nome, obra ou poder": "Name, series or power", "Pesquisar personagem": "Search character",
+    "Pesquisar": "Search", "Experimente": "Try", "Recentes": "Recent", "Sugestões": "Suggestions", "Personagens": "Characters", "Nenhum nome parecido": "No similar names",
+    "Também procura por poder, apelido e organização": "Also searches powers, nicknames and groups", "Procurando…": "Searching…", "Procurando": "Searching", "Ops": "Oops",
+    "Resultados": "Results", "Esse apelido é de": "That nickname belongs to", "Quem tem esse poder": "Who has this power", "Quem faz parte": "Who's in it", "Quem tem isso": "Who has it",
+    "Personagens da obra": "Characters in the series", "Talvez seja algum destes": "Maybe one of these", "Nada encontrado": "Nothing found",
+    "Não sabe o nome? Descreva ou mande um print": "Don't know the name? Describe it or send a screenshot", "Como ele é?": "What do they look like?",
+    "cabelo branco, olhos azuis brilhantes, usa uma venda preta nos olhos e roupa escura de escola": "white hair, bright blue eyes, wears a black blindfold and a dark school uniform",
+    "Adicionar características": "Add features", "cabelo branco": "white hair", "venda nos olhos": "blindfold", "cicatriz no rosto": "scar on face", "olhos vermelhos": "red eyes",
+    "chapéu de palha": "straw hat", "óculos": "glasses", "máscara": "mask", "Enviar print da cena": "Upload a screenshot", "Opcional · ajuda a acertar o anime e a cena": "Optional · helps find the anime and scene",
+    "Limpar": "Clear", "Encontrar anime": "Find anime", "Procurando...": "Searching...", "Encontramos": "We found", "Exemplo de resultado": "Example result", "Busca salva": "Saved search",
+    "Explore": "Explore", "Quem a galera mais procura esta semana": "Who people search the most this week", "Episódios novos de cada dia da temporada": "New episodes for each day of the season",
+    "Lutas 1 contra 1 e torneios de 8": "1v1 fights and 8-character tournaments", "Adivinhe o personagem pelas pistas": "Guess the character from clues",
+    "Monte coleções com os seus favoritos": "Build collections with your favorites", "Diga um anime que curtiu e receba indicações": "Tell us an anime you liked and get picks",
+    "Seu resultado": "Your result", "Pelo print": "From screenshot", "Palpite": "Guess", "de chance": "chance", "de semelhança": "match", "Ver foto ↗": "See photo ↗",
+    "Ver página completa do personagem →": "See the full character page →", "Onde assistir": "Where to watch", "Ver todas no JustWatch →": "See all on JustWatch →", "grátis": "free",
+    "Altura": "Height", "Idade": "Age", "Gênero": "Gender", "Aniversário": "Birthday", "Criador da obra": "Creator", "Masculino": "Male", "Feminino": "Female", "Não-binário": "Non-binary",
+    "Aniversário, idade e gênero vêm do AniList quando ele tem. O resto é segundo a IA.": "Birthday, age and gender come from AniList when available. The rest is from the AI.",
+    "Salvar nos favoritos": "Save to favorites", "Tirar dos favoritos": "Remove from favorites",
+    "Escreva como é o personagem ou envie um print.": "Describe the character or upload a screenshot.", "Algo deu errado na busca. Tente de novo.": "Something went wrong. Try again.",
+    "Digite pelo menos 2 letras.": "Type at least 2 letters.",
+    // Página do personagem
+    "← Voltar": "← Back", "★ Favoritar": "★ Favorite", "★ Favorito": "★ Favorited", "＋ Coleção": "＋ Collection", "⚔ Quem ganha?": "⚔ Who wins?", "🏆 Ranking": "🏆 Ranking",
+    "↗ Compartilhar": "↗ Share", "Poderes e habilidades": "Powers and abilities", "Personalidade": "Personality", "Frases marcantes": "Famous quotes", "Curiosidades": "Fun facts",
+    "Personagens relacionados": "Related characters", "Aparece em": "Appears in", "Principal": "Main", "Coadjuvante": "Supporting", "Figurante": "Background", "Mangá": "Manga",
+    "Foto, nome, aniversário, idade e personagens relacionados vêm do": "Photo, name, birthday, age and related characters come from",
+    ". Poderes, personalidade, frases e curiosidades foram escritos pela IA e podem ter erros.": ". Powers, personality, quotes and fun facts were written by AI and may contain mistakes.",
+    "A ficha com poderes e curiosidades aparece quando a IA estiver ligada no servidor.": "The full profile with powers and fun facts appears when the AI is turned on.",
+    "Montando a ficha completa… na primeira vez pode levar alguns segundos.": "Building the full profile… the first time can take a few seconds.",
+    "Link copiado!": "Link copied!", "Guardar na coleção": "Save to collection",
+    // Tendências
+    "Tendências da comunidade": "Community trends", "Mais procurados aqui esta semana": "Most searched here this week", "Ranking da comunidade": "Community ranking",
+    "O top 10 de todo mundo somado: 1º lugar vale 10 pontos, o 10º vale 1.": "Everyone's top 10 added up: 1st place is worth 10 points, 10th is worth 1.",
+    "Enviar meu ranking": "Send my ranking", "Atualizar meu ranking": "Update my ranking", "Enviando…": "Sending…", "Em alta no mundo agora": "Trending worldwide now",
+    "Personagens principais dos animes mais comentados no AniList.": "Main characters from the most talked-about anime on AniList.",
+    "Ninguém mandou o ranking ainda. Monte o seu na aba Ranking e seja o primeiro!": "No one has sent a ranking yet. Build yours in the Ranking tab and be the first!",
+    "Ninguém procurou personagens ainda esta semana. Abra a página de um personagem e ele entra no placar!": "No one searched this week yet. Open a character page and it joins the board!",
+    "Pronto! Seu ranking entrou na soma.": "Done! Your ranking was added.", "Monte seu ranking com pelo menos 3 personagens na aba Ranking e Tier List.": "Build a ranking with at least 3 characters in the Ranking & Tier List tab.",
+    // O que assistir
+    "O que assistir agora?": "What should I watch?", "indicações": "picks", "Qual anime você curtiu?": "Which anime did you like?", "Anime que você curtiu": "Anime you liked",
+    "Ex.: Jujutsu Kaisen, Naruto, Frieren": "E.g.: Jujutsu Kaisen, Naruto, Frieren", "Ou escolha um estilo": "Or pick a style", "Porque você curtiu": "Because you liked",
+    "Parecidos com este": "More like this", "Ver personagens": "See characters", "Animes": "Anime", "Nenhum anime com esse nome": "No anime with that name",
+    "Indicações da comunidade do AniList. Os motivos foram escritos pela IA.": "Picks from the AniList community. The reasons were written by AI.",
+    "Indicações da comunidade do AniList.": "Picks from the AniList community.",
+    "Ação": "Action", "Aventura": "Adventure", "Comédia": "Comedy", "Drama": "Drama", "Fantasia": "Fantasy", "Mistério": "Mystery", "Ficção científica": "Sci-Fi", "Esportes": "Sports",
+    "Dia a dia": "Slice of Life", "Sobrenatural": "Supernatural", "Romance": "Romance", "Terror": "Horror", "Robôs": "Mecha", "Música": "Music", "Psicológico": "Psychological",
+    "Série": "Series", "Filme": "Movie", "Web": "Web", "Curta": "Short", "Especial": "Special",
+    // Calendário
+    "Calendário da temporada": "Season calendar", "Hoje": "Today", "Amanhã": "Tomorrow", "Dom": "Sun", "Seg": "Mon", "Ter": "Tue", "Qua": "Wed", "Qui": "Thu", "Sex": "Fri", "Sáb": "Sat",
+    "Só os que eu acompanho": "Only the ones I follow", "Mostrar também os menos conhecidos": "Also show lesser-known ones", "já saiu": "aired", "estreia": "premiere",
+    "último episódio": "final episode", "Dias da semana": "Days of the week", "Nenhum episódio nesse dia.": "No episodes on this day.",
+    "Nenhum anime que você acompanha sai nesse dia.": "None of the anime you follow air on this day.", "Sem episódio nesta semana": "No episode this week",
+    "Horários de Brasília, segundo o AniList. O episódio pode chegar nas plataformas brasileiras algumas horas depois.": "Times are Brasília time (UTC−3), from AniList. Episodes may reach streaming services a few hours later.",
+    "Toque na ☆ de um anime pra acompanhar. A contagem regressiva do próximo episódio aparece aqui.": "Tap the ☆ on an anime to follow it. The countdown to the next episode shows up here.",
+    // Desafio
+    "Descubra o personagem misterioso de hoje em até 6 tentativas. Ele é o mesmo pra todo mundo!": "Find today's mystery character in up to 6 tries. It's the same for everyone!",
+    "certo": "right", "perto": "close", "errado": "wrong", "↑ o certo é maior": "↑ the answer is higher", "↓ o certo é menor": "↓ the answer is lower", "Seu palpite": "Your guess",
+    "Digite o nome de um personagem": "Type a character name", "Anime": "Anime", "Estreia": "Debut", "Estilos": "Genres", "Fama": "Fame", "Jogados": "Played", "Vitórias": "Wins",
+    "Sequência": "Streak", "Melhor": "Best", "Não foi dessa vez!": "Not this time!", "O personagem era": "The character was", "Compartilhar resultado": "Share result",
+    "Ver a ficha": "See profile", "Resultado copiado! Cole pros amigos.": "Result copied! Paste it for your friends.",
+    // Quem ganha / torneio
+    "a IA decide a luta": "the AI decides the fight", "Luta 1 contra 1": "1v1 fight", "Torneio": "Tournament", "Lutar!": "Fight!", "Lutando…": "Fighting…", "Sortear uma luta": "Random fight",
+    "Escolha os dois lutadores.": "Pick both fighters.", "Primeiro lutador: digite o nome": "First fighter: type the name", "Segundo lutador: digite o nome": "Second fighter: type the name",
+    "Primeiro personagem": "First character", "Segundo personagem": "Second character", "Trocar": "Change", "Empate!": "It's a tie!", "Momento decisivo:": "Turning point:",
+    "E você, quem acha que ganha?": "And you, who do you think wins?", "Ninguém votou ainda. Seja o primeiro!": "No votes yet. Be the first!", "Voto guardado!": "Vote saved!",
+    "↗ Compartilhar luta": "↗ Share fight", "Nova luta": "New fight", "Link da luta copiado!": "Fight link copied!", "A IA está analisando a luta…": "The AI is analyzing the fight…",
+    "Comparando poderes, técnicas e feitos.": "Comparing powers, techniques and feats.", "É só uma brincadeira de fã: a IA dá um palpite pelo que aparece nas obras.": "Just for fun: the AI makes a guess based on what's shown in the series.",
+    "Força": "Strength", "Velocidade": "Speed", "Inteligência": "Intelligence", "Técnica": "Technique", "Resistência": "Endurance",
+    "Escolha 8 lutadores": "Pick 8 fighters", "Adicionar lutador": "Add fighter", "Começar torneio": "Start tournament", "Começar torneio de 4": "Start 4-player tournament",
+    "Sortear 8": "Random 8", "Seus favoritos:": "Your favorites:", "Quartas de final": "Quarterfinals", "Semifinal": "Semifinal", "Final": "Final", "Campeão": "Champion",
+    "quem vai ser?": "who will it be?", "Copiar resultado": "Copy result", "Novo torneio": "New tournament", "Resultado copiado!": "Result copied!",
+    "Toque numa luta pra ver o que a IA disse. É só brincadeira de fã.": "Tap a fight to see what the AI said. Just for fun.",
+    // Jogo e teste
+    "Quem é esse personagem?": "Who's that character?", "3 pistas · 4 opções": "3 clues · 4 options", "Pontos": "Points", "Recorde": "Record", "Dificuldade": "Difficulty",
+    "Fácil": "Easy", "Médio": "Medium", "Difícil": "Hard", "Começar": "Start", "Escolhendo um personagem...": "Picking a character...",
+    "A IA descreve um personagem só pela aparência. Quanto menos pistas você usar, mais pontos ganha.": "The AI describes a character by looks only. The fewer clues you use, the more points you get.",
+    "Qual personagem você é?": "Which character are you?", "Começar o teste": "Start the quiz", "Descobrindo qual personagem é você...": "Finding out which character you are...",
+    "São 8 perguntas rápidas sobre o seu jeito. No final a IA diz qual personagem de anime combina mais com você e onde assistir.": "8 quick questions about your personality. At the end the AI tells you which anime character matches you best and where to watch.",
+    "Fazer de novo": "Try again", "Tentar de novo": "Try again",
+    "Num sábado livre, você prefere...": "On a free Saturday, you'd rather...", "Treinar algo até ficar perfeito": "Practice something until it's perfect", "Sair e fazer bagunça com os amigos": "Go out and have fun with friends",
+    "Ler, jogar ou descobrir algo novo": "Read, play or discover something new", "Dormir até tarde e comer bem": "Sleep in and eat well", "Seu grupo está em perigo. Você...": "Your group is in danger. You...",
+    "Vai na frente sem pensar duas vezes": "Charge ahead without thinking twice", "Bola um plano rapidinho": "Come up with a quick plan", "Protege quem está mais fraco": "Protect the weakest",
+    "Faz uma piada pra todo mundo se acalmar": "Crack a joke so everyone calms down", "Que poder você escolheria?": "Which power would you pick?", "Força absurda": "Insane strength",
+    "Controlar fogo, água ou raios": "Control fire, water or lightning", "Ler a mente das pessoas": "Read minds", "Velocidade impossível": "Impossible speed", "Seu maior defeito é...": "Your biggest flaw is...",
+    "Teimosia": "Stubbornness", "Preguiça": "Laziness", "Ser sério e fechado demais": "Being too serious and closed off", "Falar sem parar": "Never stop talking",
+    "Seu lugar favorito seria...": "Your favorite place would be...", "Uma cidade grande à noite": "A big city at night", "Uma floresta ou montanha": "A forest or mountain",
+    "Uma biblioteca ou laboratório": "A library or lab", "Uma praia ensolarada": "A sunny beach", "Seus amigos te descrevem como...": "Your friends describe you as...",
+    "O líder da turma": "The group's leader", "O amigo mais leal": "The most loyal friend", "O misterioso": "The mysterious one", "O engraçado": "The funny one",
+    "Qual comida não pode faltar?": "Which food can't be missing?", "Lámen": "Ramen", "Doce": "Sweets", "Churrasco": "Barbecue", "Qualquer uma, desde que seja muita": "Anything, as long as it's a lot",
+    "Seu grande objetivo é...": "Your big goal is...", "Ser o mais forte de todos": "Be the strongest of all", "Proteger quem eu amo": "Protect the people I love",
+    "Descobrir a verdade sobre tudo": "Discover the truth about everything", "Viver muitas aventuras": "Live lots of adventures",
+    // Personagem do dia
+    "Quem será hoje?": "Who will it be today?", "Revelar personagem": "Reveal character", "Revelando...": "Revealing...",
+    "Todo dia um personagem diferente, com curiosidades e um efeito especial só dele.": "A different character every day, with fun facts and a special effect of their own.",
+    "Fundo especial do personagem do dia": "Special background for the character of the day", "🎂 Hoje é aniversário dele!": "🎂 It's their birthday today!",
+    "Hoje o AniList não tem nenhum aniversariante. Volte amanhã!": "AniList has no birthdays today. Come back tomorrow!",
+    // Ranking / tier list
+    "Meu ranking": "My ranking", "top 10": "top 10", "Anime (opcional)": "Anime (optional)", "Ex.: Satoru Gojo": "E.g.: Satoru Gojo", "Ex.: Jujutsu Kaisen": "E.g.: Jujutsu Kaisen",
+    "Adicionar ao ranking": "Add to ranking", "Copiar ranking pra mandar pros amigos": "Copy ranking to send to friends", "Apagar ranking": "Delete ranking", "Ir para": "Go to",
+    "↓ Ranking top 10": "↓ Top 10 ranking", "↓ Tier List": "↓ Tier List", "Tier List": "Tier List", "arraste ou toque": "drag or tap", "Ex.: Luffy": "E.g.: Luffy", "Adicionar": "Add",
+    "Puxar do ranking e dos favoritos": "Pull from ranking and favorites", "Copiar tier list pra mandar pros amigos": "Copy tier list to send to friends", "Apagar tier list": "Delete tier list",
+    "Clique de novo pra confirmar": "Click again to confirm", "Escreva o nome do personagem.": "Write the character's name.", "Copiado! Agora é só colar no WhatsApp.": "Copied! Now just paste it in a chat.",
+    "Seu ranking está vazio. Coloque seu personagem favorito em 1º lugar!": "Your ranking is empty. Put your favorite character in 1st place!",
+    "Adicione personagens aqui em cima e depois coloque cada um numa fileira.": "Add characters above, then put each one in a row.",
+    // Coleções e favoritos
+    "Minhas coleções": "My collections", "Nova coleção": "New collection", "Criar": "Create", "Nome da coleção": "Collection name", "Ícone": "Icon",
+    "Ex.: Os mais fortes, Vilões favoritos, Meu time dos sonhos": "E.g.: Strongest ones, Favorite villains, Dream team",
+    "Crie coleções com os nomes que quiser e guarde seus personagens nelas.": "Create collections with any name and save your characters in them.",
+    "← Coleções": "← Collections", "Renomear": "Rename", "Copiar lista": "Copy list", "Apagar": "Delete", "Adicionar personagem: digite o nome": "Add character: type the name",
+    "Lista copiada!": "List copied!", "Dê um nome pra coleção.": "Give the collection a name.",
+    "Toque na estrela de um resultado para guardar o personagem aqui, com os links de onde assistir.": "Tap the star on a result to save the character here, with links to where to watch.",
+    "Apagar histórico": "Clear history", "Suas buscas vão aparecer aqui. Elas ficam salvas só neste navegador.": "Your searches will show up here. They're saved only in this browser.",
+    // Conquistas
+    "As conquistas ficam salvas só neste navegador.": "Achievements are saved only in this browser.",
+    "Primeiro caso": "First case", "Faça sua primeira pesquisa.": "Do your first search.", "Detetive júnior": "Junior detective", "Faça 10 pesquisas.": "Do 10 searches.",
+    "Detetive lendário": "Legendary detective", "Faça 50 pesquisas.": "Do 50 searches.", "Retrato falado": "Police sketch", "Ache 5 personagens só pela descrição.": "Find 5 characters by description only.",
+    "Olho de águia": "Eagle eye", "Faça uma busca usando um print.": "Search using a screenshot.", "Leitor de fichas": "Profile reader", "Abra a página de 5 personagens.": "Open 5 character pages.",
+    "Enciclopédia ambulante": "Walking encyclopedia", "Abra a página de 30 personagens.": "Open 30 character pages.", "Primeiro favorito": "First favorite", "Favorite um personagem.": "Favorite a character.",
+    "Coração otaku": "Otaku heart", "Tenha 15 favoritos.": "Have 15 favorites.", "Colecionador": "Collector", "Crie sua primeira coleção.": "Create your first collection.",
+    "Curador do museu": "Museum curator", "Guarde 25 personagens nas coleções.": "Save 25 characters in collections.", "Meu top 10": "My top 10", "Complete o ranking com 10 personagens.": "Complete the ranking with 10 characters.",
+    "Juiz das tiers": "Tier judge", "Coloque 10 personagens nas fileiras da tier list.": "Put 10 characters in tier list rows.", "Que comece a luta": "Let the fight begin",
+    "Faça a primeira luta no Quem ganha?.": "Do your first fight in Who wins?.", "Narrador de batalhas": "Battle narrator", "Faça 15 lutas.": "Do 15 fights.", "Na mosca": "Bullseye",
+    "Acerte um personagem no jogo.": "Guess a character in the game.", "Em chamas": "On fire", "Acerte 5 seguidas no jogo.": "Get 5 in a row in the game.", "Imparável": "Unstoppable",
+    "Acerte 15 seguidas no jogo.": "Get 15 in a row in the game.", "Autoconhecimento": "Self-knowledge", "Descubra qual personagem você é no Teste.": "Find out which character you are in the Quiz.",
+    "Parabéns pra você": "Happy birthday", "Revele o personagem do dia.": "Reveal the character of the day.", "Visitante fiel": "Loyal visitor", "Abra o site 3 dias seguidos.": "Open the site 3 days in a row.",
+    "Uma semana inteira": "A whole week", "Abra o site 7 dias seguidos.": "Open the site 7 days in a row.", "Expansão de domínio": "Domain expansion",
+    "Use o tema Vazio Infinito ou Corte Carmesim.": "Use the Infinite Void or Crimson Cut theme.", "Estilista": "Stylist", "Experimente 5 temas diferentes.": "Try 5 different themes.",
+    "Em dia com a temporada": "Up to date with the season", "Acompanhe 3 animes no Calendário.": "Follow 3 anime in the Calendar.", "Caso do dia resolvido": "Case of the day solved",
+    "Vença o Desafio do dia.": "Win the Daily challenge.", "Mente brilhante": "Brilliant mind", "Vença 5 Desafios do dia.": "Win 5 Daily challenges.",
+    // Perfil
+    "Seu apelido": "Your nickname", "Foto do perfil": "Profile photo", "Trocar foto do perfil": "Change profile photo", "💻 Do computador": "💻 From my computer",
+    "Usar foto do AniList": "Use AniList photo", "Seu usuário do AniList": "Your AniList username", "Usuário do AniList": "AniList username",
+    "Ou a foto de um personagem: digite o nome": "Or a character's photo: type the name", "Foto de personagem": "Character photo", "Tirar a foto": "Remove photo",
+    "A foto fica salva só neste navegador.": "The photo is saved only in this browser.", "pesquisas": "searches", "personagens vistos": "characters seen", "favoritos": "favorites",
+    "coleções": "collections", "lutas": "fights", "desafios vencidos": "challenges won", "acertos no jogo": "game wins", "dia seguido": "day streak", "dias seguidos": "day streak",
+    "Seus estilos favoritos": "Your favorite genres", "Animes que você mais explorou": "Anime you explored the most", "Seu top 3": "Your top 3", "Toque pra montar o seu": "Tap to build yours",
+    "Favoritos no AniList": "AniList favorites", "Seu perfil fica salvo só neste navegador.": "Your profile is saved only in this browser.",
+    "Abra fichas de personagens e use o O que assistir pra descobrir seus estilos.": "Open character pages and use What to watch to discover your genres.",
+    "Ainda vazio. Explore uns personagens!": "Still empty. Explore some characters!", "Foto trocada!": "Photo changed!", "Foto removida.": "Photo removed.",
+    "Procurando no AniList…": "Searching AniList…", "Digite seu nome de usuário do AniList.": "Type your AniList username.", "Escolha uma imagem PNG ou JPG.": "Pick a PNG or JPG image.",
+    "Detetive novato": "Rookie detective", "Investigador": "Investigator", "Detetive sênior": "Senior detective", "Lenda dos animes": "Anime legend",
+    // Configurações
+    "Configurações": "Settings", "Tema de cores": "Color theme", "Cor 1": "Color 1", "Cor 2": "Color 2", "Modo": "Mode", "Escuro": "Dark", "Claro": "Light", "Automático": "Auto",
+    "Fonte dos títulos": "Title font", "Fonte do texto": "Body font", "Tamanho do texto": "Text size", "Efeitos": "Effects", "Quantidade": "Amount", "Fundo animado": "Animated background",
+    "Fundo personalizado": "Custom background", "Nenhuma imagem": "No image", "Escolher imagem": "Choose image", "Remover": "Remove", "Usar meu fundo": "Use my background",
+    "Puxe uma imagem PNG ou JPG do seu computador ou celular. Ela fica salva só neste navegador.": "Pick a PNG or JPG from your computer or phone. It's saved only in this browser.",
+    "Mostrar em": "Show on", "Todos os temas": "All themes", "Onde mostrar o fundo": "Where to show the background", "Escurecer": "Darken", "Desfocar": "Blur",
+    "Fundo removido. O tema voltou ao normal.": "Background removed. The theme is back to normal.", "Preparando a imagem…": "Preparing the image…",
+    "Pronto! Esse é o seu fundo agora. Ele fica salvo só neste navegador.": "Done! This is your background now. It's saved only in this browser.",
+    "Sons": "Sounds", "Ligar sons": "Sound on", "Volume": "Volume", "▶ Testar som": "▶ Test sound", "Restaurar padrão": "Reset to default", "Idioma": "Language",
+    "Elegante": "Elegant", "Mangá": "Manga", "Fofa": "Cute", "Pincel": "Brush", "Moderna": "Modern", "Clássica": "Classic", "Arredondada": "Rounded", "Do aparelho": "System",
+    "Sakura": "Sakura", "Neon Tóquio": "Tokyo Neon", "Energia azul": "Blue Energy", "Pôr do sol": "Sunset", "Floresta": "Forest", "Inverno": "Winter", "Corte Carmesim": "Crimson Cut",
+    "Vazio Infinito": "Infinite Void", "Cachoeira": "Waterfall", "Neon na chuva": "Neon Rain", "Tempestade": "Storm", "Minhas cores": "My colors",
+    "Nenhum": "None", "Pétalas de sakura": "Sakura petals", "Neve": "Snow", "Estrelas": "Stars", "Vaga-lumes": "Fireflies", "Faíscas": "Sparks", "Cortes": "Slashes", "Chamas": "Flames",
+    "Raios": "Lightning", "Bolhas": "Bubbles", "Flocos de gelo": "Ice flakes", "Folhas": "Leaves", "Vento": "Wind", "Energia": "Energy", "Confete": "Confetti", "Vazio infinito": "Infinite void",
+    "Chuva": "Rain", "Respingos": "Splashes",
+    "Respiração da Água": "Water Breathing", "Seis Olhos": "Six Eyes", "Anime · ": "Anime · ",
+    // Rodapé e avisos
+    "Só mostramos plataformas oficiais. Assista sempre pelos serviços que pagam quem faz os animes.": "We only show official platforms. Always watch on services that pay the people who make anime.",
+    "Personagens, fotos e aniversários:": "Characters, photos and birthdays:", "· Busca por cena:": "· Scene search:", "· Onde assistir:": "· Where to watch:",
+    "Não consegui falar com o servidor. Confira a internet e tente de novo.": "Couldn't reach the server. Check your connection and try again.",
+    "A IA não respondeu agora. Tente de novo.": "The AI didn't respond. Try again.", "Não consegui copiar.": "Couldn't copy.", "Não consegui sortear agora.": "Couldn't pick at random right now.",
+    "As coisas que você faz aqui ficam salvas só neste navegador.": "Everything you do here is saved only in this browser.",
+  };
+  const MONTHS = { janeiro: "January", fevereiro: "February", "março": "March", abril: "April", maio: "May", junho: "June", julho: "July", agosto: "August", setembro: "September", outubro: "October", novembro: "November", dezembro: "December" };
+  const WEEK = { "domingo": "Sunday", "segunda-feira": "Monday", "terça-feira": "Tuesday", "quarta-feira": "Wednesday", "quinta-feira": "Thursday", "sexta-feira": "Friday", "sábado": "Saturday",
+    "dom": "Sun", "seg": "Mon", "ter": "Tue", "qua": "Wed", "qui": "Thu", "sex": "Fri", "sáb": "Sat" };
+  const tr = (s) => D[s] || s;
+  const k = (n) => String(n).replace(",", ".");
+  const P = [
+    [/^(\d+) de (janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)$/i, (m, d, mo) => `${MONTHS[mo.toLowerCase()]} ${d}`],
+    [/^(\d+) anos$/, (m, n) => `${n} years old`],
+    [/^([\d,]+) mil$/, (m, n) => `${k(n)}K`],
+    [/^♥ ([\d,]+) mil fãs marcaram como favorito no AniList$/, (m, n) => `♥ ${k(n)}K fans favorited this on AniList`],
+    [/^♥ (\d+) fãs marcaram como favorito no AniList$/, (m, n) => `♥ ${n} fans favorited this on AniList`],
+    [/^(\d+) tentativas? restantes?$/, (m, n) => `${n} ${n === "1" ? "try" : "tries"} left`],
+    [/^nº (\d+)$/, (m, n) => `#${n}`],
+    [/^(\d+) de (\d+)$/, (m, a, b) => `${a} of ${b}`],
+    [/^(\d+) (encontrado|encontrados) para “(.+)”$/, (m, n, x, q) => `${n} found for “${q}”`],
+    [/^(\d+) (resultado|resultados)$/, (m, n) => `${n} result${n === "1" ? "" : "s"}`],
+    [/^(\d+) episódios esta semana$/, (m, n) => `${n} episodes this week`],
+    [/^semana (\d+) de (\d+)$/, (m, a, b) => `week ${a} of ${b}`],
+    [/^(\d+) (visita|visitas)$/, (m, n) => `${n} visit${n === "1" ? "" : "s"}`],
+    [/^Episódio (\d+) de (\d+)(.*)$/, (m, a, b, r) => `Episode ${a} of ${b}${r.replace(" · filme", " · movie")}`],
+    [/^Episódio (\d+)(.*)$/, (m, a, r) => `Episode ${a}${r.replace(" · filme", " · movie")}`],
+    [/^Episódio (\d+) sai (\S+), (.+)$/, (m, a, d, t) => `Episode ${a} airs ${WEEK[d] || d}, ${t}`],
+    [/^Ep\. (\d+) · (\S+) (.+)$/, (m, a, d, t) => `Ep. ${a} · ${WEEK[d.replace(".", "")] || d} ${t}`],
+    [/^(.+) · (\d+)\/(\d+) medalhas$/, (m, t, a, b) => `${tr(t)} · ${a}/${b} medals`],
+    [/^Próximo desafio em (.+)$/, (m, t) => `Next challenge in ${t}`],
+    [/^há (\d+) min$/, (m, n) => `${n} min ago`], [/^há (\d+) h$/, (m, n) => `${n} h ago`], [/^agora$/, () => "now"],
+    [/^Acertou em (\d+)! 🎉$/, (m, n) => `Got it in ${n}! 🎉`],
+    [/^(.+) vence!$/, (m, a) => `${a} wins!`], [/^(.+) vence (.+)$/, (m, a, b) => `${a} beats ${b}`],
+    [/^Vantagens de (.+)$/, (m, a) => `${a}'s advantages`],
+    [/^(.*?)(\d+)% de certeza$/, (m, pre, n) => `${pre}${n}% sure`],
+    [/^(\d+)% de (chance|semelhança)$/, (m, n, w) => `${n}% ${w === "chance" ? "chance" : "match"}`],
+    [/^desbloqueada em (.+)$/, (m, d) => `unlocked on ${d}`],
+    [/^(.) Conquista desbloqueada: (.+)$/u, (m, e, n) => `${e} Achievement unlocked: ${tr(n)}`],
+    [/^Personagens chamados “(.+)”$/, (m, q) => `Characters named “${q}”`],
+    [/^Personagens de (.+)$/, (m, a) => `Characters from ${a}`],
+    [/^Os mais populares de (.+)$/, (m, g) => `Most popular in ${tr(g)}`],
+    [/^(.+) · em (\d+) (ranking|rankings)$/, (m, a, n) => `${a} · in ${n} ranking${n === "1" ? "" : "s"}`],
+    [/^O top 10 de todo mundo somado: 1º lugar vale 10 pontos, o 10º vale 1\. (\d+) (rankings? enviados?|ranking enviado) até agora\.$/, (m, n) => `Everyone's top 10 added up: 1st place is worth 10 points, 10th is worth 1. ${n} ranking${n === "1" ? "" : "s"} sent so far.`],
+    [/^(\d+) (personagem|personagens)$/, (m, n) => `${n} character${n === "1" ? "" : "s"}`],
+    [/^(\d+) (coleção|coleções)$/, (m, n) => `${n} collection${n === "1" ? "" : "s"}`],
+    [/^(\d+) (salvo|salvos)$/, (m, n) => `${n} saved`],
+    [/^(\d+)\/8$/, (m, n) => `${n}/8`],
+    [/^Só no (.+)$/, (m, t) => `Only on ${tr(t)}`],
+    [/^Seu fundo aparece só quando o tema (.+) está ligado\.$/, (m, t) => `Your background shows only when the ${tr(t)} theme is on.`],
+    [/^Seu fundo está guardado pro tema (.+)\. Escolha esse tema pra ver\.$/, (m, t) => `Your background is saved for the ${tr(t)} theme. Pick that theme to see it.`],
+    [/^Acompanhar (.+)$/, (m, a) => `Follow ${a}`], [/^Parar de acompanhar (.+)$/, (m, a) => `Unfollow ${a}`], [/^Acompanhando (.+)$/, (m, a) => `Following ${a}`],
+    [/^Guardar (.+)$/, (m, a) => `Save ${a}`], [/^Tirar (.+) da coleção$/, (m, a) => `Remove ${a} from collection`], [/^Tirar (.+)$/, (m, a) => `Remove ${a}`],
+    [/^(.+) já está no ranking\.$/, (m, a) => `${a} is already in the ranking.`], [/^(.+) entrou no seu ranking!$/, (m, a) => `${a} joined your ranking!`],
+    [/^(.+) já foi tentado\.$/, (m, a) => `${a} was already guessed.`], [/^(.+) já está no torneio\.$/, (m, a) => `${a} is already in the tournament.`],
+    [/^👑 (.+) é o campeão!$/, (m, a) => `👑 ${a} is the champion!`], [/^Pronto! Só não achei: (.+)\.$/, (m, a) => `Done! I just couldn't find: ${a}.`],
+    [/^Usando a foto de (.+)\.$/, (m, a) => `Using ${a}'s photo.`], [/^Pronto! Usando a foto de (.+) no AniList\.$/, (m, a) => `Done! Using ${a}'s AniList photo.`],
+    [/^Não achei ninguém com “(.+)”\. Confira se o nome está certo, ou descreva como o personagem é logo abaixo\.$/, (m, q) => `Couldn't find anyone for “${q}”. Check the spelling, or describe the character below.`],
+    [/^A IA está ocupada agora e não conseguiu procurar “(.+)”\. Espere uns segundos e toque em Pesquisar de novo\.$/, (m, q) => `The AI is busy and couldn't search “${q}”. Wait a few seconds and tap Search again.`],
+    [/^(.+) foi pra “(.+)”\.$/, (m, a, c) => `${a} went to “${c}”.`],
+    [/^(\d+) pts$/, (m, n) => `${n} pts`],
+    [/^Mangá · (\d+)$/, (m, y) => `Manga · ${y}`], [/^Mangá$/, () => "Manga"],
+    [/^(.+) \(mangá\)$/, (m, a) => `${a} (manga)`],
+  ];
+  function translate(s) {
+    const raw = s.trim();
+    if (!raw) return s;
+    let out = D[raw];
+    if (!out) for (const [re, fn] of P) { const m = raw.match(re); if (m) { out = fn(...m); break; } }
+    if (!out || out === raw) return s;
+    return s.replace(raw, out);
+  }
+  const ATTRS = ["placeholder", "aria-label", "title"];
+  function walk(root) {
+    if (root.nodeType === 3) { fixText(root); return; }
+    if (root.nodeType !== 1 || /^(SCRIPT|STYLE)$/.test(root.tagName)) return;
+    fixAttrs(root);
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+    while (w.nextNode()) { const n = w.currentNode; if (n.nodeType === 3) fixText(n); else if (/^(SCRIPT|STYLE)$/.test(n.tagName)) continue; else fixAttrs(n); }
+  }
+  function fixText(n) { const p = n.parentElement; if (!p || /^(SCRIPT|STYLE)$/.test(p.tagName)) return; const t = translate(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+  function fixAttrs(el) { for (const a of ATTRS) { const v = el.getAttribute?.(a); if (v) { const t = translate(v); if (t !== v) el.setAttribute(a, t); } } }
+  const mo = new MutationObserver((list) => {
+    for (const m of list) {
+      if (m.type === "characterData") fixText(m.target);
+      else if (m.type === "attributes") fixAttrs(m.target);
+      else m.addedNodes.forEach(walk);
+    }
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTRS });
+  document.addEventListener("DOMContentLoaded", () => walk(document.body));
+  // Títulos da aba do navegador
+  const origTitle = Object.getOwnPropertyDescriptor(Document.prototype, "title");
+  Object.defineProperty(document, "title", { get: () => origTitle.get.call(document), set: (v) => origTitle.set.call(document, translate(String(v))), configurable: true });
+  window.Lang.t = translate;
+})();
+</script>
 </head>
 <body>
 <canvas id="fx" aria-hidden="true"></canvas>
@@ -1236,8 +1592,10 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
     <h2>Menu</h2>
     <button class="x" id="closeMenu" type="button" aria-label="Fechar menu"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
+  <button type="button" class="m-profile" id="mProfile"><span class="m-av" id="mAv"></span><span><b id="mName">Meu perfil</b><small id="mTitle">Toque pra montar o seu</small></span></button>
   <nav class="m-list" role="tablist" aria-label="Seções">
     <button type="button" role="tab" id="tabBtnBuscar" aria-selected="true" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
+    <button type="button" role="tab" id="tabBtnDes" aria-selected="false" aria-controls="tabDes"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M15 16.5l1.5 1.5 3-3"/></svg><span>Desafio do dia</span><span class="count" id="desDot"></span></button>
     <button type="button" role="tab" id="tabBtnTrend" aria-selected="false" aria-controls="tabTrend"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Tendências</span></button>
     <button type="button" role="tab" id="tabBtnRec" aria-selected="false" aria-controls="tabRec"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M8 21h8M12 17v4"/><path d="m10.5 8.5 4 2.5-4 2.5z"/></svg><span>O que assistir</span></button>
     <button type="button" role="tab" id="tabBtnCal" aria-selected="false" aria-controls="tabCal"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.2"/></svg><span>Calendário</span></button>
@@ -1251,6 +1609,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
     <button type="button" role="tab" id="tabBtnFav" aria-selected="false" aria-controls="tabFav"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Favoritos</span><span class="count" id="favCount"></span></button>
     <button type="button" role="tab" id="tabBtnHist" aria-selected="false" aria-controls="tabHist"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Últimas buscas</span><span class="count" id="histCount"></span></button>
   </nav>
+  <div class="m-lang" id="mLang" role="radiogroup" aria-label="Idioma"><button type="button" data-l="pt">🇧🇷 Português</button><button type="button" data-l="en">🇺🇸 English</button></div>
 </aside>
 <button class="gear" id="openSettings" type="button" aria-label="Abrir configurações" aria-controls="settings" aria-expanded="false">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
@@ -1487,6 +1846,48 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
     </div>
   </section>
 
+  <section id="tabDes" role="tabpanel" aria-labelledby="tabBtnDes" class="tabpanel des" hidden>
+    <div class="rhead"><h2>Desafio do dia</h2><span id="desNum"></span></div>
+    <p class="hint des-intro">Descubra o personagem misterioso de hoje em até 6 tentativas. Ele é o mesmo pra todo mundo!</p>
+    <div class="des-legend"><span><i class="st certo"></i>certo</span><span><i class="st perto"></i>perto</span><span><i class="st errado"></i>errado</span><span>↑ o certo é maior</span><span>↓ o certo é menor</span></div>
+    <div class="col-add des-ask" id="desAsk"><input type="search" id="desIn" placeholder="Digite o nome de um personagem" autocomplete="off" aria-label="Seu palpite"><div class="qsug" id="desSug" hidden role="listbox"></div></div>
+    <p class="des-left" id="desLeft"></p>
+    <div class="des-board"><div class="des-grid" id="desGrid"></div></div>
+    <div id="desHints"></div>
+    <div id="desEnd"></div>
+    <div class="des-stats" id="desStats"></div>
+  </section>
+
+  <section id="tabPerf" role="tabpanel" class="tabpanel perf" hidden>
+    <div class="pf-hero" id="pfHero">
+      <button type="button" class="pf-av" id="pfAv" aria-label="Trocar foto do perfil"><span class="pf-av-in" id="pfAvIn"></span><span class="pf-cam">📷</span></button>
+      <div class="pf-id">
+        <input id="pfName" maxlength="24" placeholder="Seu apelido" aria-label="Seu apelido" autocomplete="off">
+        <span class="pf-title" id="pfTitle"></span>
+        <div class="pf-badges" id="pfBadges"></div>
+      </div>
+    </div>
+    <div class="stage pf-photo" id="pfPhoto" hidden>
+      <h3 class="sec-h">Foto do perfil</h3>
+      <div class="pf-opts">
+        <label class="mini pf-pick"><input type="file" id="pfFile" accept="image/png,image/jpeg,image/webp,image/gif"> 💻 Do computador</label>
+        <div class="pf-ani"><input id="pfAni" placeholder="Seu usuário do AniList" autocomplete="off" aria-label="Usuário do AniList"><button type="button" class="mini" id="pfAniGo">Usar foto do AniList</button></div>
+        <div class="col-add"><input type="search" id="pfChar" placeholder="Ou a foto de um personagem: digite o nome" autocomplete="off" aria-label="Foto de personagem"><div class="qsug" id="pfCharSug" hidden role="listbox"></div></div>
+        <button type="button" class="ghost" id="pfDel">Tirar a foto</button>
+      </div>
+      <p class="cbg-hint" id="pfMsg">A foto fica salva só neste navegador.</p>
+    </div>
+    <div class="pf-stats" id="pfStats"></div>
+    <div class="pf-charts">
+      <div class="cp-sec"><h3>Seus estilos favoritos</h3><div class="bars" id="pfGenres"></div></div>
+      <div class="cp-sec"><h3>Animes que você mais explorou</h3><div class="bars" id="pfAnimes"></div></div>
+    </div>
+    <div class="cp-sec" id="pfTopBox"><h3>Seu top 3</h3><div class="ctiles small" id="pfTop"></div></div>
+    <div class="cp-sec" id="pfFavBox"><h3>Seus favoritos</h3><div class="ctiles small" id="pfFavs"></div></div>
+    <div class="cp-sec" id="pfAniBox" hidden><h3>Favoritos no AniList</h3><div class="ctiles small" id="pfAniFavs"></div></div>
+    <p class="cp-note">Seu perfil fica salvo só neste navegador.</p>
+  </section>
+
   <section id="tabRec" role="tabpanel" aria-labelledby="tabBtnRec" class="tabpanel rec" hidden>
     <div class="rhead"><h2>O que assistir agora?</h2><span>indicações</span></div>
     <div class="stage rec-ask">
@@ -1543,6 +1944,14 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
   </div>
 
   <div class="s-body">
+    <section class="s-group">
+      <h3>Idioma</h3>
+      <div class="seg lang-seg" id="langSeg" role="radiogroup" aria-label="Idioma">
+        <button type="button" role="radio" data-l="pt">🇧🇷 Português</button>
+        <button type="button" role="radio" data-l="en">🇺🇸 English</button>
+      </div>
+    </section>
+
     <section class="s-group">
       <h3>Tema de cores</h3>
       <div class="themes" id="themes"></div>
@@ -2264,6 +2673,10 @@ window.Sfx = Sfx;
 // Chama uma rota do servidor e devolve o JSON (ou um erro com a mensagem do servidor)
 async function api(path, body) {
   if (location.protocol === "file:") throw new Error("Essa parte só funciona com o site publicado no Vercel.");
+  if (window.Lang?.get() === "en") {
+    if (body === undefined) path += (path.includes("?") ? "&" : "?") + "lang=en";
+    else body = { ...body, lang: "en" };
+  }
   let r;
   try {
     r = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
@@ -2380,7 +2793,7 @@ function showTab(t) {
     for (const panel of [].concat(panels)) $(panel).hidden = k !== t;
     if (btn) $(btn).setAttribute("aria-selected", String(k === t));
   }
-  $("menuLabel").textContent = TABS[t][0] ? $(TABS[t][0]).querySelector("span").textContent : "Personagem";
+  $("menuLabel").textContent = TABS[t][0] ? $(TABS[t][0]).querySelector("span").textContent : t === "perfil" ? "Perfil" : "Personagem";
   document.documentElement.dataset.tab = t;
   window.onTab?.(t);
   if (t === "historico") renderHistory();
@@ -3090,6 +3503,7 @@ async function loadChar(id) {
     if (decodeURIComponent(location.hash).split("/")[1] != id) return;
     renderChar(d);
     countView(id);
+    window.trackTaste?.(d.anime?.genres, d.anime?.title, 1);
     window.Conq?.event("ficha", id);
   } catch (err) {
     box.innerHTML = `<button type="button" class="ghost cp-back" data-back>← Voltar</button><div class="empty">${esc(err.message)}</div>`;
@@ -3496,6 +3910,8 @@ const DEFS = [
   ["jogo15", "👑", "Imparável", "Acerte 15 seguidas no jogo.", 15, () => st.seq],
   ["teste", "🪞", "Autoconhecimento", "Descubra qual personagem você é no Teste.", 1, () => n("teste")],
   ["diario", "🎂", "Parabéns pra você", "Revele o personagem do dia.", 1, () => n("diario")],
+  ["des1", "🧩", "Caso do dia resolvido", "Vença o Desafio do dia.", 1, () => n("desafio")],
+  ["des5", "🔍", "Mente brilhante", "Vença 5 Desafios do dia.", 5, () => n("desafio")],
   ["dias3", "📅", "Visitante fiel", "Abra o site 3 dias seguidos.", 3, dayStreak],
   ["dias7", "🗓️", "Uma semana inteira", "Abra o site 7 dias seguidos.", 7, dayStreak],
   ["dominio", "🌀", "Expansão de domínio", "Use o tema Vazio Infinito ou Corte Carmesim.", 1, () => st.temas.filter((t) => t === "vazio" || t === "carmesim").length],
@@ -3550,7 +3966,8 @@ check(!first);   // na primeira vez, desbloqueia em silêncio o que a pessoa já
 addEventListener("config", (e) => { noteTheme(e.detail); check(true); });
 // Favoritos, ranking, tier list e coleções são conferidos quando a pessoa mexe neles
 document.addEventListener("click", () => setTimeout(() => check(true), 300));
-window.Conq = { event, check };
+window.Conq = { event, check, stats: () => ({ n: { ...st.n }, fichas: st.fichas.length, seq: st.seq, streak: dayStreak(),
+  unlocked: DEFS.filter((d) => st.unlocked[d[0]]).map((d) => ({ id: d[0], icon: d[1], name: d[2] })), total: DEFS.length }) };
 const k0 = location.hash.slice(1);
 if (k0 === "calendario" || k0 === "conquistas") showTab(k0);
 })();
@@ -3567,7 +3984,7 @@ const prevTab = window.onTab;
 window.onTab = (t) => { prevTab?.(t); if (t === "comparar") drawTour(); };
 
 // ---------- O que assistir
-const GEN = { Action: "Ação", Adventure: "Aventura", Comedy: "Comédia", Drama: "Drama", Fantasy: "Fantasia", Mystery: "Mistério", "Sci-Fi": "Ficção científica", Sports: "Esportes", "Slice of Life": "Dia a dia", Supernatural: "Sobrenatural", Romance: "Romance", Horror: "Terror", Mecha: "Robôs", Music: "Música", Psychological: "Psicológico" };
+const GEN = window.GEN_PT = { Action: "Ação", Adventure: "Aventura", Comedy: "Comédia", Drama: "Drama", Fantasy: "Fantasia", Mystery: "Mistério", "Sci-Fi": "Ficção científica", Sports: "Esportes", "Slice of Life": "Dia a dia", Supernatural: "Sobrenatural", Romance: "Romance", Horror: "Terror", Mecha: "Robôs", Music: "Música", Psychological: "Psicológico" };
 const FMT = { TV: "Série", MOVIE: "Filme", OVA: "OVA", ONA: "Web", TV_SHORT: "Curta", SPECIAL: "Especial" };
 $("recGen").insertAdjacentHTML("beforeend", Object.entries(GEN).map(([k, v]) => `<button type="button" data-g="${esc(k)}">${esc(v)}</button>`).join(""));
 $("recGen").onclick = (e) => { const b = e.target.closest("[data-g]"); if (b) loadGenre(b.dataset.g); };
@@ -3612,6 +4029,7 @@ async function loadRec(id) {
   $("recOut").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
   try {
     const d = await api(`/api/recommend?id=${id}`);
+    window.trackTaste?.(d.base?.genres, d.base?.title, 2);
     $("recOut").innerHTML = `<div class="cp-sec"><div class="rec-head">${d.base.cover ? `<img src="${esc(d.base.cover)}" alt="">` : ""}<span><small>Porque você curtiu</small><h3>${esc(d.base.title)}</h3></span></div>
       ${d.recs.length ? `<div class="agrid">${d.recs.map(acard).join("")}</div>` : `<div class="empty">Ainda não tem indicações pra esse anime. Tente outro ou escolha um estilo.</div>`}
       <p class="cp-note">Indicações da comunidade do AniList. ${d.recs.some((r) => r.motivo) ? "Os motivos foram escritos pela IA." : ""}</p></div>`;
@@ -3852,6 +4270,232 @@ drawTour();
   $("cbgBlur").oninput = (e) => window.Config.set({ cbgBlur: Number(e.target.value) });
   addEventListener("config", paint);
   getImg().then((b) => { if (b) url = URL.createObjectURL(b); paint(); });
+})();
+</script>
+<script>
+// ---------- Desafio do dia e Perfil
+(() => {
+const { suggest } = window.DA;
+const pic = (src) => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="ph"></span>`;
+const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TZ = "America/Sao_Paulo";
+const L = () => (window.Lang?.get?.() === "en" ? "en" : "pt");
+TABS.desafio = ["tabBtnDes", "tabDes"];
+TABS.perfil = [null, "tabPerf"];
+$("tabBtnDes").onclick = () => { closeMenu(); goTo("desafio"); };
+$("mProfile").onclick = () => { closeMenu(); goTo("perfil"); };
+const prevTab = window.onTab;
+window.onTab = (t) => { prevTab?.(t); if (t === "desafio") drawDes(); if (t === "perfil") drawProfile(); };
+
+// Gostos: gêneros e animes que a pessoa explora (pra o perfil)
+const GKEY3 = "achei-o-anime:gostos";
+const loadTaste = () => { try { return { g: {}, a: {}, ...JSON.parse(localStorage.getItem(GKEY3) || "{}") }; } catch { return { g: {}, a: {} }; } };
+window.trackTaste = (genres, title, w = 1) => {
+  const t = loadTaste();
+  for (const g of genres || []) t.g[g] = (t.g[g] || 0) + w;
+  if (title) t.a[title] = (t.a[title] || 0) + w;
+  try { localStorage.setItem(GKEY3, JSON.stringify(t)); } catch {}
+};
+
+// ---------- Desafio do dia
+const DKEY3 = "achei-o-anime:desafio", DSTAT = "achei-o-anime:desafio-stats";
+const today = () => new Date().toLocaleDateString("en-CA", { timeZone: TZ });
+const loadD = () => { try { const d = JSON.parse(localStorage.getItem(DKEY3) || "null"); if (d?.dia === today()) return d; } catch {} return { dia: today(), rows: [], dicas: [], fim: false, venceu: false, resposta: null, numero: null }; };
+const saveD = (d) => { try { localStorage.setItem(DKEY3, JSON.stringify(d)); } catch {} };
+const loadS = () => { try { return { jogados: 0, vitorias: 0, seq: 0, melhor: 0, ultimo: null, ...JSON.parse(localStorage.getItem(DSTAT) || "{}") }; } catch { return { jogados: 0, vitorias: 0, seq: 0, melhor: 0, ultimo: null }; } };
+const saveS = (x) => { try { localStorage.setItem(DSTAT, JSON.stringify(x)); } catch {} };
+let D = loadD(), busy = false;
+const MAXT = 6;
+const COLS = [["anime", "Anime"], ["genero", "Gênero"], ["idade", "Idade"], ["estreia", "Estreia"], ["generos", "Estilos"], ["fama", "Fama"]];
+const GENDER = { Male: "Masculino", Female: "Feminino", "Non-binary": "Não-binário" };
+const kfmt = (n) => (n >= 1000 ? (n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil" : String(n ?? "?"));
+function cell(key, st, p, k) {
+  const cls = st === "mais" || st === "menos" ? "errado" : st === "?" ? "q" : st;
+  const ar = st === "mais" ? `<span class="ar">↑</span>` : st === "menos" ? `<span class="ar">↓</span>` : "";
+  const v = { anime: esc(p.anime || "?"), genero: esc(GENDER[p.gender] || p.gender || "?"), idade: p.age ?? "?", estreia: p.year ?? "?", fama: kfmt(p.favourites),
+    generos: (p.shared?.length ? p.shared : (p.genres || []).slice(0, 2)).map((g) => esc(L() === "en" ? g : window.GEN_PT?.[g] || g)).join(", ") || "?" }[key];
+  return `<div class="dc ${cls}" style="--k:${k}">${ar}<span>${v}</span></div>`;
+}
+function drawDes() {
+  if (D.dia !== today()) D = loadD();
+  $("desNum").textContent = D.numero ? `nº ${D.numero}` : "";
+  const left = MAXT - D.rows.length;
+  $("desLeft").textContent = D.fim ? "" : `${left} ${left === 1 ? "tentativa restante" : "tentativas restantes"}`;
+  $("desAsk").hidden = D.fim;
+  $("desGrid").innerHTML = `<div class="h">Personagem</div>${COLS.map(([, n]) => `<div class="h">${n}</div>`).join("")}` +
+    D.rows.map((r) => `<div class="dc who">${pic(r.p.image)}<span>${esc(r.p.name)}</span></div>${COLS.map(([k], i) => cell(k, r.c[k], { ...r.p, shared: r.c.generosIguais }, i)).join("")}`).join("");
+  $("desHints").innerHTML = (D.dicas || []).map((d) => `<div class="des-hint">💡 ${esc(d)}</div>`).join("");
+  if (D.fim && D.resposta) {
+    const r = D.resposta;
+    $("desEnd").innerHTML = `<div class="des-end">${r.image ? `<img src="${esc(r.image)}" alt="">` : "<span></span>"}<div>
+      <h3>${D.venceu ? `Acertou em ${D.rows.length}! 🎉` : "Não foi dessa vez!"}</h3>
+      <p>${D.venceu ? "" : "O personagem era "}<b>${esc(r.name)}</b>, de ${esc(r.anime)}.</p>
+      <p class="des-next" id="desNext"></p>
+      <div class="row-btns"><button type="button" class="go" id="desShare"><span>Compartilhar resultado</span></button><a class="mini" href="#personagem/${Number(r.id)}">Ver a ficha</a></div></div></div>`;
+    $("desShare").onclick = shareDes;
+    tickNext();
+  } else $("desEnd").innerHTML = "";
+  const s = loadS();
+  $("desStats").innerHTML = [["Jogados", s.jogados], ["Vitórias", s.jogados ? Math.round((s.vitorias / s.jogados) * 100) + "%" : "0%"], ["Sequência", s.seq], ["Melhor", s.melhor]].map(([n, v]) => `<div><b>${v}</b><small>${n}</small></div>`).join("");
+  $("desDot").classList.toggle("dot", !D.fim);
+  $("desDot").textContent = "";
+}
+let nextT = 0;
+function tickNext() {
+  clearInterval(nextT);
+  const upd = () => {
+    const el = $("desNext"); if (!el) { clearInterval(nextT); return; }
+    const now = new Date(), sp = new Date(now.toLocaleString("en-US", { timeZone: TZ }));
+    const left = (24 * 3600 - (sp.getHours() * 3600 + sp.getMinutes() * 60 + sp.getSeconds()));
+    const h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60), x = left % 60;
+    el.textContent = `Próximo desafio em ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}`;
+    if (left <= 1) { D = loadD(); drawDes(); }
+  };
+  upd(); nextT = setInterval(upd, 1000);
+}
+function emojiRow(c) { return COLS.map(([k]) => ({ certo: "🟩", perto: "🟨", errado: "🟥", mais: "⬆️", menos: "⬇️" }[c[k]] || "⬛")).join(""); }
+async function shareDes() {
+  const txt = `🕵️ Desafio do Detetive Anime nº ${D.numero} — ${D.venceu ? D.rows.length : "X"}/${MAXT}\n${D.rows.map((r) => emojiRow(r.c)).join("\n")}\nhttps://detetive-anime.howlks.com/#desafio`;
+  try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch { return; }
+  try { await navigator.clipboard.writeText(txt); window.toast?.("Resultado copiado! Cole pros amigos."); } catch { window.toast?.("Não consegui copiar."); }
+}
+function finish(won, resposta) {
+  D.fim = true; D.venceu = won; D.resposta = resposta; saveD(D);
+  const s = loadS();
+  if (s.ultimo !== D.dia) {
+    s.jogados++;
+    if (won) { s.vitorias++; s.seq = s.ultimoVenceu === prevDay(D.dia) ? s.seq + 1 : 1; s.melhor = Math.max(s.melhor, s.seq); s.ultimoVenceu = D.dia; }
+    else s.seq = 0;
+    s.ultimo = D.dia; saveS(s);
+  }
+  if (won) { Sfx.play("recorde"); window.Conq?.event("desafio"); } else Sfx.play("erro");
+}
+function prevDay(day) { const d = new Date(day + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); }
+async function guess(c) {
+  if (busy || D.fim || !c?.id) return;
+  if (D.rows.some((r) => r.p.id === c.id)) { window.toast?.(`${c.name} já foi tentado.`); return; }
+  busy = true; $("desIn").disabled = true;
+  try {
+    const r = await api("/api/desafio", { id: c.id, tentativa: D.rows.length + 1, dia: D.dia });
+    D.numero = r.numero;
+    D.rows.push({ p: r.palpite, c: r.comparacao });
+    D.dicas = r.dicas?.length ? r.dicas : D.dicas;
+    if (r.acertou) finish(true, r.resposta);
+    else if (D.rows.length >= MAXT) finish(false, r.resposta);
+    else Sfx.play("pop");
+    saveD(D); drawDes();
+  } catch (err) { window.toast?.(err.message); }
+  finally { busy = false; $("desIn").disabled = false; $("desIn").value = ""; if (!D.fim) $("desIn").focus(); }
+}
+suggest($("desIn"), $("desSug"), guess);
+if (!D.numero) api("/api/desafio", { dia: D.dia }).then((r) => { D.numero = r.numero; saveD(D); if (!$("tabDes").hidden) drawDes(); }).catch(() => {});
+drawDes();
+
+// ---------- Perfil
+const PKEY = "achei-o-anime:perfil";
+const loadP = () => { try { return { nome: "", foto: null, fotoTipo: null, anilist: null, ...JSON.parse(localStorage.getItem(PKEY) || "{}") }; } catch { return { nome: "" }; } };
+const saveP = (p) => { try { localStorage.setItem(PKEY, JSON.stringify(p)); } catch {} };
+// Foto do computador fica no IndexedDB (mesmo lugar do fundo personalizado)
+const idbOpen = () => new Promise((res, rej) => { const r = indexedDB.open("detetive-anime", 1); r.onupgradeneeded = () => r.result.createObjectStore("fundo"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+async function idb(mode, fn) { const db = await idbOpen(); return new Promise((res, rej) => { const tx = db.transaction("fundo", mode); const q = fn(tx.objectStore("fundo")); tx.oncomplete = () => res(q?.result); tx.onerror = () => rej(tx.error); }); }
+let avatarUrl = null;
+async function loadAvatar() {
+  const p = loadP();
+  if (p.fotoTipo === "arquivo") { try { const b = await idb("readonly", (s) => s.get("avatar")); avatarUrl = b ? URL.createObjectURL(b) : null; } catch { avatarUrl = null; } }
+  else avatarUrl = p.foto || null;
+  drawMenuProfile();
+  if (!$("tabPerf").hidden) drawProfile();
+}
+function rankTitle(n) { return n >= 22 ? "Lenda dos animes" : n >= 15 ? "Detetive sênior" : n >= 8 ? "Investigador" : n >= 3 ? "Detetive júnior" : "Detetive novato"; }
+const avHtml = (name) => avatarUrl ? `<img src="${esc(avatarUrl)}" alt="">` : esc((name || "?").trim().charAt(0).toUpperCase() || "🕵️");
+function drawMenuProfile() {
+  const p = loadP(), st = window.Conq?.stats?.();
+  $("mAv").innerHTML = avHtml(p.nome || "🕵️");
+  $("mName").textContent = p.nome || "Meu perfil";
+  $("mTitle").textContent = p.nome ? rankTitle(st?.unlocked.length || 0) : "Toque pra montar o seu";
+}
+function bars(obj, top = 6) {
+  const list = Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, top);
+  if (!list.length) return "";
+  const max = list[0][1];
+  return list.map(([k, v]) => `<div class="bar-r"><span title="${esc(k)}">${esc(window.GEN_PT?.[k] || k)}</span><span class="tr"><i data-w="${Math.round((v / max) * 100)}"></i></span><b>${v}</b></div>`).join("");
+}
+function drawProfile() {
+  const p = loadP(), st = window.Conq?.stats?.() || { n: {}, fichas: 0, streak: 0, unlocked: [], total: 0 }, n = (k) => st.n[k] || 0;
+  if (document.activeElement !== $("pfName")) $("pfName").value = p.nome || "";
+  $("pfAvIn").innerHTML = avHtml(p.nome || "🕵️");
+  $("pfTitle").textContent = `${rankTitle(st.unlocked.length)} · ${st.unlocked.length}/${st.total} medalhas`;
+  $("pfBadges").innerHTML = st.unlocked.slice(0, 14).map((u) => `<span title="${esc(u.name)}">${u.icon}</span>`).join("");
+  const favs = safe(() => loadFavs()), cols = safe(() => loadCols()), rank = safe(() => loadRank());
+  const ds = loadS();
+  const items = [["🔎", n("pesquisa") + n("busca") + n("print"), "pesquisas"], ["📖", st.fichas, "personagens vistos"], ["⭐", favs.length, "favoritos"], ["🗂️", cols.length, "coleções"],
+    ["⚔️", n("luta"), "lutas"], ["🧩", ds.vitorias, "desafios vencidos"], ["🎮", n("acerto"), "acertos no jogo"], ["📅", st.streak, st.streak === 1 ? "dia seguido" : "dias seguidos"]];
+  $("pfStats").innerHTML = items.map(([ic, v, t], i) => `<div class="pf-stat" style="--i:${i}"><span class="ic">${ic}</span><b>${v}</b><small>${t}</small></div>`).join("");
+  const taste = loadTaste();
+  $("pfGenres").innerHTML = bars(taste.g) || `<div class="empty">Abra fichas de personagens e use o O que assistir pra descobrir seus estilos.</div>`;
+  $("pfAnimes").innerHTML = bars(taste.a, 5) || `<div class="empty">Ainda vazio. Explore uns personagens!</div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll("#tabPerf [data-w]").forEach((i) => { i.style.width = i.dataset.w + "%"; })));
+  const top = rank.slice(0, 3);
+  $("pfTopBox").hidden = !top.length;
+  $("pfTop").innerHTML = top.map((r, i) => `<div class="ctile" style="--i:${i}"><div class="im"><div class="ini">${["🥇", "🥈", "🥉"][i]}</div></div><div class="tx"><b>${esc(r.name)}</b>${r.anime ? `<small>${esc(r.anime)}</small>` : ""}</div></div>`).join("");
+  const fv = favs.filter((f) => f.character?.name).slice(0, 8);
+  $("pfFavBox").hidden = !fv.length;
+  $("pfFavs").innerHTML = fv.map((f, i) => window.DA.tile({ id: f.character.id, name: f.character.name, image: f.character.image, anime: f.anime?.title }, i)).join("");
+  $("pfAniBox").hidden = !p.anilist?.favoritos?.length;
+  $("pfAniFavs").innerHTML = (p.anilist?.favoritos || []).map((c, i) => window.DA.tile(c, i)).join("");
+  drawMenuProfile();
+}
+function safe(f) { try { return f() || []; } catch { return []; } }
+const pmsg = (t, err) => { $("pfMsg").textContent = t; $("pfMsg").classList.toggle("err", Boolean(err)); };
+$("pfAv").onclick = () => { $("pfPhoto").hidden = !$("pfPhoto").hidden; };
+$("pfName").addEventListener("input", (e) => { const p = loadP(); p.nome = e.target.value.slice(0, 24); saveP(p); drawMenuProfile(); });
+$("pfName").addEventListener("change", () => { window.Sfx?.play("plim"); drawProfile(); });
+async function squareBlob(file) {
+  const bmp = await createImageBitmap(file);
+  const s = Math.min(bmp.width, bmp.height), k = Math.min(1, 512 / s);
+  const cv = document.createElement("canvas"); cv.width = cv.height = Math.round(s * k);
+  cv.getContext("2d").drawImage(bmp, (bmp.width - s) / 2, (bmp.height - s) / 2, s, s, 0, 0, cv.width, cv.height);
+  return new Promise((r) => cv.toBlob((b) => r(b || file), "image/webp", 0.9));
+}
+$("pfFile").onchange = async (e) => {
+  const f = e.target.files[0]; e.target.value = "";
+  if (!f || !/^image\//.test(f.type)) { pmsg("Escolha uma imagem PNG ou JPG.", true); return; }
+  try {
+    const b = await squareBlob(f);
+    await idb("readwrite", (s) => s.put(b, "avatar"));
+    const p = loadP(); p.fotoTipo = "arquivo"; p.foto = null; saveP(p);
+    pmsg("Foto trocada!"); window.Sfx?.play("plim"); loadAvatar();
+  } catch { pmsg("Não consegui usar essa imagem.", true); }
+};
+$("pfAniGo").onclick = async () => {
+  const u = $("pfAni").value.trim();
+  if (!u) { pmsg("Digite seu nome de usuário do AniList.", true); return; }
+  pmsg("Procurando no AniList…");
+  try {
+    const d = await api(`/api/find?usuario=${encodeURIComponent(u)}`);
+    const p = loadP(); p.fotoTipo = "anilist"; p.foto = d.avatar; p.anilist = d; if (!p.nome) p.nome = d.name; saveP(p);
+    pmsg(`Pronto! Usando a foto de ${d.name} no AniList.`); window.Sfx?.play("plim"); loadAvatar();
+  } catch (err) { pmsg(err.message, true); }
+};
+suggest($("pfChar"), $("pfCharSug"), (c) => {
+  const p = loadP(); p.fotoTipo = "personagem"; p.foto = c.image; saveP(p);
+  $("pfChar").value = ""; pmsg(`Usando a foto de ${c.name}.`); window.Sfx?.play("plim"); loadAvatar();
+});
+$("pfDel").onclick = async () => { try { await idb("readwrite", (s) => s.delete("avatar")); } catch {} const p = loadP(); p.foto = null; p.fotoTipo = null; saveP(p); pmsg("Foto removida."); loadAvatar(); };
+loadAvatar();
+
+const k0 = location.hash.slice(1);
+if (k0 === "desafio" || k0 === "perfil") showTab(k0);
+})();
+</script>
+<script>
+// Botões de idioma (configurações e menu)
+(() => {
+  const cur = window.Lang?.get() || "pt";
+  document.querySelectorAll("#langSeg [data-l], #mLang [data-l]").forEach((b) => {
+    b.setAttribute("aria-checked", String(b.dataset.l === cur)); b.setAttribute("aria-pressed", String(b.dataset.l === cur));
+    b.onclick = () => { if (b.dataset.l !== cur) window.Lang.set(b.dataset.l); };
+  });
 })();
 </script>
 </body>

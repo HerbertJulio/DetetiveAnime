@@ -2491,6 +2491,7 @@ async function runFind(q) {
     $("qTag").textContent = list.length ? `${list.length} ${list.length === 1 ? "encontrado" : "encontrados"} para “${q}”` : "";
     if (d.explicacao) { $("qExp").textContent = d.explicacao; $("qExp").hidden = false; }
     $("qList").innerHTML = list.map(tile).join("");
+    if (d.outros?.length) $("qObra").innerHTML = `<div class="cp-sec" style="margin-top:18px"><h3>Personagens chamados “${esc(q)}”</h3><div class="ctiles small">${d.outros.map(tile).join("")}</div></div>`;
     if (d.obra) {
       $("qObra").innerHTML = `<div class="cp-sec" style="margin-top:${list.length ? 18 : 0}px"><div class="show">${d.obra.cover ? `<img src="${esc(d.obra.cover)}" alt="">` : ""}<a href="${esc(d.obra.url)}" target="_blank" rel="noopener">${esc(d.obra.title)}<small>${esc(d.obra.native || "")}</small></a></div>
         <h3>Personagens de ${esc(d.obra.title)}</h3><div class="ctiles">${d.obra.personagens.map(tile).join("")}</div></div>`;

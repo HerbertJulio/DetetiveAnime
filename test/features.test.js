@@ -145,3 +145,22 @@ test("se um modelo do Gemini estiver lotado, tenta o próximo", async () => {
   assert.deepEqual(await askJson("x"), { ok: 1 });
   assert.deepEqual(tried, ["gemini-flash-latest", "gemini-flash-lite-latest"]);
 });
+
+test("nome pouco conhecido também pergunta pra IA (ex.: organização Akatsuki)", async () => {
+  process.env.GEMINI_API_KEY = "g";
+  const weak = { ...gojo, id: 81369, favourites: 1296, name: { full: "Akatsuki", alternative: [] } };
+  const itachi = { ...gojo, id: 14, name: { full: "Itachi Uchiha" }, media: { nodes: [{ id: 20, type: "ANIME", isAdult: false, title: { romaji: "NARUTO", english: "Naruto" } }] } };
+  const yona = { ...jjk, id: 20770, title: { romaji: "Akatsuki no Yona", english: "Yona of the Dawn" }, synonyms: [] };
+  globalThis.fetch = fakeFetch((u, o) => {
+    if (u.includes("generativelanguage")) return gemini({ tipo: "organizacao", explicacao: "A Akatsuki é uma organização de ninjas.", personagens: [{ nome: "Itachi Uchiha", anime: "Naruto", motivo: "Membro" }] });
+    const q = JSON.parse(o.body).query;
+    if (q.includes("c0:")) return { data: { c0: { characters: [itachi] } } };
+    return { data: { chars: { characters: [weak] }, shows: { media: [yona] } } };
+  });
+  const { find } = await import("../api/find.js");
+  const r = await find("Akatsuki", false);
+  assert.equal(r.tipo, "organizacao");
+  assert.equal(r.resultados[0].name, "Itachi Uchiha");
+  assert.equal(r.outros[0].name, "Akatsuki");
+  assert.equal(r.obra, null);
+});

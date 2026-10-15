@@ -35,6 +35,14 @@ export function nameHit(c, nq) {
   return all.some((n) => n.includes(nq) || words.every((w) => n.split(" ").some((t) => t.startsWith(w))));
 }
 
+// A obra só conta quando a pesquisa é praticamente o título ("Jujutsu Kaisen"), não um pedaço dele.
+export function showHit(m, nq) {
+  const titles = [m.title?.romaji, m.title?.english, m.title?.native, ...(m.synonyms || [])].map(normalize).filter(Boolean);
+  return titles.some((t) => t === nq || (t.includes(nq) && nq.length >= t.length * 0.6) || (nq.includes(t) && t.length >= nq.length * 0.6));
+}
+// Personagem famoso (muita gente favoritou) ou nome completo igual: aí não precisa perguntar pra IA.
+const strongHit = (c, q) => (c.favourites || 0) >= 5000 || (sameName(c.name?.full, q) && q.trim().includes(" "));
+
 const mediaCard = (m) => ({ id: m.id, title: m.title?.english || m.title?.romaji, native: m.title?.native || "", cover: m.coverImage?.large || null, url: m.siteUrl });
 
 export async function find(q, rapido) {
@@ -48,15 +56,16 @@ export async function find(q, rapido) {
   }
 
   const named = characters.filter((c) => nameHit(c, nq));
-  const show = media.find((m) => titleMatches(m, q) || (m.synonyms || []).some((s) => normalize(s) === nq));
+  const show = media.find((m) => showHit(m, nq));
   const obra = show ? { ...mediaCard(show), personagens: (show.characters?.edges || []).map((e) => liteCard({ ...e.node, media: { nodes: [{ ...show, type: "ANIME" }] } }, { role: e.role })) } : null;
 
   if (rapido) {
     return { q, tipo: named.length ? "personagem" : obra ? "obra" : "sugestao", resultados: (named.length ? named : characters).slice(0, 6).map((c) => liteCard(c)), obra: obra ? { ...obra, personagens: obra.personagens.slice(0, 6) } : null };
   }
 
-  if (named.length || obra) {
-    return { q, tipo: named.length ? "personagem" : "obra", explicacao: "", resultados: named.slice(0, 10).map((c) => liteCard(c)), obra };
+  const byName = named.slice(0, 10).map((c) => liteCard(c));
+  if (obra || named.some((c) => strongHit(c, q))) {
+    return { q, tipo: named.length ? "personagem" : "obra", explicacao: "", resultados: byName, obra };
   }
 
   // Não é nome nem obra: pode ser poder, técnica, organização ou apelido. A IA ajuda a descobrir quem é.
@@ -79,9 +88,11 @@ Regras: até 8 personagens, do mais ligado ao menos ligado. Só personagens que 
           || list.find((x) => sameName(x.name?.full, g.nome)) || null;
         if (c && !seen.has(c.id)) { seen.add(c.id); resultados.push(liteCard(c, { motivo: clip(g.motivo, 140) })); }
       });
-      if (resultados.length) return { q, tipo: clip(ai.tipo, 20) || "outro", explicacao: clip(ai.explicacao, 220), resultados, obra: null };
+      const outros = byName.filter((c) => !seen.has(c.id));
+      if (resultados.length) return { q, tipo: clip(ai.tipo, 20) || "outro", explicacao: clip(ai.explicacao, 220), resultados, outros, obra: null };
     }
   }
 
+  if (byName.length) return { q, tipo: "personagem", explicacao: "", resultados: byName, obra: null, iaFalhou };
   return { q, tipo: "sugestao", explicacao: "", resultados: characters.slice(0, 8).map((c) => liteCard(c)), obra: null, iaFalhou };
 }

@@ -83,7 +83,10 @@ test("página do personagem junta AniList e IA", async () => {
   assert.equal(b.facts.altura, "190 cm");
   assert.equal(b.poderes[0].nome, "Infinito");
   assert.equal(b.cor1, "#33CCFF");
-  assert.equal(b.cor2, null);
+  assert.equal(b.cor2, "#33CCFF");
+  const { vivid } = await import("../api/character.js");
+  assert.equal(vivid("#FFFFFF"), null);
+  assert.equal(vivid("#3B82F6"), "#3B82F6");
   assert.deepEqual(b.related.map((r) => r.name), ["Yuuji Itadori"]);
   assert.equal(b.watch.official[0].name, "Crunchyroll");
 });

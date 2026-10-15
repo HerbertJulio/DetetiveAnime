@@ -1,8 +1,14 @@
 import { getCharacterFull, mediaCast, charFacts, cleanDescription, descriptionFacts, streamingLinks } from "../lib/anilist.js";
 import { askJson, aiEnabled } from "../lib/ai.js";
 import { whereToWatch } from "../lib/tmdb.js";
-import { route, clip, hexOr } from "../lib/common.js";
+import { route, clip } from "../lib/common.js";
 
+// Só aceita cores vivas: branco, preto e cinza deixariam o texto ilegível no destaque.
+export function vivid(c) {
+  if (!/^#[0-9a-f]{6}$/i.test(String(c || ""))) return null;
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+  return Math.max(r, g, b) - Math.min(r, g, b) >= 60 && Math.max(r, g, b) >= 90 ? c : null;
+}
 const list = (v, n, len) => (Array.isArray(v) ? v : []).map((x) => clip(x, len)).filter(Boolean).slice(0, n);
 
 // Página do personagem: dados oficiais do AniList + ficha escrita pela IA (poderes, personalidade, frases e curiosidades).
@@ -27,7 +33,7 @@ export default route("GET", async (req, res) => {
 Personagem: ${name}${c.name?.native ? ` (${c.name.native})` : ""}, do anime ${anime}. Outros nomes: ${(c.name?.alternative || []).join(", ") || "nenhum"}.
 Informações do AniList (em inglês, podem ter spoilers): """${cleanDescription(raw).slice(0, 1800)}"""
 Responda SOMENTE com JSON:
-{"resumo":"2 frases apresentando o personagem, sem spoilers grandes","apelidos":["apelidos e títulos conhecidos"],"organizacao":"grupo, clã, escola, time ou organização dele (ou vazio)","poderes":[{"nome":"nome do poder, técnica ou habilidade","descricao":"1 frase simples"}],"personalidade":"3 ou 4 frases sobre o jeito dele","tracos":["4 a 6 palavras curtas sobre a personalidade"],"frases":["até 3 falas marcantes e curtas dele, traduzidas para o português"],"curiosidades":["4 curiosidades curtas e verdadeiras"],"altura":"ex. 1,90 m, ou vazio","criador":"autor da obra original","cor1":"#RRGGBB cor que lembra o personagem","cor2":"#RRGGBB segunda cor"}
+{"resumo":"2 frases apresentando o personagem, sem spoilers grandes","apelidos":["apelidos e títulos conhecidos"],"organizacao":"grupo, clã, escola, time ou organização dele (ou vazio)","poderes":[{"nome":"nome do poder, técnica ou habilidade em português, como é conhecido no Brasil (ex.: Infinito, Seis Olhos)","descricao":"1 frase simples"}],"personalidade":"3 ou 4 frases sobre o jeito dele","tracos":["4 a 6 palavras curtas sobre a personalidade"],"frases":["até 3 falas marcantes e curtas dele, traduzidas para o português"],"curiosidades":["4 curiosidades curtas e verdadeiras"],"altura":"ex. 1,90 m, ou vazio","criador":"autor da obra original","cor1":"#RRGGBB cor viva que lembra o personagem (não use branco, preto nem cinza)","cor2":"#RRGGBB segunda cor viva"}
 Regras: português do Brasil. Nada de conteúdo adulto nem violência pesada. Não invente: se não tiver certeza, deixe de fora. Até 6 poderes.`, { maxTokens: 1600 }).catch((e) => { console.error("IA:", e.message); return null; })
       : Promise.resolve(null),
   ]);
@@ -56,8 +62,8 @@ Regras: português do Brasil. Nada de conteúdo adulto nem violência pesada. N�
     tracos: list(p.tracos, 6, 24),
     frases: list(p.frases, 3, 160),
     curiosidades: list(p.curiosidades, 5, 240),
-    cor1: hexOr(p.cor1, null),
-    cor2: hexOr(p.cor2, null),
+    cor1: vivid(p.cor1) || vivid(p.cor2),
+    cor2: vivid(p.cor2) || vivid(p.cor1),
     related: cast.slice(0, 12).map((e) => ({ id: e.node.id, name: e.node.name?.full, image: e.node.image?.large || e.node.image?.medium || null, role: e.role })),
     watch: { tmdb, official: streamingLinks(main) },
   });

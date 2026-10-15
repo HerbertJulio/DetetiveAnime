@@ -196,3 +196,48 @@ test("votação dos fãs conta os votos de cada lado", async () => {
   assert.equal(bad.code, 400);
   delete globalThis.__blobMock; delete process.env.BLOB_READ_WRITE_TOKEN;
 });
+
+test("o que assistir: parecidos com o anime, com motivo e sem conteúdo adulto", async () => {
+  process.env.GEMINI_API_KEY = "g";
+  const rec = (id, extra = {}) => ({ id, type: "ANIME", isAdult: false, siteUrl: "u", title: { english: "A" + id }, coverImage: { large: "c" }, genres: ["Action"], externalLinks: [], ...extra });
+  globalThis.fetch = fakeFetch((u, o) => {
+    if (u.includes("generativelanguage")) return gemini({ motivos: { 2: "Lutas incríveis." } });
+    return { data: { Media: { ...rec(1), recommendations: { nodes: [{ mediaRecommendation: rec(2) }, { mediaRecommendation: rec(3, { isAdult: true }) }, { mediaRecommendation: rec(4, { genres: ["Ecchi"] }) }] } } } };
+  });
+  const { default: handler } = await import("../api/recommend.js");
+  const res = fakeRes();
+  await handler({ method: "GET", query: { id: "1" } }, res);
+  assert.equal(res.code, 200);
+  assert.deepEqual(res.body.recs.map((r) => r.id), [2]);
+  assert.equal(res.body.recs[0].motivo, "Lutas incríveis.");
+});
+
+test("ranking da comunidade soma os pontos dos rankings enviados", async () => {
+  process.env.BLOB_READ_WRITE_TOKEN = "x";
+  let saved = [];
+  globalThis.__blobMock = {
+    put: async (p) => { saved.push(p); },
+    del: async (urls) => { saved = saved.filter((p) => !urls.includes("u:" + p)); },
+    list: async ({ prefix }) => ({ blobs: saved.filter((p) => p.startsWith(prefix)).map((pathname) => ({ pathname, url: "u:" + pathname })), hasMore: false }),
+  };
+  const mk = (id, full, fav) => ({ id, favourites: fav, name: { full, alternative: [] }, image: {}, media: { nodes: [] } });
+  globalThis.fetch = fakeFetch((u, o) => {
+    const { query, variables } = JSON.parse(o.body);
+    if (query.includes("c0:")) {
+      const pool = { Gojo: [mk(10, "Satoru Gojou", 9)], Luffy: [mk(20, "Luffy Monkey", 9)], Naruto: [mk(30, "Naruto Uzumaki", 9)] };
+      return { data: Object.fromEntries(Object.keys(variables).map((k, i) => [`c${i}`, { characters: pool[variables[k]] || [] }])) };
+    }
+    if (query.includes("id_in")) return { data: { Page: { characters: [mk(10, "Satoru Gojou", 9), mk(20, "Luffy Monkey", 9), mk(30, "Naruto Uzumaki", 9)] } } };
+    return { data: { Page: { media: [] } } };
+  });
+  const { default: handler } = await import("../api/trends.js");
+  const send = (cliente, nomes) => handler({ method: "POST", body: { tipo: "ranking", cliente, nomes: nomes.map((name) => ({ name })) } }, fakeRes());
+  await send("aaaaaaaa1", ["Gojo", "Luffy", "Naruto"]);
+  await send("aaaaaaaa1", ["Luffy", "Gojo", "Naruto"]); // mandou de novo: troca o antigo
+  await send("bbbbbbbb2", ["Luffy", "Naruto", "Gojo"]);
+  const res = fakeRes();
+  await handler({ method: "GET" }, res);
+  assert.equal(res.body.comunidade.total, 2);
+  assert.deepEqual(res.body.comunidade.top.map((c) => [c.name, c.pontos]), [["Luffy Monkey", 20], ["Satoru Gojou", 17], ["Naruto Uzumaki", 17]]);
+  delete globalThis.__blobMock; delete process.env.BLOB_READ_WRITE_TOKEN;
+});

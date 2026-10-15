@@ -8,6 +8,9 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 - **Página do personagem**: foto, nome, anime, poderes, personalidade, frases marcantes, curiosidades, personagens relacionados e onde assistir.
 - **Tendências da comunidade**: os personagens mais procurados da semana no site e os que estão em alta no mundo.
 - **Quem ganha?**: escolha dois personagens e a IA diz quem venceria a luta.
+- **O que assistir**: diga um anime que curtiu (ou escolha um estilo) e receba indicações parecidas, com o motivo e onde assistir.
+- **Torneio** (dentro do Quem ganha?): 4 ou 8 lutadores em chaveamento até sair o campeão.
+- **Ranking da comunidade** (dentro de Tendências): os rankings de todo mundo somados.
 - **Calendário da temporada**: episódios novos dos próximos 7 dias, com horário de Brasília e contagem regressiva dos animes que você acompanha.
 - **Conquistas**: 25 medalhas para desbloquear usando o site.
 - **Coleções**: crie coleções com o nome que quiser e guarde seus personagens.
@@ -17,7 +20,7 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 - **Teste**: "Qual personagem você é?" com 8 perguntas.
 - **Ranking e Tier List**: monte o seu top 10 e a sua tier list S, A, B, C e D.
 - **Favoritos** e **Últimas buscas**.
-- **Configurações**: temas de cores (incluindo Corte Carmesim e Vazio Infinito), modo claro/escuro, fontes, 15 efeitos de fundo e sons.
+- **Configurações**: temas de cores (Corte Carmesim, Vazio Infinito, Cachoeira, Neon na chuva e Tempestade têm cenário de fundo), modo claro/escuro, fontes, 15 efeitos de fundo e sons.
 
 Só aparecem plataformas oficiais. Conteúdo adulto é filtrado.
 
@@ -31,6 +34,7 @@ api/character.js   página do personagem
 api/versus.js      quem ganha a luta
 api/trends.js      tendências da semana
 api/schedule.js    calendário da temporada
+api/recommend.js   o que assistir
 api/daily.js       personagem do dia (aniversariantes do AniList)
 api/game.js        rodada do jogo
 api/quiz.js        resultado do teste

@@ -813,8 +813,22 @@ footer{gap:6px}
 /* ---------- Domínio do tema Corte Carmesim (santuário original sob a lua de sangue) */
 .domain{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .domain svg{width:100%;height:100%;display:block}
-[data-skin="carmesim"] .domain{display:block;animation:bgIn 1s ease both}
-[data-skin="carmesim"][data-mode="light"] .domain{opacity:.28}
+[data-skin="carmesim"] .d-carmesim,[data-skin="cachoeira"] .d-cachoeira,[data-skin="chuvaneon"] .d-chuvaneon,[data-skin="tempestade"] .d-tempestade{display:block;animation:bgIn 1s ease both}
+[data-mode="light"] .domain{opacity:.28}
+:is([data-skin="cachoeira"],[data-skin="chuvaneon"],[data-skin="tempestade"]) .aurora i{opacity:.1}
+.c-fall line{animation:fall linear infinite}
+@keyframes fall{to{stroke-dashoffset:-240}}
+.c-foam{transform-box:fill-box;transform-origin:center;animation:moonPulse 2.4s ease-in-out infinite}
+.n-sign{animation:neon 5s steps(1) infinite}
+.n-sign:nth-child(2){animation-delay:-1.7s}.n-sign:nth-child(3){animation-delay:-3.1s}.n-sign:nth-child(4){animation-delay:-.6s}
+@keyframes neon{0%,100%{opacity:1}47%{opacity:1}48%{opacity:.3}49%{opacity:1}51%{opacity:.4}52%{opacity:1}}
+.t-clouds{animation:mist 30s ease-in-out infinite alternate}
+.t-glow,.t-bolt{opacity:0;animation:storm 7s infinite}
+.t-bolt{animation-name:bolt}
+@keyframes storm{0%,60%,72%,100%{opacity:0}61%{opacity:.9}63%{opacity:.2}65%{opacity:.75}}
+@keyframes bolt{0%,60%,68%,100%{opacity:0}61%,62%{opacity:1}64%,65%{opacity:.8}}
+[data-skin="tempestade"] .flash{background:rgba(220,230,255,.16)}
+[data-skin="chuvaneon"] .flash{background:rgba(255,43,214,.08)}
 [data-skin="carmesim"] .aurora i{opacity:.12}
 [data-skin="carmesim"] .aurora::before{opacity:.5}
 .domain .d-moon,.domain .d-halo{transform-box:fill-box;transform-origin:center;animation:moonPulse 6s ease-in-out infinite}
@@ -824,6 +838,73 @@ footer{gap:6px}
 @keyframes mist{to{transform:translateX(60px)}}
 @keyframes rip{50%{opacity:.4;transform:translateY(3px)}}
 [data-aurora="off"] .domain *{animation:none!important}
+
+/* ---------- O que assistir */
+.rec{gap:22px}
+.rec-ask .col-add{max-width:none}
+.rec-head{display:flex;align-items:center;gap:14px}
+.rec-head img{width:54px;height:76px;border-radius:10px;object-fit:cover}
+.rec-head h3{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:1.4em;line-height:1.15}
+.rec-head small{color:var(--muted)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
+.acard{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:12px;border-radius:20px;position:relative;overflow:hidden;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .45s both;animation-delay:calc(var(--i,0) * 50ms);transition:transform .2s,border-color .2s}
+.acard:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--c,var(--accent)) 60%,transparent)}
+.acard::before{content:"";position:absolute;inset:0;background:radial-gradient(90% 90% at 0% 0%,color-mix(in srgb,var(--c,var(--accent)) 22%,transparent),transparent 60%);pointer-events:none}
+.acard .cv{position:relative;width:96px;aspect-ratio:2/3;border-radius:12px;overflow:hidden;background:var(--surface-2)}
+.acard .cv img{width:100%;height:100%;object-fit:cover}
+.acard .sc{position:absolute;left:6px;top:6px;font-family:var(--mono);font-size:.7rem;font-weight:500;padding:2px 7px;border-radius:999px;background:rgba(0,0,0,.65);color:#FFE27A}
+.acard .tx{position:relative;display:flex;flex-direction:column;gap:5px;min-width:0}
+.acard b{font-size:1.02em;line-height:1.25}
+.acard .meta{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.acard .gen{display:flex;flex-wrap:wrap;gap:4px}
+.acard .gen span{font-size:.72em;padding:2px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.acard .why{margin:0;font-size:.86em;line-height:1.4}
+.acard .pl{display:flex;flex-wrap:wrap;gap:6px}
+.acard .pl a{display:inline-flex;align-items:center;gap:5px;font-size:.74em;font-weight:500;text-decoration:none;padding:2px 9px 2px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.acard .pl .pico,.acard .pl .dot{width:16px;height:16px;border-radius:5px;background:#fff;padding:1px;font-size:.6rem;display:grid;place-items:center}
+.acard .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.acard .acts button{font:inherit;font-size:.76em;color:var(--fg);background:transparent;border:1px solid var(--line-strong);border-radius:999px;padding:3px 10px;cursor:pointer}
+.acard .acts button:hover{border-color:var(--accent)}
+.sug .cvs{width:32px;height:44px;border-radius:6px;object-fit:cover;background:var(--surface-2)}
+
+/* ---------- Torneio */
+.vs-mode{max-width:420px;grid-template-columns:repeat(2,1fr);padding:4px;border-radius:999px;background:color-mix(in srgb,var(--surface) 85%,transparent);border:1px solid var(--line)}
+.vs-mode button{border-radius:999px}
+.vs-mode button[aria-selected="true"]{background:var(--grad)!important;color:var(--accent-ink);border-color:transparent!important}
+.vs-single,.tour{display:flex;flex-direction:column;gap:22px}
+.tour-n{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-left:6px}
+.tour-pick .col-add{max-width:none}
+.tour-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tour-chips:empty{display:none}
+.tchar{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:.8em;animation:pop .3s}
+.tchar img,.tchar .ph{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center 20%;background:var(--surface-2);border:2px solid var(--line-strong)}
+.tchar b{line-height:1.2}
+.tchar button{position:absolute;top:-4px;right:calc(50% - 40px);width:24px;height:24px;border-radius:50%;border:0;background:#C81E3A;color:#fff;cursor:pointer;font-size:.9rem;line-height:1}
+.tour-quick{display:flex;flex-wrap:wrap;gap:6px}
+.tour-quick:empty{display:none}
+.tour-quick button{font:inherit;font-size:.8em;color:var(--fg);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+.bracket{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr)) minmax(0,.8fr);gap:14px;align-items:center}
+.round{display:flex;flex-direction:column;justify-content:space-around;gap:12px;height:100%}
+.round h4{margin:0 0 2px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
+.match{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);cursor:pointer;font:inherit;color:var(--fg);text-align:left;padding:0;transition:border-color .2s,transform .2s}
+.match:hover{border-color:var(--accent)}
+.match.live{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent);animation:pulse 1.2s ease-in-out infinite}
+.mrow{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:.84em;min-width:0}
+.mrow + .mrow{border-top:1px solid var(--line)}
+.mrow img,.mrow .ph{width:28px;height:28px;border-radius:50%;object-fit:cover;object-position:center 20%;background:var(--surface-2);flex:none}
+.mrow span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.mrow.win{font-weight:700;background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.mrow.win::after{content:"✓";color:var(--accent)}
+.mrow.lose{opacity:.45}
+.champ{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:16px 8px;border-radius:20px;
+  background:linear-gradient(160deg,color-mix(in srgb,#FFD84D 18%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,#FFD84D 55%,transparent)}
+.champ img,.champ .ph{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:center 20%;border:3px solid #FFD84D;box-shadow:0 0 0 6px rgba(255,216,77,.18),0 18px 40px -16px #E8A317;animation:pop .6s}
+.champ .crown{font-size:1.8rem;animation:float 2s ease-in-out infinite;margin-bottom:-14px;position:relative;z-index:1}
+.champ b{font-family:var(--display);font-weight:var(--display-weight);font-size:1.2em}
+.champ small{color:var(--muted)}
+.tour-detail{margin-top:16px}
+@media (max-width:760px){.bracket{grid-template-columns:1fr}.round{height:auto}.tour-chips{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -841,6 +922,9 @@ footer{gap:6px}
     gelo:     { name: "Inverno",      a: "#7FD8FF", b: "#C6B8FF", effect: "neve" },
     carmesim: { name: "Corte Carmesim", a: "#E3122D", b: "#FF6A2B", effect: "cortes", deep: "#070304" },
     vazio:    { name: "Vazio Infinito", a: "#3FD0FF", b: "#9B6BFF", effect: "vazio", deep: "#02030A" },
+    cachoeira:{ name: "Cachoeira", a: "#2FD4C8", b: "#7FB6FF", effect: "gotas", deep: "#020B0E" },
+    chuvaneon:{ name: "Neon na chuva", a: "#FF2BD6", b: "#00E0FF", effect: "chuva", deep: "#05030B" },
+    tempestade:{ name: "Tempestade", a: "#8FB0FF", b: "#FFE27A", effect: "tempestade", deep: "#04060C" },
     custom:   { name: "Minhas cores", a: "#FF4F9A", b: "#4F8BFF", effect: null },
   };
 
@@ -873,6 +957,9 @@ footer{gap:6px}
     energia:   "Energia",
     confete:   "Confete",
     vazio:     "Vazio infinito",
+    chuva:     "Chuva",
+    tempestade:"Tempestade",
+    gotas:     "Respingos",
   };
 
   const DEFAULTS = { theme: "sakura", c1: "#FF4F9A", c2: "#4F8BFF", mode: "dark", title: "mincho", body: "zen", size: 16, effect: "sakura", amount: 50, aurora: true, sound: true, volume: 60 };
@@ -1047,7 +1134,7 @@ footer{gap:6px}
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="daily-bg" id="dailyBg" aria-hidden="true" hidden><canvas id="dailyBgFx"></canvas></div>
 <div class="flash" id="flash" aria-hidden="true"></div>
-<div class="domain" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+<div class="domain d-carmesim" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <linearGradient id="dSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0002"/><stop offset=".45" stop-color="#3A0008"/><stop offset=".68" stop-color="#7A0A14"/><stop offset=".69" stop-color="#14000A"/><stop offset="1" stop-color="#050003"/></linearGradient>
 <radialGradient id="dMoon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF8A6B"/><stop offset=".55" stop-color="#E3122D"/><stop offset="1" stop-color="#5A0010"/></radialGradient>
@@ -1069,6 +1156,53 @@ footer{gap:6px}
 <line x1="620" y1="745" x2="980" y2="745" stroke-width="1" opacity=".2"/><line x1="380" y1="800" x2="1220" y2="800" stroke-width=".8" opacity=".15"/></g>
 <g class="d-mist" fill="#5A000E"><ellipse cx="300" cy="610" rx="420" ry="26" opacity=".55"/><ellipse cx="1300" cy="605" rx="460" ry="24" opacity=".5"/><ellipse cx="800" cy="628" rx="620" ry="18" opacity=".45"/></g>
 </svg></div>
+<div class="domain d-cachoeira" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#010A10"/><stop offset=".6" stop-color="#06303A"/><stop offset="1" stop-color="#0B4A4E"/></linearGradient>
+<linearGradient id="cFall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BDF6FF" stop-opacity=".55"/><stop offset=".7" stop-color="#5FE3E0" stop-opacity=".75"/><stop offset="1" stop-color="#EFFFFF" stop-opacity=".9"/></linearGradient>
+<radialGradient id="cMoon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F2FFFD"/><stop offset=".6" stop-color="#BDF6F0" stop-opacity=".7"/><stop offset="1" stop-color="#BDF6F0" stop-opacity="0"/></radialGradient>
+<radialGradient id="cFoam" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F4FFFF" stop-opacity=".85"/><stop offset="1" stop-color="#7FE8E6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#cSky)"/>
+<circle cx="1180" cy="170" r="150" fill="url(#cMoon)" opacity=".55"/><circle cx="1180" cy="170" r="46" fill="#EFFFFC" opacity=".9"/>
+<path d="M0 520 L160 380 L300 470 L460 330 L620 450 L700 400 L700 900 L0 900 Z" fill="#05232A"/>
+<path d="M900 400 L1040 300 L1180 420 L1320 340 L1460 430 L1600 360 L1600 900 L900 900 Z" fill="#05232A"/>
+<path d="M0 620 L120 560 L260 600 L420 540 L560 590 L690 250 L715 245 L715 900 L0 900 Z" fill="#021317"/>
+<path d="M885 245 L910 250 L1010 560 L1160 600 L1300 545 L1460 600 L1600 560 L1600 900 L885 900 Z" fill="#021317"/>
+<path d="M10 504 L30 600 L-10 600 Z" fill="#010B0E"/><path d="M32 489 L55 600 L8 600 Z" fill="#010B0E"/><path d="M55 476 L82 600 L29 600 Z" fill="#010B0E"/><path d="M77 510 L96 600 L58 600 Z" fill="#010B0E"/><path d="M100 500 L121 600 L79 600 Z" fill="#010B0E"/><path d="M128 507 L148 600 L109 600 Z" fill="#010B0E"/><path d="M166 449 L198 600 L135 600 Z" fill="#010B0E"/><path d="M190 485 L214 600 L166 600 Z" fill="#010B0E"/><path d="M217 474 L244 600 L191 600 Z" fill="#010B0E"/><path d="M240 425 L277 600 L204 600 Z" fill="#010B0E"/><path d="M281 463 L310 600 L252 600 Z" fill="#010B0E"/><path d="M311 501 L332 600 L291 600 Z" fill="#010B0E"/><path d="M334 476 L360 600 L308 600 Z" fill="#010B0E"/><path d="M360 427 L396 600 L323 600 Z" fill="#010B0E"/><path d="M383 508 L403 600 L364 600 Z" fill="#010B0E"/><path d="M423 457 L453 600 L393 600 Z" fill="#010B0E"/><path d="M446 456 L477 600 L416 600 Z" fill="#010B0E"/><path d="M467 457 L497 600 L437 600 Z" fill="#010B0E"/><path d="M508 424 L545 600 L471 600 Z" fill="#010B0E"/><path d="M542 484 L567 600 L518 600 Z" fill="#010B0E"/><path d="M570 493 L593 600 L548 600 Z" fill="#010B0E"/><path d="M606 457 L636 600 L576 600 Z" fill="#010B0E"/><path d="M643 477 L668 600 L617 600 Z" fill="#010B0E"/><path d="M960 429 L996 600 L924 600 Z" fill="#010B0E"/><path d="M1000 425 L1037 600 L964 600 Z" fill="#010B0E"/><path d="M1037 428 L1073 600 L1001 600 Z" fill="#010B0E"/><path d="M1073 487 L1096 600 L1049 600 Z" fill="#010B0E"/><path d="M1104 474 L1130 600 L1077 600 Z" fill="#010B0E"/><path d="M1125 507 L1144 600 L1105 600 Z" fill="#010B0E"/><path d="M1151 484 L1175 600 L1127 600 Z" fill="#010B0E"/><path d="M1185 414 L1224 600 L1146 600 Z" fill="#010B0E"/><path d="M1215 416 L1254 600 L1176 600 Z" fill="#010B0E"/><path d="M1255 414 L1294 600 L1217 600 Z" fill="#010B0E"/><path d="M1283 488 L1307 600 L1260 600 Z" fill="#010B0E"/><path d="M1308 490 L1331 600 L1285 600 Z" fill="#010B0E"/><path d="M1333 448 L1365 600 L1301 600 Z" fill="#010B0E"/><path d="M1372 426 L1408 600 L1335 600 Z" fill="#010B0E"/><path d="M1402 445 L1434 600 L1369 600 Z" fill="#010B0E"/><path d="M1439 502 L1459 600 L1418 600 Z" fill="#010B0E"/><path d="M1472 419 L1510 600 L1434 600 Z" fill="#010B0E"/><path d="M1509 435 L1543 600 L1474 600 Z" fill="#010B0E"/><path d="M1539 492 L1562 600 L1516 600 Z" fill="#010B0E"/><path d="M1575 477 L1601 600 L1550 600 Z" fill="#010B0E"/>
+<rect x="712" y="245" width="176" height="400" fill="url(#cFall)"/>
+<g class="c-fall" stroke="#FFFFFF" stroke-linecap="round" opacity=".7"><line x1="712" y1="250" x2="710" y2="640" stroke-width="1.5" stroke-dasharray="71 23" style="animation-duration:0.65s"/><line x1="718" y1="250" x2="718" y2="640" stroke-width="2.0" stroke-dasharray="33 52" style="animation-duration:0.75s"/><line x1="724" y1="250" x2="719" y2="640" stroke-width="2.2" stroke-dasharray="45 25" style="animation-duration:0.99s"/><line x1="730" y1="250" x2="725" y2="640" stroke-width="2.5" stroke-dasharray="90 34" style="animation-duration:1.04s"/><line x1="736" y1="250" x2="737" y2="640" stroke-width="1.3" stroke-dasharray="67 45" style="animation-duration:0.63s"/><line x1="742" y1="250" x2="739" y2="640" stroke-width="2.5" stroke-dasharray="38 38" style="animation-duration:0.89s"/><line x1="748" y1="250" x2="748" y2="640" stroke-width="2.5" stroke-dasharray="65 63" style="animation-duration:0.73s"/><line x1="754" y1="250" x2="755" y2="640" stroke-width="2.7" stroke-dasharray="53 26" style="animation-duration:0.98s"/><line x1="760" y1="250" x2="755" y2="640" stroke-width="1.3" stroke-dasharray="43 51" style="animation-duration:1.08s"/><line x1="766" y1="250" x2="765" y2="640" stroke-width="1.9" stroke-dasharray="67 49" style="animation-duration:0.85s"/><line x1="772" y1="250" x2="769" y2="640" stroke-width="1.6" stroke-dasharray="79 35" style="animation-duration:0.66s"/><line x1="778" y1="250" x2="776" y2="640" stroke-width="2.3" stroke-dasharray="51 66" style="animation-duration:0.91s"/><line x1="784" y1="250" x2="785" y2="640" stroke-width="1.4" stroke-dasharray="62 46" style="animation-duration:0.72s"/><line x1="790" y1="250" x2="788" y2="640" stroke-width="3.3" stroke-dasharray="56 22" style="animation-duration:1.27s"/><line x1="796" y1="250" x2="791" y2="640" stroke-width="2.5" stroke-dasharray="80 40" style="animation-duration:0.84s"/><line x1="802" y1="250" x2="800" y2="640" stroke-width="2.3" stroke-dasharray="81 49" style="animation-duration:0.65s"/><line x1="808" y1="250" x2="803" y2="640" stroke-width="1.8" stroke-dasharray="74 62" style="animation-duration:0.65s"/><line x1="814" y1="250" x2="817" y2="640" stroke-width="1.9" stroke-dasharray="66 63" style="animation-duration:1.18s"/><line x1="820" y1="250" x2="817" y2="640" stroke-width="2.1" stroke-dasharray="72 42" style="animation-duration:0.62s"/><line x1="826" y1="250" x2="826" y2="640" stroke-width="1.6" stroke-dasharray="37 51" style="animation-duration:0.64s"/><line x1="832" y1="250" x2="835" y2="640" stroke-width="1.5" stroke-dasharray="45 45" style="animation-duration:0.87s"/><line x1="838" y1="250" x2="842" y2="640" stroke-width="1.4" stroke-dasharray="58 45" style="animation-duration:0.98s"/><line x1="844" y1="250" x2="849" y2="640" stroke-width="3.1" stroke-dasharray="85 55" style="animation-duration:0.79s"/><line x1="850" y1="250" x2="849" y2="640" stroke-width="2.0" stroke-dasharray="86 44" style="animation-duration:1.27s"/><line x1="856" y1="250" x2="852" y2="640" stroke-width="1.6" stroke-dasharray="44 62" style="animation-duration:0.76s"/><line x1="862" y1="250" x2="862" y2="640" stroke-width="2.6" stroke-dasharray="46 38" style="animation-duration:0.60s"/><line x1="868" y1="250" x2="867" y2="640" stroke-width="2.0" stroke-dasharray="66 40" style="animation-duration:1.27s"/><line x1="874" y1="250" x2="876" y2="640" stroke-width="2.4" stroke-dasharray="69 61" style="animation-duration:1.07s"/><line x1="880" y1="250" x2="875" y2="640" stroke-width="3.3" stroke-dasharray="79 63" style="animation-duration:1.16s"/><line x1="886" y1="250" x2="885" y2="640" stroke-width="2.1" stroke-dasharray="36 50" style="animation-duration:1.04s"/></g>
+<rect y="630" width="1600" height="270" fill="#032127"/>
+<ellipse class="c-foam" cx="800" cy="650" rx="230" ry="42" fill="url(#cFoam)"/>
+<g class="d-rip" stroke="#9FF4F0" stroke-linecap="round" fill="none"><ellipse cx="800" cy="700" rx="320" ry="20" stroke-width="1.2" opacity=".35"/><ellipse cx="800" cy="745" rx="460" ry="26" stroke-width="1" opacity=".25"/><ellipse cx="800" cy="800" rx="620" ry="30" stroke-width=".8" opacity=".15"/></g>
+<g class="d-mist" fill="#BFF7F2"><ellipse cx="800" cy="620" rx="380" ry="60" opacity=".18"/><ellipse cx="420" cy="610" rx="380" ry="28" opacity=".12"/><ellipse cx="1200" cy="615" rx="400" ry="30" opacity=".12"/></g>
+<path d="M-20 649 L34 905 L-74 905 Z" fill="#000607"/><path d="M39 729 L76 905 L2 905 Z" fill="#000607"/><path d="M120 684 L167 905 L74 905 Z" fill="#000607"/><path d="M170 767 L198 905 L141 905 Z" fill="#000607"/><path d="M218 658 L270 905 L166 905 Z" fill="#000607"/><path d="M294 765 L323 905 L264 905 Z" fill="#000607"/><path d="M370 648 L424 905 L316 905 Z" fill="#000607"/><path d="M440 736 L476 905 L405 905 Z" fill="#000607"/><path d="M505 767 L534 905 L476 905 Z" fill="#000607"/><path d="M548 649 L601 905 L494 905 Z" fill="#000607"/><path d="M617 711 L658 905 L576 905 Z" fill="#000607"/><path d="M698 724 L736 905 L660 905 Z" fill="#000607"/><path d="M777 669 L826 905 L727 905 Z" fill="#000607"/><path d="M828 750 L860 905 L795 905 Z" fill="#000607"/><path d="M882 751 L914 905 L850 905 Z" fill="#000607"/><path d="M949 749 L981 905 L916 905 Z" fill="#000607"/><path d="M1008 767 L1037 905 L979 905 Z" fill="#000607"/><path d="M1088 735 L1124 905 L1053 905 Z" fill="#000607"/><path d="M1150 703 L1192 905 L1107 905 Z" fill="#000607"/><path d="M1230 726 L1267 905 L1192 905 Z" fill="#000607"/><path d="M1310 715 L1350 905 L1270 905 Z" fill="#000607"/><path d="M1375 712 L1415 905 L1334 905 Z" fill="#000607"/><path d="M1417 723 L1455 905 L1379 905 Z" fill="#000607"/><path d="M1467 784 L1492 905 L1442 905 Z" fill="#000607"/><path d="M1543 761 L1573 905 L1512 905 Z" fill="#000607"/><path d="M1604 683 L1651 905 L1558 905 Z" fill="#000607"/>
+</svg></div>
+<div class="domain d-chuvaneon" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="nSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05030C"/><stop offset=".55" stop-color="#1B0A33"/><stop offset=".75" stop-color="#3A0F4A"/><stop offset="1" stop-color="#06040C"/></linearGradient>
+<linearGradient id="nFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".7" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<mask id="nRefl"><rect x="0" y="660" width="1600" height="240" fill="url(#nFade)"/></mask>
+<filter id="nGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="nBlur"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#nSky)"/>
+<ellipse cx="800" cy="600" rx="900" ry="160" fill="#FF2BD6" opacity=".12"/>
+<g id="nCity"><rect x="-20" y="306" width="70" height="334" fill="#120A24"/><rect x="27" y="314" width="7" height="9" fill="#FFD7A8" opacity="0.49"/><rect x="41" y="404" width="7" height="9" fill="#9EF0FF" opacity="0.59"/><rect x="-1" y="458" width="7" height="9" fill="#FFF1C7" opacity="0.44"/><rect x="41" y="476" width="7" height="9" fill="#FF9BE6" opacity="0.36"/><rect x="13" y="494" width="7" height="9" fill="#FF9BE6" opacity="0.63"/><rect x="-15" y="512" width="7" height="9" fill="#9EF0FF" opacity="0.88"/><rect x="-1" y="512" width="7" height="9" fill="#FF9BE6" opacity="0.50"/><rect x="41" y="566" width="7" height="9" fill="#FFD7A8" opacity="0.79"/><rect x="-15" y="584" width="7" height="9" fill="#9EF0FF" opacity="0.39"/><rect x="-15" y="620" width="7" height="9" fill="#9EF0FF" opacity="0.49"/><rect x="55" y="366" width="68" height="274" fill="#120A24"/><rect x="102" y="374" width="7" height="9" fill="#FF9BE6" opacity="0.37"/><rect x="60" y="392" width="7" height="9" fill="#9EF0FF" opacity="0.63"/><rect x="102" y="464" width="7" height="9" fill="#FF9BE6" opacity="0.59"/><rect x="60" y="482" width="7" height="9" fill="#FFF1C7" opacity="0.83"/><rect x="60" y="554" width="7" height="9" fill="#FFF1C7" opacity="0.40"/><rect x="74" y="572" width="7" height="9" fill="#FFD7A8" opacity="0.43"/><rect x="88" y="590" width="7" height="9" fill="#9EF0FF" opacity="0.71"/><rect x="102" y="626" width="7" height="9" fill="#FFF1C7" opacity="0.75"/><rect x="133" y="346" width="58" height="294" fill="#120A24"/><rect x="180" y="354" width="7" height="9" fill="#9EF0FF" opacity="0.40"/><rect x="138" y="372" width="7" height="9" fill="#FF9BE6" opacity="0.88"/><rect x="180" y="372" width="7" height="9" fill="#FFD7A8" opacity="0.69"/><rect x="166" y="390" width="7" height="9" fill="#FFD7A8" opacity="0.76"/><rect x="166" y="408" width="7" height="9" fill="#FFF1C7" opacity="0.49"/><rect x="180" y="408" width="7" height="9" fill="#FF9BE6" opacity="0.48"/><rect x="152" y="444" width="7" height="9" fill="#FF9BE6" opacity="0.77"/><rect x="138" y="462" width="7" height="9" fill="#9EF0FF" opacity="0.53"/><rect x="138" y="498" width="7" height="9" fill="#9EF0FF" opacity="0.72"/><rect x="152" y="516" width="7" height="9" fill="#9EF0FF" opacity="0.52"/><rect x="166" y="516" width="7" height="9" fill="#FFF1C7" opacity="0.36"/><rect x="180" y="606" width="7" height="9" fill="#FFD7A8" opacity="0.87"/><rect x="199" y="450" width="70" height="190" fill="#120A24"/><rect x="218" y="458" width="7" height="9" fill="#FF9BE6" opacity="0.81"/><rect x="260" y="494" width="7" height="9" fill="#FFD7A8" opacity="0.38"/><rect x="260" y="530" width="7" height="9" fill="#FFF1C7" opacity="0.85"/><rect x="246" y="548" width="7" height="9" fill="#FFF1C7" opacity="0.60"/><rect x="232" y="566" width="7" height="9" fill="#9EF0FF" opacity="0.44"/><rect x="232" y="602" width="7" height="9" fill="#9EF0FF" opacity="0.39"/><rect x="279" y="418" width="62" height="222" fill="#120A24"/><rect x="284" y="426" width="7" height="9" fill="#FF9BE6" opacity="0.66"/><rect x="298" y="444" width="7" height="9" fill="#FFF1C7" opacity="0.56"/><rect x="298" y="498" width="7" height="9" fill="#9EF0FF" opacity="0.56"/><rect x="298" y="552" width="7" height="9" fill="#FFF1C7" opacity="0.88"/><rect x="326" y="552" width="7" height="9" fill="#9EF0FF" opacity="0.43"/><rect x="298" y="570" width="7" height="9" fill="#FFF1C7" opacity="0.40"/><rect x="326" y="570" width="7" height="9" fill="#9EF0FF" opacity="0.48"/><rect x="326" y="606" width="7" height="9" fill="#FFD7A8" opacity="0.52"/><rect x="343" y="343" width="50" height="297" fill="#120A24"/><rect x="376" y="405" width="7" height="9" fill="#FFF1C7" opacity="0.84"/><rect x="362" y="423" width="7" height="9" fill="#9EF0FF" opacity="0.72"/><rect x="362" y="441" width="7" height="9" fill="#FF9BE6" opacity="0.75"/><rect x="362" y="459" width="7" height="9" fill="#FF9BE6" opacity="0.76"/><rect x="376" y="585" width="7" height="9" fill="#FFD7A8" opacity="0.45"/><rect x="348" y="621" width="7" height="9" fill="#FFD7A8" opacity="0.86"/><rect x="403" y="361" width="97" height="279" fill="#120A24"/><rect x="408" y="369" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="450" y="369" width="7" height="9" fill="#FFD7A8" opacity="0.50"/><rect x="422" y="405" width="7" height="9" fill="#FFF1C7" opacity="0.46"/><rect x="436" y="441" width="7" height="9" fill="#9EF0FF" opacity="0.76"/><rect x="408" y="477" width="7" height="9" fill="#FFD7A8" opacity="0.36"/><rect x="436" y="531" width="7" height="9" fill="#9EF0FF" opacity="0.57"/><rect x="464" y="549" width="7" height="9" fill="#FFD7A8" opacity="0.50"/><rect x="478" y="549" width="7" height="9" fill="#FFD7A8" opacity="0.58"/><rect x="464" y="621" width="7" height="9" fill="#FF9BE6" opacity="0.90"/><rect x="505" y="274" width="91" height="366" fill="#120A24"/><rect x="510" y="282" width="7" height="9" fill="#FFF1C7" opacity="0.90"/><rect x="524" y="282" width="7" height="9" fill="#FFF1C7" opacity="0.84"/><rect x="524" y="300" width="7" height="9" fill="#9EF0FF" opacity="0.86"/><rect x="538" y="318" width="7" height="9" fill="#FF9BE6" opacity="0.47"/><rect x="566" y="336" width="7" height="9" fill="#FF9BE6" opacity="0.57"/><rect x="524" y="354" width="7" height="9" fill="#FFD7A8" opacity="0.79"/><rect x="552" y="354" width="7" height="9" fill="#FFD7A8" opacity="0.79"/><rect x="524" y="390" width="7" height="9" fill="#FF9BE6" opacity="0.58"/><rect x="538" y="390" width="7" height="9" fill="#FF9BE6" opacity="0.70"/><rect x="538" y="408" width="7" height="9" fill="#FFD7A8" opacity="0.57"/><rect x="510" y="426" width="7" height="9" fill="#9EF0FF" opacity="0.70"/><rect x="538" y="426" width="7" height="9" fill="#FF9BE6" opacity="0.76"/><rect x="524" y="444" width="7" height="9" fill="#FFF1C7" opacity="0.62"/><rect x="552" y="462" width="7" height="9" fill="#FFF1C7" opacity="0.40"/><rect x="538" y="498" width="7" height="9" fill="#9EF0FF" opacity="0.56"/><rect x="524" y="516" width="7" height="9" fill="#FFD7A8" opacity="0.72"/><rect x="538" y="552" width="7" height="9" fill="#FFF1C7" opacity="0.61"/><rect x="552" y="570" width="7" height="9" fill="#FF9BE6" opacity="0.59"/><rect x="566" y="570" width="7" height="9" fill="#FFF1C7" opacity="0.63"/><rect x="510" y="588" width="7" height="9" fill="#9EF0FF" opacity="0.40"/><rect x="566" y="588" width="7" height="9" fill="#FFF1C7" opacity="0.71"/><rect x="510" y="606" width="7" height="9" fill="#FFD7A8" opacity="0.90"/><rect x="580" y="624" width="7" height="9" fill="#FF9BE6" opacity="0.69"/><rect x="602" y="398" width="60" height="242" fill="#120A24"/><rect x="635" y="442" width="7" height="9" fill="#9EF0FF" opacity="0.57"/><rect x="635" y="478" width="7" height="9" fill="#FF9BE6" opacity="0.88"/><rect x="607" y="550" width="7" height="9" fill="#9EF0FF" opacity="0.45"/><rect x="635" y="550" width="7" height="9" fill="#FF9BE6" opacity="0.52"/><rect x="635" y="604" width="7" height="9" fill="#FFF1C7" opacity="0.47"/><rect x="607" y="622" width="7" height="9" fill="#FFD7A8" opacity="0.66"/><rect x="670" y="403" width="87" height="237" fill="#120A24"/><rect x="703" y="429" width="7" height="9" fill="#9EF0FF" opacity="0.83"/><rect x="675" y="447" width="7" height="9" fill="#FF9BE6" opacity="0.68"/><rect x="675" y="465" width="7" height="9" fill="#FFD7A8" opacity="0.64"/><rect x="717" y="465" width="7" height="9" fill="#FFD7A8" opacity="0.36"/><rect x="717" y="501" width="7" height="9" fill="#FFF1C7" opacity="0.74"/><rect x="731" y="501" width="7" height="9" fill="#FFF1C7" opacity="0.76"/><rect x="717" y="519" width="7" height="9" fill="#9EF0FF" opacity="0.70"/><rect x="717" y="537" width="7" height="9" fill="#FFF1C7" opacity="0.73"/><rect x="717" y="555" width="7" height="9" fill="#FFD7A8" opacity="0.44"/><rect x="703" y="609" width="7" height="9" fill="#FFD7A8" opacity="0.59"/><rect x="703" y="627" width="7" height="9" fill="#9EF0FF" opacity="0.43"/><rect x="717" y="627" width="7" height="9" fill="#FFD7A8" opacity="0.69"/><rect x="759" y="470" width="51" height="170" fill="#120A24"/><rect x="792" y="478" width="7" height="9" fill="#FFD7A8" opacity="0.76"/><rect x="764" y="496" width="7" height="9" fill="#FF9BE6" opacity="0.46"/><rect x="778" y="550" width="7" height="9" fill="#FFD7A8" opacity="0.80"/><rect x="778" y="568" width="7" height="9" fill="#FFD7A8" opacity="0.79"/><rect x="792" y="604" width="7" height="9" fill="#FF9BE6" opacity="0.85"/><rect x="816" y="290" width="89" height="350" fill="#120A24"/><rect x="821" y="298" width="7" height="9" fill="#FFF1C7" opacity="0.37"/><rect x="849" y="298" width="7" height="9" fill="#FFF1C7" opacity="0.74"/><rect x="821" y="316" width="7" height="9" fill="#FF9BE6" opacity="0.44"/><rect x="835" y="316" width="7" height="9" fill="#9EF0FF" opacity="0.51"/><rect x="863" y="316" width="7" height="9" fill="#FF9BE6" opacity="0.62"/><rect x="877" y="352" width="7" height="9" fill="#FFD7A8" opacity="0.62"/><rect x="835" y="370" width="7" height="9" fill="#FF9BE6" opacity="0.55"/><rect x="891" y="370" width="7" height="9" fill="#FFD7A8" opacity="0.55"/><rect x="891" y="406" width="7" height="9" fill="#FF9BE6" opacity="0.64"/><rect x="877" y="514" width="7" height="9" fill="#FFD7A8" opacity="0.50"/><rect x="835" y="532" width="7" height="9" fill="#FFF1C7" opacity="0.73"/><rect x="835" y="604" width="7" height="9" fill="#FFF1C7" opacity="0.48"/><rect x="835" y="622" width="7" height="9" fill="#FFF1C7" opacity="0.64"/><rect x="907" y="268" width="74" height="372" fill="#120A24"/><rect x="940" y="276" width="7" height="9" fill="#9EF0FF" opacity="0.44"/><rect x="926" y="294" width="7" height="9" fill="#FFF1C7" opacity="0.65"/><rect x="926" y="348" width="7" height="9" fill="#FF9BE6" opacity="0.56"/><rect x="940" y="348" width="7" height="9" fill="#FFD7A8" opacity="0.58"/><rect x="968" y="474" width="7" height="9" fill="#FF9BE6" opacity="0.55"/><rect x="968" y="492" width="7" height="9" fill="#FF9BE6" opacity="0.43"/><rect x="940" y="510" width="7" height="9" fill="#FF9BE6" opacity="0.78"/><rect x="926" y="528" width="7" height="9" fill="#FFD7A8" opacity="0.47"/><rect x="940" y="528" width="7" height="9" fill="#FF9BE6" opacity="0.49"/><rect x="954" y="528" width="7" height="9" fill="#9EF0FF" opacity="0.82"/><rect x="954" y="564" width="7" height="9" fill="#FF9BE6" opacity="0.46"/><rect x="968" y="600" width="7" height="9" fill="#FFF1C7" opacity="0.85"/><rect x="985" y="398" width="103" height="242" fill="#120A24"/><rect x="990" y="424" width="7" height="9" fill="#FF9BE6" opacity="0.70"/><rect x="1004" y="424" width="7" height="9" fill="#FFD7A8" opacity="0.73"/><rect x="1004" y="442" width="7" height="9" fill="#FFF1C7" opacity="0.69"/><rect x="990" y="514" width="7" height="9" fill="#FFF1C7" opacity="0.65"/><rect x="1004" y="514" width="7" height="9" fill="#FF9BE6" opacity="0.41"/><rect x="1018" y="514" width="7" height="9" fill="#FFF1C7" opacity="0.68"/><rect x="1018" y="550" width="7" height="9" fill="#9EF0FF" opacity="0.83"/><rect x="1046" y="550" width="7" height="9" fill="#FFD7A8" opacity="0.55"/><rect x="1004" y="586" width="7" height="9" fill="#FFD7A8" opacity="0.80"/><rect x="1074" y="586" width="7" height="9" fill="#FFF1C7" opacity="0.68"/><rect x="1060" y="604" width="7" height="9" fill="#FFF1C7" opacity="0.47"/><rect x="990" y="622" width="7" height="9" fill="#FFD7A8" opacity="0.36"/><rect x="1094" y="335" width="96" height="305" fill="#120A24"/><rect x="1141" y="343" width="7" height="9" fill="#9EF0FF" opacity="0.75"/><rect x="1155" y="343" width="7" height="9" fill="#FFF1C7" opacity="0.60"/><rect x="1141" y="361" width="7" height="9" fill="#FFD7A8" opacity="0.84"/><rect x="1099" y="415" width="7" height="9" fill="#9EF0FF" opacity="0.70"/><rect x="1127" y="433" width="7" height="9" fill="#FF9BE6" opacity="0.83"/><rect x="1155" y="433" width="7" height="9" fill="#9EF0FF" opacity="0.68"/><rect x="1127" y="469" width="7" height="9" fill="#FF9BE6" opacity="0.50"/><rect x="1113" y="541" width="7" height="9" fill="#FFF1C7" opacity="0.61"/><rect x="1113" y="559" width="7" height="9" fill="#FF9BE6" opacity="0.77"/><rect x="1099" y="613" width="7" height="9" fill="#FFF1C7" opacity="0.56"/><rect x="1113" y="613" width="7" height="9" fill="#FFF1C7" opacity="0.78"/><rect x="1192" y="472" width="56" height="168" fill="#120A24"/><rect x="1239" y="498" width="7" height="9" fill="#FFF1C7" opacity="0.77"/><rect x="1239" y="516" width="7" height="9" fill="#9EF0FF" opacity="0.90"/><rect x="1211" y="534" width="7" height="9" fill="#FFD7A8" opacity="0.66"/><rect x="1225" y="552" width="7" height="9" fill="#FFF1C7" opacity="0.86"/><rect x="1197" y="570" width="7" height="9" fill="#FF9BE6" opacity="0.66"/><rect x="1225" y="606" width="7" height="9" fill="#FF9BE6" opacity="0.87"/><rect x="1239" y="606" width="7" height="9" fill="#FFD7A8" opacity="0.81"/><rect x="1197" y="624" width="7" height="9" fill="#FFF1C7" opacity="0.38"/><rect x="1254" y="329" width="87" height="311" fill="#120A24"/><rect x="1315" y="373" width="7" height="9" fill="#FF9BE6" opacity="0.84"/><rect x="1273" y="391" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="1315" y="409" width="7" height="9" fill="#FFF1C7" opacity="0.65"/><rect x="1329" y="445" width="7" height="9" fill="#FFD7A8" opacity="0.70"/><rect x="1315" y="463" width="7" height="9" fill="#9EF0FF" opacity="0.88"/><rect x="1259" y="535" width="7" height="9" fill="#FFF1C7" opacity="0.47"/><rect x="1273" y="553" width="7" height="9" fill="#FFD7A8" opacity="0.84"/><rect x="1315" y="571" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="1329" y="589" width="7" height="9" fill="#FFF1C7" opacity="0.85"/><rect x="1301" y="625" width="7" height="9" fill="#FFF1C7" opacity="0.88"/><rect x="1315" y="625" width="7" height="9" fill="#FF9BE6" opacity="0.74"/><rect x="1348" y="298" width="99" height="342" fill="#120A24"/><rect x="1409" y="306" width="7" height="9" fill="#FFF1C7" opacity="0.60"/><rect x="1423" y="306" width="7" height="9" fill="#9EF0FF" opacity="0.36"/><rect x="1381" y="324" width="7" height="9" fill="#FF9BE6" opacity="0.66"/><rect x="1409" y="324" width="7" height="9" fill="#9EF0FF" opacity="0.49"/><rect x="1409" y="342" width="7" height="9" fill="#9EF0FF" opacity="0.37"/><rect x="1367" y="432" width="7" height="9" fill="#9EF0FF" opacity="0.88"/><rect x="1367" y="450" width="7" height="9" fill="#FFF1C7" opacity="0.46"/><rect x="1367" y="468" width="7" height="9" fill="#FFD7A8" opacity="0.37"/><rect x="1381" y="540" width="7" height="9" fill="#FF9BE6" opacity="0.81"/><rect x="1409" y="576" width="7" height="9" fill="#FF9BE6" opacity="0.44"/><rect x="1409" y="594" width="7" height="9" fill="#FFD7A8" opacity="0.44"/><rect x="1423" y="594" width="7" height="9" fill="#FF9BE6" opacity="0.59"/><rect x="1437" y="594" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="1437" y="630" width="7" height="9" fill="#FFF1C7" opacity="0.50"/><rect x="1451" y="454" width="76" height="186" fill="#120A24"/><rect x="1456" y="462" width="7" height="9" fill="#FFD7A8" opacity="0.62"/><rect x="1456" y="552" width="7" height="9" fill="#FF9BE6" opacity="0.53"/><rect x="1484" y="570" width="7" height="9" fill="#FFD7A8" opacity="0.49"/><rect x="1498" y="606" width="7" height="9" fill="#FF9BE6" opacity="0.60"/><rect x="1512" y="606" width="7" height="9" fill="#FFD7A8" opacity="0.64"/><rect x="1456" y="624" width="7" height="9" fill="#FF9BE6" opacity="0.63"/><rect x="1535" y="378" width="81" height="262" fill="#120A24"/><rect x="1554" y="422" width="7" height="9" fill="#FF9BE6" opacity="0.73"/><rect x="1568" y="476" width="7" height="9" fill="#FFF1C7" opacity="0.36"/><rect x="1582" y="476" width="7" height="9" fill="#FFD7A8" opacity="0.85"/><rect x="1540" y="494" width="7" height="9" fill="#FFD7A8" opacity="0.72"/><rect x="1582" y="530" width="7" height="9" fill="#FFD7A8" opacity="0.39"/><rect x="1540" y="584" width="7" height="9" fill="#FFD7A8" opacity="0.82"/><rect x="1568" y="584" width="7" height="9" fill="#9EF0FF" opacity="0.60"/><rect x="1596" y="584" width="7" height="9" fill="#FFF1C7" opacity="0.67"/><rect x="1596" y="602" width="7" height="9" fill="#9EF0FF" opacity="0.52"/><g filter="url(#nGlow)"><g class="n-sign" style="--c:#FF2BD6"><rect x="180" y="330" width="34" height="130" rx="6" fill="#0A0614" stroke="#FF2BD6" stroke-width="3"/><circle cx="197" cy="354" r="8" fill="none" stroke="#FF2BD6" stroke-width="2.5"/><rect x="189" y="374" width="16" height="3" fill="#FF2BD6"/><rect x="189" y="386" width="16" height="3" fill="#FF2BD6"/><rect x="195" y="398" width="4" height="50" fill="#FF2BD6"/></g><g class="n-sign" style="--c:#00E0FF"><rect x="420" y="300" width="34" height="110" rx="6" fill="#0A0614" stroke="#00E0FF" stroke-width="3"/><circle cx="437" cy="324" r="8" fill="none" stroke="#00E0FF" stroke-width="2.5"/><rect x="429" y="344" width="16" height="3" fill="#00E0FF"/><rect x="429" y="356" width="16" height="3" fill="#00E0FF"/><rect x="435" y="368" width="4" height="30" fill="#00E0FF"/></g><g class="n-sign" style="--c:#FF2BD6"><rect x="1030" y="320" width="34" height="120" rx="6" fill="#0A0614" stroke="#FF2BD6" stroke-width="3"/><circle cx="1047" cy="344" r="8" fill="none" stroke="#FF2BD6" stroke-width="2.5"/><rect x="1039" y="364" width="16" height="3" fill="#FF2BD6"/><rect x="1039" y="376" width="16" height="3" fill="#FF2BD6"/><rect x="1045" y="388" width="4" height="40" fill="#FF2BD6"/></g><g class="n-sign" style="--c:#7CFFB0"><rect x="1290" y="290" width="34" height="140" rx="6" fill="#0A0614" stroke="#7CFFB0" stroke-width="3"/><circle cx="1307" cy="314" r="8" fill="none" stroke="#7CFFB0" stroke-width="2.5"/><rect x="1299" y="334" width="16" height="3" fill="#7CFFB0"/><rect x="1299" y="346" width="16" height="3" fill="#7CFFB0"/><rect x="1305" y="358" width="4" height="60" fill="#7CFFB0"/></g><g class="n-sign" style="--c:#FFB13B"><rect x="760" y="360" width="34" height="90" rx="6" fill="#0A0614" stroke="#FFB13B" stroke-width="3"/><circle cx="777" cy="384" r="8" fill="none" stroke="#FFB13B" stroke-width="2.5"/><rect x="769" y="404" width="16" height="3" fill="#FFB13B"/><rect x="769" y="416" width="16" height="3" fill="#FFB13B"/><rect x="775" y="428" width="4" height="10" fill="#FFB13B"/></g></g><rect x="-30" y="478" width="88" height="182" fill="#07040F"/><rect x="-25" y="504" width="7" height="9" fill="#9EF0FF" opacity="0.40"/><rect x="-11" y="504" width="7" height="9" fill="#FFF1C7" opacity="0.45"/><rect x="45" y="504" width="7" height="9" fill="#FFF1C7" opacity="0.53"/><rect x="31" y="540" width="7" height="9" fill="#9EF0FF" opacity="0.48"/><rect x="45" y="540" width="7" height="9" fill="#9EF0FF" opacity="0.50"/><rect x="-11" y="558" width="7" height="9" fill="#FFF1C7" opacity="0.61"/><rect x="31" y="612" width="7" height="9" fill="#FFD7A8" opacity="0.72"/><rect x="45" y="612" width="7" height="9" fill="#FF9BE6" opacity="0.75"/><rect x="-11" y="630" width="7" height="9" fill="#9EF0FF" opacity="0.52"/><rect x="17" y="630" width="7" height="9" fill="#9EF0FF" opacity="0.78"/><rect x="45" y="630" width="7" height="9" fill="#FFD7A8" opacity="0.39"/><rect x="17" y="648" width="7" height="9" fill="#FF9BE6" opacity="0.40"/><rect x="76" y="449" width="116" height="211" fill="#07040F"/><rect x="151" y="457" width="7" height="9" fill="#FF9BE6" opacity="0.45"/><rect x="109" y="475" width="7" height="9" fill="#FFF1C7" opacity="0.49"/><rect x="165" y="475" width="7" height="9" fill="#FFD7A8" opacity="0.50"/><rect x="165" y="493" width="7" height="9" fill="#FFD7A8" opacity="0.65"/><rect x="95" y="529" width="7" height="9" fill="#FF9BE6" opacity="0.85"/><rect x="179" y="529" width="7" height="9" fill="#FF9BE6" opacity="0.47"/><rect x="109" y="547" width="7" height="9" fill="#FFF1C7" opacity="0.90"/><rect x="151" y="583" width="7" height="9" fill="#FF9BE6" opacity="0.45"/><rect x="165" y="583" width="7" height="9" fill="#9EF0FF" opacity="0.65"/><rect x="81" y="601" width="7" height="9" fill="#FF9BE6" opacity="0.54"/><rect x="95" y="601" width="7" height="9" fill="#FF9BE6" opacity="0.43"/><rect x="165" y="601" width="7" height="9" fill="#FFF1C7" opacity="0.42"/><rect x="95" y="619" width="7" height="9" fill="#9EF0FF" opacity="0.67"/><rect x="137" y="619" width="7" height="9" fill="#FFF1C7" opacity="0.77"/><rect x="151" y="619" width="7" height="9" fill="#9EF0FF" opacity="0.68"/><rect x="95" y="637" width="7" height="9" fill="#FF9BE6" opacity="0.36"/><rect x="123" y="637" width="7" height="9" fill="#FF9BE6" opacity="0.52"/><rect x="137" y="637" width="7" height="9" fill="#FF9BE6" opacity="0.60"/><rect x="151" y="637" width="7" height="9" fill="#FF9BE6" opacity="0.59"/><rect x="215" y="529" width="89" height="131" fill="#07040F"/><rect x="220" y="537" width="7" height="9" fill="#FFF1C7" opacity="0.40"/><rect x="276" y="537" width="7" height="9" fill="#FFF1C7" opacity="0.88"/><rect x="262" y="555" width="7" height="9" fill="#FF9BE6" opacity="0.70"/><rect x="248" y="573" width="7" height="9" fill="#FFD7A8" opacity="0.36"/><rect x="276" y="573" width="7" height="9" fill="#FF9BE6" opacity="0.45"/><rect x="248" y="591" width="7" height="9" fill="#FF9BE6" opacity="0.76"/><rect x="276" y="591" width="7" height="9" fill="#FF9BE6" opacity="0.53"/><rect x="276" y="609" width="7" height="9" fill="#FFF1C7" opacity="0.85"/><rect x="248" y="627" width="7" height="9" fill="#FF9BE6" opacity="0.68"/><rect x="276" y="627" width="7" height="9" fill="#9EF0FF" opacity="0.44"/><rect x="234" y="645" width="7" height="9" fill="#FFD7A8" opacity="0.82"/><rect x="290" y="645" width="7" height="9" fill="#FFF1C7" opacity="0.43"/><rect x="312" y="526" width="164" height="134" fill="#07040F"/><rect x="415" y="534" width="7" height="9" fill="#FF9BE6" opacity="0.35"/><rect x="401" y="552" width="7" height="9" fill="#FFF1C7" opacity="0.88"/><rect x="443" y="552" width="7" height="9" fill="#FF9BE6" opacity="0.69"/><rect x="415" y="570" width="7" height="9" fill="#9EF0FF" opacity="0.47"/><rect x="457" y="570" width="7" height="9" fill="#FF9BE6" opacity="0.66"/><rect x="331" y="606" width="7" height="9" fill="#FF9BE6" opacity="0.74"/><rect x="331" y="624" width="7" height="9" fill="#FFD7A8" opacity="0.69"/><rect x="429" y="624" width="7" height="9" fill="#FFF1C7" opacity="0.78"/><rect x="443" y="624" width="7" height="9" fill="#FFD7A8" opacity="0.57"/><rect x="457" y="624" width="7" height="9" fill="#FFD7A8" opacity="0.36"/><rect x="487" y="453" width="126" height="207" fill="#07040F"/><rect x="520" y="461" width="7" height="9" fill="#FF9BE6" opacity="0.42"/><rect x="590" y="461" width="7" height="9" fill="#FF9BE6" opacity="0.40"/><rect x="506" y="479" width="7" height="9" fill="#9EF0FF" opacity="0.49"/><rect x="520" y="479" width="7" height="9" fill="#FFF1C7" opacity="0.36"/><rect x="590" y="479" width="7" height="9" fill="#FF9BE6" opacity="0.45"/><rect x="534" y="497" width="7" height="9" fill="#FF9BE6" opacity="0.65"/><rect x="590" y="497" width="7" height="9" fill="#FF9BE6" opacity="0.90"/><rect x="506" y="515" width="7" height="9" fill="#FFD7A8" opacity="0.39"/><rect x="576" y="533" width="7" height="9" fill="#FFD7A8" opacity="0.47"/><rect x="534" y="569" width="7" height="9" fill="#FFF1C7" opacity="0.50"/><rect x="506" y="587" width="7" height="9" fill="#FFD7A8" opacity="0.83"/><rect x="506" y="623" width="7" height="9" fill="#FF9BE6" opacity="0.72"/><rect x="604" y="623" width="7" height="9" fill="#9EF0FF" opacity="0.35"/><rect x="562" y="641" width="7" height="9" fill="#FFD7A8" opacity="0.43"/><rect x="629" y="492" width="89" height="168" fill="#07040F"/><rect x="648" y="500" width="7" height="9" fill="#9EF0FF" opacity="0.52"/><rect x="690" y="518" width="7" height="9" fill="#FF9BE6" opacity="0.65"/><rect x="662" y="536" width="7" height="9" fill="#FFD7A8" opacity="0.57"/><rect x="648" y="554" width="7" height="9" fill="#FFD7A8" opacity="0.88"/><rect x="676" y="554" width="7" height="9" fill="#FF9BE6" opacity="0.75"/><rect x="690" y="554" width="7" height="9" fill="#FF9BE6" opacity="0.65"/><rect x="676" y="590" width="7" height="9" fill="#FFF1C7" opacity="0.79"/><rect x="690" y="590" width="7" height="9" fill="#FF9BE6" opacity="0.78"/><rect x="676" y="608" width="7" height="9" fill="#FF9BE6" opacity="0.66"/><rect x="704" y="608" width="7" height="9" fill="#FF9BE6" opacity="0.44"/><rect x="634" y="626" width="7" height="9" fill="#9EF0FF" opacity="0.43"/><rect x="662" y="626" width="7" height="9" fill="#FF9BE6" opacity="0.58"/><rect x="725" y="461" width="162" height="199" fill="#07040F"/><rect x="856" y="469" width="7" height="9" fill="#FF9BE6" opacity="0.43"/><rect x="786" y="487" width="7" height="9" fill="#9EF0FF" opacity="0.66"/><rect x="800" y="487" width="7" height="9" fill="#FF9BE6" opacity="0.76"/><rect x="870" y="505" width="7" height="9" fill="#FFD7A8" opacity="0.39"/><rect x="772" y="523" width="7" height="9" fill="#FFF1C7" opacity="0.58"/><rect x="842" y="541" width="7" height="9" fill="#FF9BE6" opacity="0.87"/><rect x="856" y="541" width="7" height="9" fill="#FF9BE6" opacity="0.51"/><rect x="758" y="559" width="7" height="9" fill="#FFF1C7" opacity="0.47"/><rect x="772" y="559" width="7" height="9" fill="#9EF0FF" opacity="0.82"/><rect x="800" y="559" width="7" height="9" fill="#FFF1C7" opacity="0.45"/><rect x="856" y="559" width="7" height="9" fill="#FFD7A8" opacity="0.43"/><rect x="730" y="577" width="7" height="9" fill="#FF9BE6" opacity="0.43"/><rect x="758" y="577" width="7" height="9" fill="#9EF0FF" opacity="0.61"/><rect x="758" y="595" width="7" height="9" fill="#9EF0FF" opacity="0.63"/><rect x="800" y="595" width="7" height="9" fill="#FFD7A8" opacity="0.38"/><rect x="828" y="595" width="7" height="9" fill="#FFD7A8" opacity="0.42"/><rect x="856" y="595" width="7" height="9" fill="#FFF1C7" opacity="0.35"/><rect x="828" y="613" width="7" height="9" fill="#9EF0FF" opacity="0.82"/><rect x="870" y="613" width="7" height="9" fill="#9EF0FF" opacity="0.36"/><rect x="758" y="631" width="7" height="9" fill="#FFD7A8" opacity="0.57"/><rect x="800" y="631" width="7" height="9" fill="#FFD7A8" opacity="0.71"/><rect x="842" y="649" width="7" height="9" fill="#FFD7A8" opacity="0.48"/><rect x="905" y="490" width="110" height="170" fill="#07040F"/><rect x="924" y="498" width="7" height="9" fill="#FFD7A8" opacity="0.85"/><rect x="938" y="498" width="7" height="9" fill="#FF9BE6" opacity="0.73"/><rect x="952" y="534" width="7" height="9" fill="#FF9BE6" opacity="0.69"/><rect x="952" y="570" width="7" height="9" fill="#FF9BE6" opacity="0.64"/><rect x="910" y="588" width="7" height="9" fill="#FFF1C7" opacity="0.45"/><rect x="994" y="624" width="7" height="9" fill="#FFF1C7" opacity="0.75"/><rect x="910" y="642" width="7" height="9" fill="#9EF0FF" opacity="0.35"/><rect x="924" y="642" width="7" height="9" fill="#FFF1C7" opacity="0.64"/><rect x="994" y="642" width="7" height="9" fill="#9EF0FF" opacity="0.35"/><rect x="1029" y="389" width="87" height="271" fill="#07040F"/><rect x="1034" y="397" width="7" height="9" fill="#FF9BE6" opacity="0.85"/><rect x="1034" y="415" width="7" height="9" fill="#9EF0FF" opacity="0.58"/><rect x="1090" y="415" width="7" height="9" fill="#FFF1C7" opacity="0.56"/><rect x="1104" y="415" width="7" height="9" fill="#FF9BE6" opacity="0.88"/><rect x="1104" y="433" width="7" height="9" fill="#9EF0FF" opacity="0.89"/><rect x="1062" y="451" width="7" height="9" fill="#9EF0FF" opacity="0.53"/><rect x="1076" y="451" width="7" height="9" fill="#FFF1C7" opacity="0.56"/><rect x="1062" y="469" width="7" height="9" fill="#FFF1C7" opacity="0.86"/><rect x="1034" y="487" width="7" height="9" fill="#FFD7A8" opacity="0.59"/><rect x="1048" y="505" width="7" height="9" fill="#FF9BE6" opacity="0.65"/><rect x="1090" y="505" width="7" height="9" fill="#9EF0FF" opacity="0.82"/><rect x="1034" y="523" width="7" height="9" fill="#FFF1C7" opacity="0.40"/><rect x="1076" y="523" width="7" height="9" fill="#9EF0FF" opacity="0.74"/><rect x="1104" y="523" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="1034" y="541" width="7" height="9" fill="#FFF1C7" opacity="0.80"/><rect x="1062" y="541" width="7" height="9" fill="#FF9BE6" opacity="0.45"/><rect x="1090" y="541" width="7" height="9" fill="#FF9BE6" opacity="0.64"/><rect x="1104" y="541" width="7" height="9" fill="#FFF1C7" opacity="0.49"/><rect x="1090" y="559" width="7" height="9" fill="#FF9BE6" opacity="0.49"/><rect x="1076" y="577" width="7" height="9" fill="#9EF0FF" opacity="0.65"/><rect x="1048" y="613" width="7" height="9" fill="#FF9BE6" opacity="0.35"/><rect x="1062" y="613" width="7" height="9" fill="#FF9BE6" opacity="0.37"/><rect x="1048" y="649" width="7" height="9" fill="#FFD7A8" opacity="0.38"/><rect x="1076" y="649" width="7" height="9" fill="#FFF1C7" opacity="0.45"/><rect x="1127" y="484" width="143" height="176" fill="#07040F"/><rect x="1202" y="492" width="7" height="9" fill="#9EF0FF" opacity="0.63"/><rect x="1244" y="492" width="7" height="9" fill="#FFD7A8" opacity="0.58"/><rect x="1174" y="510" width="7" height="9" fill="#FFD7A8" opacity="0.86"/><rect x="1188" y="510" width="7" height="9" fill="#9EF0FF" opacity="0.81"/><rect x="1132" y="528" width="7" height="9" fill="#FF9BE6" opacity="0.53"/><rect x="1160" y="528" width="7" height="9" fill="#9EF0FF" opacity="0.57"/><rect x="1174" y="528" width="7" height="9" fill="#FFF1C7" opacity="0.44"/><rect x="1230" y="528" width="7" height="9" fill="#9EF0FF" opacity="0.75"/><rect x="1132" y="546" width="7" height="9" fill="#FF9BE6" opacity="0.42"/><rect x="1132" y="564" width="7" height="9" fill="#FFF1C7" opacity="0.50"/><rect x="1160" y="582" width="7" height="9" fill="#FFD7A8" opacity="0.54"/><rect x="1202" y="582" width="7" height="9" fill="#FF9BE6" opacity="0.54"/><rect x="1258" y="582" width="7" height="9" fill="#FF9BE6" opacity="0.79"/><rect x="1174" y="600" width="7" height="9" fill="#9EF0FF" opacity="0.68"/><rect x="1202" y="600" width="7" height="9" fill="#FFD7A8" opacity="0.58"/><rect x="1258" y="600" width="7" height="9" fill="#9EF0FF" opacity="0.55"/><rect x="1146" y="618" width="7" height="9" fill="#FFD7A8" opacity="0.81"/><rect x="1188" y="618" width="7" height="9" fill="#FFD7A8" opacity="0.41"/><rect x="1216" y="618" width="7" height="9" fill="#FF9BE6" opacity="0.64"/><rect x="1230" y="618" width="7" height="9" fill="#FFF1C7" opacity="0.49"/><rect x="1258" y="618" width="7" height="9" fill="#FF9BE6" opacity="0.55"/><rect x="1132" y="636" width="7" height="9" fill="#FFF1C7" opacity="0.66"/><rect x="1216" y="636" width="7" height="9" fill="#FFD7A8" opacity="0.87"/><rect x="1283" y="497" width="91" height="163" fill="#07040F"/><rect x="1288" y="505" width="7" height="9" fill="#FF9BE6" opacity="0.90"/><rect x="1330" y="505" width="7" height="9" fill="#FFD7A8" opacity="0.40"/><rect x="1330" y="523" width="7" height="9" fill="#9EF0FF" opacity="0.39"/><rect x="1358" y="523" width="7" height="9" fill="#9EF0FF" opacity="0.69"/><rect x="1288" y="559" width="7" height="9" fill="#FFF1C7" opacity="0.78"/><rect x="1302" y="559" width="7" height="9" fill="#9EF0FF" opacity="0.43"/><rect x="1330" y="559" width="7" height="9" fill="#FF9BE6" opacity="0.77"/><rect x="1316" y="577" width="7" height="9" fill="#FFD7A8" opacity="0.79"/><rect x="1330" y="595" width="7" height="9" fill="#FFD7A8" opacity="0.82"/><rect x="1358" y="595" width="7" height="9" fill="#FF9BE6" opacity="0.67"/><rect x="1302" y="631" width="7" height="9" fill="#FFF1C7" opacity="0.81"/><rect x="1383" y="476" width="88" height="184" fill="#07040F"/><rect x="1430" y="502" width="7" height="9" fill="#FFF1C7" opacity="0.79"/><rect x="1416" y="520" width="7" height="9" fill="#FF9BE6" opacity="0.71"/><rect x="1402" y="556" width="7" height="9" fill="#9EF0FF" opacity="0.40"/><rect x="1444" y="556" width="7" height="9" fill="#FF9BE6" opacity="0.40"/><rect x="1444" y="574" width="7" height="9" fill="#FFD7A8" opacity="0.56"/><rect x="1416" y="592" width="7" height="9" fill="#9EF0FF" opacity="0.47"/><rect x="1458" y="610" width="7" height="9" fill="#9EF0FF" opacity="0.57"/><rect x="1388" y="628" width="7" height="9" fill="#9EF0FF" opacity="0.41"/><rect x="1444" y="646" width="7" height="9" fill="#FF9BE6" opacity="0.72"/><rect x="1458" y="646" width="7" height="9" fill="#FF9BE6" opacity="0.59"/><rect x="1486" y="462" width="126" height="198" fill="#07040F"/><rect x="1491" y="488" width="7" height="9" fill="#FFD7A8" opacity="0.66"/><rect x="1575" y="488" width="7" height="9" fill="#FF9BE6" opacity="0.62"/><rect x="1589" y="488" width="7" height="9" fill="#FF9BE6" opacity="0.43"/><rect x="1505" y="506" width="7" height="9" fill="#FFF1C7" opacity="0.45"/><rect x="1589" y="506" width="7" height="9" fill="#FFF1C7" opacity="0.71"/><rect x="1575" y="524" width="7" height="9" fill="#FFF1C7" opacity="0.80"/><rect x="1491" y="542" width="7" height="9" fill="#FFD7A8" opacity="0.44"/><rect x="1519" y="542" width="7" height="9" fill="#FF9BE6" opacity="0.85"/><rect x="1505" y="578" width="7" height="9" fill="#FFF1C7" opacity="0.63"/><rect x="1533" y="578" width="7" height="9" fill="#FF9BE6" opacity="0.37"/><rect x="1491" y="596" width="7" height="9" fill="#FFF1C7" opacity="0.55"/><rect x="1589" y="596" width="7" height="9" fill="#FF9BE6" opacity="0.54"/><rect x="1519" y="614" width="7" height="9" fill="#FFD7A8" opacity="0.76"/><rect x="1575" y="614" width="7" height="9" fill="#FF9BE6" opacity="0.44"/><rect x="1589" y="614" width="7" height="9" fill="#FFD7A8" opacity="0.78"/><rect x="1575" y="632" width="7" height="9" fill="#9EF0FF" opacity="0.64"/><rect x="1505" y="650" width="7" height="9" fill="#FF9BE6" opacity="0.73"/><rect x="1533" y="650" width="7" height="9" fill="#FFD7A8" opacity="0.82"/><rect x="1622" y="484" width="99" height="176" fill="#07040F"/><rect x="1655" y="510" width="7" height="9" fill="#FFF1C7" opacity="0.69"/><rect x="1683" y="510" width="7" height="9" fill="#FF9BE6" opacity="0.68"/><rect x="1669" y="528" width="7" height="9" fill="#FFD7A8" opacity="0.73"/><rect x="1683" y="528" width="7" height="9" fill="#FF9BE6" opacity="0.47"/><rect x="1697" y="546" width="7" height="9" fill="#FFF1C7" opacity="0.41"/><rect x="1669" y="582" width="7" height="9" fill="#9EF0FF" opacity="0.37"/><rect x="1711" y="582" width="7" height="9" fill="#FF9BE6" opacity="0.75"/><rect x="1683" y="618" width="7" height="9" fill="#FFF1C7" opacity="0.67"/><rect x="1655" y="636" width="7" height="9" fill="#9EF0FF" opacity="0.41"/><rect x="1669" y="636" width="7" height="9" fill="#9EF0FF" opacity="0.39"/><rect x="1697" y="636" width="7" height="9" fill="#9EF0FF" opacity="0.78"/></g>
+<rect y="660" width="1600" height="240" fill="#05030A"/>
+<g mask="url(#nRefl)" filter="url(#nBlur)"><use href="#nCity" transform="translate(0 1320) scale(1 -1)"/></g>
+<g class="d-rip" stroke-linecap="round"><line x1="140" y1="720" x2="420" y2="720" stroke="#FF2BD6" stroke-width="2" opacity=".35"/><line x1="980" y1="740" x2="1340" y2="740" stroke="#00E0FF" stroke-width="2" opacity=".3"/><line x1="560" y1="790" x2="1000" y2="790" stroke="#FFB13B" stroke-width="1.5" opacity=".2"/></g>
+</svg></div>
+<div class="domain d-tempestade" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="tSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04060C"/><stop offset=".55" stop-color="#18213A"/><stop offset="1" stop-color="#2B3756"/></linearGradient>
+<radialGradient id="tGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#DCE6FF" stop-opacity=".8"/><stop offset="1" stop-color="#DCE6FF" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#tSky)"/>
+<ellipse class="t-glow" cx="1100" cy="200" rx="520" ry="220" fill="url(#tGlow)"/>
+<g class="t-clouds"><ellipse cx="312" cy="326" rx="373" ry="94" fill="#0E1320" opacity="0.92"/><ellipse cx="-54" cy="48" rx="196" ry="72" fill="#1B2338" opacity="0.83"/><ellipse cx="1611" cy="315" rx="247" ry="85" fill="#0E1320" opacity="0.89"/><ellipse cx="1057" cy="201" rx="270" ry="69" fill="#141B2B" opacity="0.71"/><ellipse cx="258" cy="221" rx="287" ry="107" fill="#141B2B" opacity="0.94"/><ellipse cx="831" cy="92" rx="267" ry="56" fill="#1B2338" opacity="0.81"/><ellipse cx="865" cy="288" rx="201" ry="108" fill="#0E1320" opacity="0.94"/><ellipse cx="875" cy="105" rx="397" ry="56" fill="#0E1320" opacity="0.85"/><ellipse cx="328" cy="221" rx="244" ry="92" fill="#141B2B" opacity="0.98"/><ellipse cx="295" cy="182" rx="388" ry="83" fill="#222B42" opacity="0.93"/><ellipse cx="1386" cy="236" rx="221" ry="101" fill="#222B42" opacity="0.74"/><ellipse cx="-74" cy="96" rx="234" ry="96" fill="#222B42" opacity="0.71"/><ellipse cx="1565" cy="84" rx="298" ry="99" fill="#141B2B" opacity="0.76"/><ellipse cx="1073" cy="313" rx="413" ry="54" fill="#0E1320" opacity="0.80"/><ellipse cx="1046" cy="276" rx="304" ry="99" fill="#1B2338" opacity="0.70"/><ellipse cx="318" cy="221" rx="277" ry="106" fill="#141B2B" opacity="0.73"/><ellipse cx="1697" cy="104" rx="231" ry="78" fill="#222B42" opacity="0.87"/><ellipse cx="1203" cy="265" rx="374" ry="54" fill="#141B2B" opacity="0.96"/><ellipse cx="246" cy="244" rx="346" ry="93" fill="#1B2338" opacity="0.92"/><ellipse cx="861" cy="281" rx="335" ry="59" fill="#141B2B" opacity="0.97"/><ellipse cx="1126" cy="235" rx="196" ry="94" fill="#1B2338" opacity="0.94"/><ellipse cx="368" cy="42" rx="280" ry="86" fill="#1B2338" opacity="0.89"/><ellipse cx="1418" cy="59" rx="242" ry="56" fill="#1B2338" opacity="0.94"/><ellipse cx="-23" cy="278" rx="192" ry="75" fill="#1B2338" opacity="0.98"/><ellipse cx="349" cy="62" rx="418" ry="85" fill="#222B42" opacity="0.78"/><ellipse cx="214" cy="279" rx="184" ry="80" fill="#141B2B" opacity="0.93"/></g>
+<path class="t-bolt" d="M1120 120 L1080 260 L1120 262 L1060 420 L1090 422 L1020 600" fill="none" stroke="#F4F7FF" stroke-width="4" stroke-linejoin="round"/>
+<path d="M0 640 L180 520 L330 600 L520 470 L700 590 L880 500 L1040 600 L1240 480 L1420 590 L1600 520 L1600 900 L0 900 Z" fill="#0C111D"/>
+<path d="M0 700 L260 640 L520 690 L800 630 L1080 690 L1360 640 L1600 680 L1600 900 L0 900 Z" fill="#070A12"/>
+<g fill="#03050A"><path d="M1270 700 C1268 640 1262 600 1250 560 L1258 558 C1272 600 1280 640 1282 700 Z"/><path d="M1252 590 C1220 570 1200 560 1176 548 L1180 542 C1206 552 1230 562 1256 580 Z"/><path d="M1262 610 C1296 590 1316 584 1344 572 L1346 578 C1320 590 1298 600 1266 620 Z"/><ellipse cx="1250" cy="540" rx="70" ry="38"/><ellipse cx="1300" cy="560" rx="60" ry="30"/><ellipse cx="1190" cy="546" rx="46" ry="24"/></g>
+</svg></div>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <button class="menu-btn" id="openMenu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
@@ -1084,6 +1218,7 @@ footer{gap:6px}
   <nav class="m-list" role="tablist" aria-label="Seções">
     <button type="button" role="tab" id="tabBtnBuscar" aria-selected="true" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
     <button type="button" role="tab" id="tabBtnTrend" aria-selected="false" aria-controls="tabTrend"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Tendências</span></button>
+    <button type="button" role="tab" id="tabBtnRec" aria-selected="false" aria-controls="tabRec"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M8 21h8M12 17v4"/><path d="m10.5 8.5 4 2.5-4 2.5z"/></svg><span>O que assistir</span></button>
     <button type="button" role="tab" id="tabBtnCal" aria-selected="false" aria-controls="tabCal"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.2"/></svg><span>Calendário</span></button>
     <button type="button" role="tab" id="tabBtnDaily" aria-selected="false" aria-controls="tabDaily"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg><span>Personagem do dia</span></button>
     <button type="button" role="tab" id="tabBtnVs" aria-selected="false" aria-controls="tabVs"><svg viewBox="0 0 24 24"><path d="M4 4l9 9M4 4v4M4 4h4M20 4l-9 9M20 4v4M20 4h-4"/><path d="M7 14l-3 3 3 3M17 14l3 3-3 3"/></svg><span>Quem ganha?</span></button>
@@ -1184,10 +1319,10 @@ footer{gap:6px}
     <div class="ex-grid">
       <a class="ex" href="#tendencias" style="--x1:#FF4F9A;--x2:#FF9F45"><span class="ex-ic">📈</span><b>Tendências</b><small>Quem a galera mais procura esta semana</small></a>
       <a class="ex" href="#calendario" style="--x1:#3FD0FF;--x2:#4F8BFF"><span class="ex-ic">📅</span><b>Calendário</b><small>Episódios novos de cada dia da temporada</small></a>
-      <a class="ex" href="#comparar" style="--x1:#E3122D;--x2:#FF6A2B"><span class="ex-ic">⚔️</span><b>Quem ganha?</b><small>Coloque dois personagens pra lutar</small></a>
+      <a class="ex" href="#comparar" style="--x1:#E3122D;--x2:#FF6A2B"><span class="ex-ic">⚔️</span><b>Quem ganha?</b><small>Lutas 1 contra 1 e torneios de 8</small></a>
       <a class="ex" href="#jogo" style="--x1:#2FD47C;--x2:#F5CE3A"><span class="ex-ic">🎮</span><b>Jogo</b><small>Adivinhe o personagem pelas pistas</small></a>
       <a class="ex" href="#colecoes" style="--x1:#9B6BFF;--x2:#FF4F9A"><span class="ex-ic">🗂️</span><b>Coleções</b><small>Monte coleções com os seus favoritos</small></a>
-      <a class="ex" href="#conquistas" style="--x1:#FFD84D;--x2:#E8A317"><span class="ex-ic">🏆</span><b>Conquistas</b><small>Desbloqueie medalhas usando o site</small></a>
+      <a class="ex" href="#assistir" style="--x1:#FFD84D;--x2:#E8A317"><span class="ex-ic">🍿</span><b>O que assistir</b><small>Diga um anime que curtiu e receba indicações</small></a>
     </div>
   </section>
   </div>
@@ -1292,6 +1427,12 @@ footer{gap:6px}
       <ol class="tr-list" id="trLocal"></ol>
     </div>
     <div class="tr-block">
+      <h3 class="sec-h">Ranking da comunidade</h3>
+      <p class="hint" id="crHint">O top 10 de todo mundo somado: 1º lugar vale 10 pontos, o 10º vale 1.</p>
+      <ol class="tr-list" id="trComm"></ol>
+      <div class="row-btns"><button type="button" class="go" id="crSend"><span>Enviar meu ranking</span></button><span class="status" id="crMsg" role="status" aria-live="polite"></span></div>
+    </div>
+    <div class="tr-block">
       <h3 class="sec-h">Em alta no mundo agora</h3>
       <p class="hint">Personagens principais dos animes mais comentados no AniList.</p>
       <div class="ctiles" id="trWorld"></div>
@@ -1300,6 +1441,11 @@ footer{gap:6px}
 
   <section id="tabVs" role="tabpanel" aria-labelledby="tabBtnVs" class="tabpanel vs" hidden>
     <div class="rhead"><h2>Quem ganha?</h2><span>a IA decide a luta</span></div>
+    <div class="seg vs-mode" role="tablist" aria-label="Modo">
+      <button type="button" role="tab" data-mode="1x1" aria-selected="true">Luta 1 contra 1</button>
+      <button type="button" role="tab" data-mode="torneio" aria-selected="false">Torneio</button>
+    </div>
+    <div id="vsSingle" class="vs-single">
     <div class="vs-pick">
       <div class="slot" id="vsA"></div>
       <div class="vs-mark" aria-hidden="true">VS</div>
@@ -1307,6 +1453,27 @@ footer{gap:6px}
     </div>
     <div class="row-btns vs-go"><button type="button" class="go" id="vsGo" disabled><span>Lutar!</span></button><button type="button" class="ghost" id="vsRand">Sortear uma luta</button><span class="status" id="vsMsg" role="status" aria-live="polite"></span></div>
     <div id="vsOut"></div>
+    </div>
+    <div id="vsTour" class="tour" hidden>
+      <div class="stage tour-pick">
+        <h3 class="sec-h">Escolha 8 lutadores <span class="tour-n" id="tourN">0/8</span></h3>
+        <div class="col-add"><input type="search" id="tourIn" placeholder="Digite o nome de um personagem" autocomplete="off" aria-label="Adicionar lutador"><div class="qsug" id="tourSug" hidden role="listbox"></div></div>
+        <div class="tour-chips" id="tourChips"></div>
+        <div class="quick tour-quick" id="tourQuick"></div>
+        <div class="row-btns"><button type="button" class="go" id="tourGo" disabled><span>Começar torneio</span></button><button type="button" class="ghost" id="tourRand">Sortear 8</button><button type="button" class="ghost" id="tourClear">Limpar</button></div>
+      </div>
+      <div id="tourOut"></div>
+    </div>
+  </section>
+
+  <section id="tabRec" role="tabpanel" aria-labelledby="tabBtnRec" class="tabpanel rec" hidden>
+    <div class="rhead"><h2>O que assistir agora?</h2><span>indicações</span></div>
+    <div class="stage rec-ask">
+      <h3 class="sec-h">Qual anime você curtiu?</h3>
+      <div class="col-add"><input type="search" id="recIn" placeholder="Ex.: Jujutsu Kaisen, Naruto, Frieren" autocomplete="off" aria-label="Anime que você curtiu"><div class="qsug" id="recSug" hidden role="listbox"></div></div>
+      <div class="qhints" id="recGen"><span>Ou escolha um estilo</span></div>
+    </div>
+    <div id="recOut"></div>
   </section>
 
   <section id="tabCal" role="tabpanel" aria-labelledby="tabBtnCal" class="tabpanel cal" hidden>
@@ -1431,7 +1598,7 @@ footer{gap:6px}
 
   function count(amount) {
     const area = Math.min(1.4, (W * H) / (1440 * 900));
-    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 46, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100, vazio: 220 }[kind] || 0;
+    const max = { sakura: 70, neve: 140, estrelas: 160, vagalumes: 45, faiscas: 90, cortes: 46, chamas: 80, raios: 3, bolhas: 45, gelo: 70, folhas: 35, vento: 32, energia: 70, confete: 100, vazio: 220, chuva: 260, tempestade: 320, gotas: 120 }[kind] || 0;
     return Math.round(max * (amount / 100) * Math.max(0.35, area));
   }
 
@@ -1497,6 +1664,17 @@ footer{gap:6px}
           c: Math.random() < 0.68 ? "w" : Math.random() < 0.5 ? "a" : "b" });
         break;
       }
+      case "chuva": case "tempestade": {
+        const neon = Math.random() < (kind === "chuva" ? 0.3 : 0.08);
+        Object.assign(p, { x: rnd(-W * 0.15, W * 1.05), y: initial ? rnd(-H, H) : rnd(-60, -10), len: rnd(14, 30), vy: rnd(10, 17) * (kind === "tempestade" ? 1.2 : 1), vx: kind === "tempestade" ? -3.2 : -1.2,
+          o: rnd(0.18, 0.5), c: neon ? (Math.random() < 0.5 ? "a" : "b") : null, gy: rnd(H * 0.7, H * 1.02), sp: 0 });
+        break;
+      }
+      case "gotas": {
+        if (Math.random() < 0.65) Object.assign(p, { k: "spray", x: W / 2 + rnd(-W * 0.07, W * 0.07), y: H * rnd(0.68, 0.74), vx: rnd(-1.6, 1.6), vy: rnd(-3.2, -0.8), s: rnd(0.8, 2.2), life: rnd(0.6, 1) });
+        else Object.assign(p, { k: "mote", y: initial ? rnd(0, H) : H + 10, s: rnd(1.2, 2.6), vx: rnd(-0.3, 0.3), vy: rnd(-0.4, -0.1), tw: rnd(0.01, 0.03), c: Math.random() < 0.6 ? "a" : "b" });
+        break;
+      }
       case "confete":
         Object.assign(p, { s: rnd(5, 10), vy: rnd(0.8, 2), vx: rnd(-0.6, 0.6), rot: rnd(0, 6.28), vr: rnd(-0.1, 0.1), col: ["#FFD84D", "#FF7AB6", "#5BE08F", "#5AA9FF", "a", "b"][Math.floor(rnd(0, 6))] });
         break;
@@ -1504,7 +1682,7 @@ footer{gap:6px}
     return p;
   }
 
-  let shooting = null;
+  let shooting = null, bolt = null;
 
   function petal(p) {
     ctx.save();
@@ -1616,6 +1794,35 @@ footer{gap:6px}
           if (p.r > p.R) parts[i] = spawn(false);
           break;
         }
+        case "chuva": case "tempestade": {
+          if (p.sp > 0) { // respingo no chão
+            p.sp += 0.08 * dt;
+            ctx.globalAlpha = Math.max(0, 0.5 - p.sp * 0.5) ; ctx.strokeStyle = pc || (dark ? "#CFE0FF" : "#5A6B8C"); ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.ellipse(p.x, p.gy, 2 + p.sp * 9, 0.6 + p.sp * 2, 0, 0, 6.283); ctx.stroke();
+            if (p.sp > 1) parts[i] = spawn(false);
+            break;
+          }
+          p.x += p.vx * dt; p.y += p.vy * dt;
+          ctx.globalAlpha = p.o; ctx.strokeStyle = pc || (dark ? "#BCD0FF" : "#6B7FA6"); ctx.lineWidth = pc ? 1.4 : 1; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * p.len / p.vy, p.y - p.len); ctx.stroke();
+          if (p.y >= p.gy) { if (Math.random() < 0.5) p.sp = 0.01; else parts[i] = spawn(false); }
+          break;
+        }
+        case "gotas": {
+          if (p.k === "spray") {
+            p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 0.06 * dt; p.life -= 0.012 * dt;
+            ctx.globalAlpha = Math.max(0, p.life) * 0.8; ctx.fillStyle = dark ? "#E8FFFE" : colors.a;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 6.283); ctx.fill();
+            if (p.life <= 0) parts[i] = spawn(false);
+          } else {
+            p.x += (p.vx + Math.sin(p.t) * 0.3) * dt; p.y += p.vy * dt;
+            const a = 0.3 + 0.6 * Math.abs(Math.sin(p.t * p.tw * 40));
+            glow(p.x, p.y, p.s, pc, a * 0.5);
+            ctx.globalAlpha = a; ctx.fillStyle = "#F2FFFE"; ctx.beginPath(); ctx.arc(p.x, p.y, p.s * 0.5, 0, 6.283); ctx.fill();
+            if (p.y < -20) parts[i] = spawn(false);
+          }
+          break;
+        }
         case "confete":
           p.y += p.vy * dt; p.x += (p.vx + Math.sin(p.t * 2) * 0.5) * dt; p.rot += p.vr * dt;
           ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(Math.cos(p.t * 3), 1); ctx.globalAlpha = 0.9;
@@ -1714,6 +1921,23 @@ footer{gap:6px}
       }
     }
 
+    // Tempestade: um raio grande de vez em quando, com clarão
+    if (kind === "tempestade") {
+      if (!bolt && Math.random() < 0.004 * dt) {
+        const pts = [[rnd(W * 0.15, W * 0.85), -10]]; let bx = pts[0][0], by = -10;
+        const end = rnd(H * 0.45, H * 0.8);
+        while (by < end) { bx += rnd(-40, 40); by += rnd(20, 50); pts.push([bx, by]); }
+        bolt = { pts, l: 1, br: pts.slice(2, -1).filter(() => Math.random() < 0.3).map(([x, y]) => [[x, y], [x + rnd(-90, 90), y + rnd(40, 110)]]) };
+        const f = document.getElementById("flash"); if (f) { f.classList.add("on"); setTimeout(() => f.classList.remove("on"), 90); }
+      }
+      if (bolt) {
+        const draw = (ps, w) => { ctx.beginPath(); ps.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.lineWidth = w; ctx.stroke(); };
+        ctx.globalAlpha = bolt.l; ctx.strokeStyle = colors.a; ctx.shadowColor = colors.a; ctx.shadowBlur = 30; ctx.lineJoin = "round";
+        draw(bolt.pts, 4); bolt.br.forEach((b) => draw(b, 2));
+        ctx.shadowBlur = 0; ctx.strokeStyle = "#FFFFFF"; draw(bolt.pts, 1.5);
+        bolt.l -= 0.05 * dt; if (bolt.l <= 0) bolt = null;
+      }
+    }
     // Vazio infinito: um anel de luz respirando no centro
     if (kind === "vazio") {
       const cx = W / 2, cy = H * 0.42, base = Math.min(W, H) * 0.085, br = 1 + Math.sin(now / 900) * 0.06;
@@ -2889,13 +3113,14 @@ function setAmbient(src) {
 
 // ---------- Tendências
 let trendsAt = 0;
-async function loadTrends() {
-  if (Date.now() - trendsAt < 120000) return;
+async function loadTrends(fresh) {
+  if (!fresh && Date.now() - trendsAt < 120000) return;
   $("trLocal").innerHTML = Array.from({ length: 4 }, () => `<li class="tr-ph shim"></li>`).join("");
   $("trWorld").innerHTML = skelTiles(8);
   try {
-    const d = await api("/api/trends");
+    const d = await api(fresh ? `/api/trends?agora=${Date.now()}` : "/api/trends");
     trendsAt = Date.now();
+    window.drawCommunity?.(d.comunidade);
     $("trWeek").textContent = d.semana ? `semana ${Number(d.semana.split("-W")[1])} de ${d.semana.slice(0, 4)}` : "";
     if (!d.local?.length) {
       $("trLocal").innerHTML = `<li class="empty">${d.local ? "Ninguém procurou personagens ainda esta semana. Abra a página de um personagem e ele entra no placar!" : "O placar da comunidade ainda não está ligado no servidor. Enquanto isso, veja quem está em alta no mundo."}</li>`;
@@ -3096,6 +3321,8 @@ function openColDialog(item) {
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
 }
 saveCols(loadCols());
+window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}`), pic };
+window.reloadTrends = () => { trendsAt = 0; loadTrends(true); };
 
 route();
 })();
@@ -3280,6 +3507,238 @@ document.addEventListener("click", () => setTimeout(() => check(true), 300));
 window.Conq = { event, check };
 const k0 = location.hash.slice(1);
 if (k0 === "calendario" || k0 === "conquistas") showTab(k0);
+})();
+</script>
+<script>
+// ---------- O que assistir, torneio e ranking da comunidade
+(() => {
+const { suggest, runFind, fight } = window.DA;
+const pic = (src) => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="ph"></span>`;
+const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+TABS.assistir = ["tabBtnRec", "tabRec"];
+$("tabBtnRec").onclick = () => { closeMenu(); goTo("assistir"); };
+const prevTab = window.onTab;
+window.onTab = (t) => { prevTab?.(t); if (t === "comparar") drawTour(); };
+
+// ---------- O que assistir
+const GEN = { Action: "Ação", Adventure: "Aventura", Comedy: "Comédia", Drama: "Drama", Fantasy: "Fantasia", Mystery: "Mistério", "Sci-Fi": "Ficção científica", Sports: "Esportes", "Slice of Life": "Dia a dia", Supernatural: "Sobrenatural", Romance: "Romance", Horror: "Terror", Mecha: "Robôs", Music: "Música", Psychological: "Psicológico" };
+const FMT = { TV: "Série", MOVIE: "Filme", OVA: "OVA", ONA: "Web", TV_SHORT: "Curta", SPECIAL: "Especial" };
+$("recGen").insertAdjacentHTML("beforeend", Object.entries(GEN).map(([k, v]) => `<button type="button" data-g="${esc(k)}">${esc(v)}</button>`).join(""));
+$("recGen").onclick = (e) => { const b = e.target.closest("[data-g]"); if (b) loadGenre(b.dataset.g); };
+
+let recItems = [], recT = 0, recCtl = null;
+const recClose = () => { $("recSug").hidden = true; };
+$("recIn").addEventListener("input", () => {
+  clearTimeout(recT);
+  const q = $("recIn").value.trim();
+  if (q.length < 2 || location.protocol === "file:") { recClose(); return; }
+  recT = setTimeout(async () => {
+    recCtl?.abort(); recCtl = new AbortController();
+    try {
+      const r = await fetch(`/api/recommend?busca=${encodeURIComponent(q)}`, { signal: recCtl.signal });
+      const d = await r.json();
+      if ($("recIn").value.trim() !== q) return;
+      recItems = d.animes || [];
+      $("recSug").innerHTML = recItems.length ? `<div class="sug-h">Animes</div>` + recItems.map((a, i) => `<button type="button" class="sug" data-i="${i}">${a.cover ? `<img class="cvs" src="${esc(a.cover)}" alt="">` : `<span class="ph"></span>`}<span><b>${esc(a.title)}</b><small>${[a.year, FMT[a.format]].filter(Boolean).join(" · ")}</small></span><span></span></button>`).join("") : `<div class="sug-h">Nenhum anime com esse nome</div>`;
+      $("recSug").hidden = false;
+    } catch {}
+  }, 220);
+});
+$("recIn").addEventListener("keydown", (e) => { if (e.key === "Enter" && recItems[0]) { e.preventDefault(); recClose(); loadRec(recItems[0].id); } if (e.key === "Escape") recClose(); });
+$("recIn").addEventListener("blur", () => setTimeout(recClose, 150));
+$("recSug").addEventListener("mousedown", (e) => e.preventDefault());
+$("recSug").onclick = (e) => { const b = e.target.closest("[data-i]"); if (!b) return; const a = recItems[Number(b.dataset.i)]; $("recIn").value = a.title; recClose(); loadRec(a.id); };
+
+const recSkel = () => `<div class="agrid">${Array.from({ length: 4 }, () => `<div class="acard"><div class="cv shim"></div><div class="tx"><b class="shim" style="height:16px;border-radius:6px">&nbsp;</b><span class="shim" style="height:40px;border-radius:6px"></span></div></div>`).join("")}</div>`;
+function acard(r, i) {
+  const meta = [r.year, FMT[r.format], r.episodes ? `${r.episodes} ep.` : ""].filter(Boolean).join(" · ");
+  return `<article class="acard" style="--i:${i}${r.color ? `;--c:${esc(r.color)}` : ""}">
+    <a class="cv" href="${esc(r.url)}" target="_blank" rel="noopener">${pic(r.cover)}${r.score ? `<span class="sc">★ ${r.score}%</span>` : ""}</a>
+    <div class="tx"><b>${esc(r.title)}</b>${meta ? `<span class="meta">${esc(meta)}</span>` : ""}
+      ${r.genres?.length ? `<span class="gen">${r.genres.map((g) => `<span>${esc(GEN[g] || g)}</span>`).join("")}</span>` : ""}
+      ${r.motivo ? `<p class="why">${esc(r.motivo)}</p>` : ""}
+      ${r.onde?.length ? `<span class="pl">${r.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${window.platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}
+      <span class="acts"><button type="button" data-rec="${r.id}" data-t="${esc(r.title)}">Parecidos com este</button><button type="button" data-chars="${esc(r.romaji || r.title)}">Ver personagens</button></span>
+    </div></article>`;
+}
+async function loadRec(id) {
+  $("recOut").innerHTML = recSkel();
+  $("recOut").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
+  try {
+    const d = await api(`/api/recommend?id=${id}`);
+    $("recOut").innerHTML = `<div class="cp-sec"><div class="rec-head">${d.base.cover ? `<img src="${esc(d.base.cover)}" alt="">` : ""}<span><small>Porque você curtiu</small><h3>${esc(d.base.title)}</h3></span></div>
+      ${d.recs.length ? `<div class="agrid">${d.recs.map(acard).join("")}</div>` : `<div class="empty">Ainda não tem indicações pra esse anime. Tente outro ou escolha um estilo.</div>`}
+      <p class="cp-note">Indicações da comunidade do AniList. ${d.recs.some((r) => r.motivo) ? "Os motivos foram escritos pela IA." : ""}</p></div>`;
+    Sfx.play("achou");
+  } catch (err) { $("recOut").innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
+}
+async function loadGenre(g) {
+  $("recOut").innerHTML = recSkel();
+  $("recOut").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
+  try {
+    const d = await api(`/api/recommend?genero=${encodeURIComponent(g)}`);
+    $("recOut").innerHTML = `<div class="cp-sec"><h3>Os mais populares de ${esc(GEN[g] || g)}</h3><div class="agrid">${d.recs.map(acard).join("")}</div></div>`;
+  } catch (err) { $("recOut").innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
+}
+$("recOut").onclick = (e) => {
+  const r = e.target.closest("[data-rec]");
+  if (r) { $("recIn").value = r.dataset.t; loadRec(Number(r.dataset.rec)); return; }
+  const c = e.target.closest("[data-chars]");
+  if (c) { goTo("buscar"); $("q").value = c.dataset.chars; setTimeout(() => runFind(c.dataset.chars), 60); }
+};
+
+// ---------- Torneio (dentro do Quem ganha?)
+const TKEY2 = "achei-o-anime:torneio";
+const T = (() => { try { return { chars: [], ...JSON.parse(localStorage.getItem(TKEY2) || "{}") }; } catch { return { chars: [] }; } })();
+T.rounds = null; T.running = false;
+const saveT = () => { try { localStorage.setItem(TKEY2, JSON.stringify({ chars: T.chars })); } catch {} };
+let mode = "1x1";
+document.querySelector(".vs-mode").onclick = (e) => {
+  const b = e.target.closest("[data-mode]"); if (!b) return;
+  mode = b.dataset.mode;
+  document.querySelectorAll(".vs-mode [data-mode]").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  $("vsSingle").hidden = mode !== "1x1"; $("vsTour").hidden = mode === "1x1";
+  if (mode === "torneio") drawTour();
+};
+suggest($("tourIn"), $("tourSug"), (c) => { addFighter(c); $("tourIn").value = ""; setTimeout(() => $("tourIn").focus(), 30); });
+function addFighter(c) {
+  if (!c?.id) return;
+  if (T.chars.some((x) => x.id === c.id)) { toast(`${c.name} já está no torneio.`); return; }
+  if (T.chars.length >= 8) { toast("O torneio já tem 8 lutadores."); return; }
+  T.chars.push({ id: c.id, name: c.name, image: c.image, anime: c.anime || "" }); saveT(); Sfx.play("pop"); drawTour();
+}
+function drawTour() {
+  const n = T.chars.length;
+  $("tourN").textContent = `${n}/8`;
+  $("tourChips").innerHTML = T.chars.map((c, i) => `<div class="tchar">${pic(c.image)}<b>${esc(c.name)}</b>${T.running ? "" : `<button type="button" data-rm="${i}" aria-label="Tirar ${esc(c.name)}">×</button>`}</div>`).join("");
+  const picks = window.DA.quickPicks("a").filter((p) => !T.chars.some((c) => c.id === p.id));
+  $("tourQuick").innerHTML = n < 8 && picks.length ? `<span class="hint" style="margin:0 4px 0 0">Seus favoritos:</span>${picks.map((p, i) => `<button type="button" data-qp="${i}">${esc(p.name)}</button>`).join("")}` : "";
+  $("tourQuick").onclick = (e) => { const b = e.target.closest("[data-qp]"); if (b) addFighter(picks[Number(b.dataset.qp)]); };
+  const ok = n === 4 || n === 8;
+  $("tourGo").disabled = !ok || T.running;
+  $("tourGo").firstElementChild.textContent = T.running ? "Lutando…" : n === 4 ? "Começar torneio de 4" : "Começar torneio";
+  $("tourIn").disabled = T.running || n >= 8;
+}
+$("tourChips").onclick = (e) => { const b = e.target.closest("[data-rm]"); if (b && !T.running) { T.chars.splice(Number(b.dataset.rm), 1); saveT(); drawTour(); } };
+$("tourClear").onclick = () => { if (T.running) return; T.chars = []; T.rounds = null; saveT(); $("tourOut").innerHTML = ""; drawTour(); };
+$("tourRand").onclick = async () => {
+  if (T.running) return;
+  try {
+    const d = await api("/api/trends");
+    const pool = [...(d.mundo || []), ...(d.local || []), ...(d.comunidade?.top || [])].filter((c) => c.id);
+    const seen = new Set(T.chars.map((c) => c.id));
+    for (const c of pool.sort(() => Math.random() - 0.5)) { if (T.chars.length >= 8) break; if (!seen.has(c.id)) { seen.add(c.id); T.chars.push({ id: c.id, name: c.name, image: c.image, anime: c.anime }); } }
+    saveT(); drawTour();
+  } catch { toast("Não consegui sortear agora."); }
+};
+const ROUND_NAMES = { 4: "Quartas de final", 2: "Semifinal", 1: "Final" };
+function drawBracket(champ) {
+  const cols = T.rounds.map((r) => `<div class="round"><h4>${ROUND_NAMES[r.length] || "Rodada"}</h4>${r.map((m, i) => {
+    const row = (c) => c ? `<span class="mrow${m.winner ? (m.winner.id === c.id ? " win" : " lose") : ""}">${pic(c.image)}<span>${esc(c.name)}</span></span>` : `<span class="mrow"><span class="ph"></span><span>…</span></span>`;
+    return `<button type="button" class="match${m.live ? " live" : ""}" data-m="${T.rounds.indexOf(r)}-${i}">${row(m.a)}${row(m.b)}</button>`;
+  }).join("")}</div>`).join("");
+  const empty = T.rounds.length === 2 ? "" : "";
+  $("tourOut").innerHTML = `<div class="bracket" style="--cols:${T.rounds.length}">${cols}${empty}
+    <div class="round"><h4>Campeão</h4>${champ ? `<div class="champ"><span class="crown">👑</span>${pic(champ.image)}<b>${esc(champ.name)}</b><small>${esc(champ.anime || "")}</small></div>` : `<div class="champ" style="opacity:.5"><span class="ph" style="width:96px;height:96px;border-radius:50%;background:var(--surface-2);display:block"></span><small>quem vai ser?</small></div>`}</div></div>
+    <div class="tour-detail" id="tourDetail"></div>
+    ${champ ? `<div class="row-btns" style="margin-top:14px"><button type="button" class="mini" id="tourCopy">Copiar resultado</button><button type="button" class="mini" id="tourAgain">Novo torneio</button></div>` : ""}
+    <p class="cp-note">Toque numa luta pra ver o que a IA disse. É só brincadeira de fã.</p>`;
+  if (champ) {
+    $("tourCopy").onclick = async () => {
+      const lines = T.rounds.map((r) => `${ROUND_NAMES[r.length]}: ${r.map((m) => `${m.a.name} x ${m.b.name} → ${m.winner?.name}`).join(" | ")}`);
+      try { await navigator.clipboard.writeText(`🏆 Torneio no Detetive Anime\n${lines.join("\n")}\nCampeão: ${champ.name} 👑`); toast("Resultado copiado!"); } catch { toast("Não consegui copiar."); }
+    };
+    $("tourAgain").onclick = () => { T.rounds = null; $("tourOut").innerHTML = ""; drawTour(); $("vsTour").scrollIntoView({ behavior: RM() ? "auto" : "smooth" }); };
+  }
+}
+$("tourOut").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-m]"); if (!b) return;
+  const [r, i] = b.dataset.m.split("-").map(Number), m = T.rounds?.[r]?.[i];
+  if (!m?.winner) return;
+  const d = m.d;
+  $("tourDetail").innerHTML = `<div class="vs-res"><div class="vs-banner"><h3>${esc(m.winner.name)} vence ${esc((m.winner.id === m.a.id ? m.b : m.a).name)}</h3><p>${d ? `${esc(d.manchete || "")}${d.manchete ? " · " : ""}${d.confianca}% de certeza` : "A IA não respondeu nessa luta, então o vencedor foi sorteado."}</p></div>
+    ${d?.explicacao ? `<p class="cp-text">${esc(d.explicacao)}</p>` : ""}${d?.momento_decisivo ? `<div class="vs-key"><b>Momento decisivo:</b> ${esc(d.momento_decisivo)}</div>` : ""}</div>`;
+  $("tourDetail").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "nearest" });
+});
+async function play(m) {
+  m.live = true;
+  for (let tries = 0; tries < 2 && !m.winner; tries++) {
+    try {
+      const d = await fight(m.a.id, m.b.id);
+      const sum = (x) => Object.values(x.stats || {}).reduce((s, v) => s + v, 0);
+      m.d = d;
+      m.winner = d.vencedor === "a" ? m.a : d.vencedor === "b" ? m.b : sum(d.a) >= sum(d.b) ? m.a : m.b;
+    } catch {}
+  }
+  if (!m.winner) m.winner = Math.random() < 0.5 ? m.a : m.b;
+  m.live = false;
+  window.Conq?.event("luta");
+  drawBracket();
+}
+$("tourGo").onclick = async () => {
+  const n = T.chars.length;
+  if (!(n === 4 || n === 8) || T.running) return;
+  T.running = true; drawTour();
+  const seeds = [...T.chars].sort(() => Math.random() - 0.5);
+  const sizes = n === 8 ? [4, 2, 1] : [2, 1];
+  T.rounds = sizes.map((k) => Array.from({ length: k }, () => ({ a: null, b: null })));
+  T.rounds[0].forEach((m, i) => { m.a = seeds[i * 2]; m.b = seeds[i * 2 + 1]; });
+  drawBracket();
+  $("tourOut").scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" });
+  for (let r = 0; r < T.rounds.length; r++) {
+    T.rounds[r].forEach((m) => { m.live = true; });
+    drawBracket();
+    await Promise.all(T.rounds[r].map(play));
+    if (r + 1 < T.rounds.length) T.rounds[r + 1].forEach((m, i) => { m.a = T.rounds[r][i * 2].winner; m.b = T.rounds[r][i * 2 + 1].winner; });
+  }
+  const champ = T.rounds.at(-1)[0].winner;
+  T.running = false; drawTour(); drawBracket(champ);
+  Sfx.play("recorde"); toast(`👑 ${champ.name} é o campeão!`);
+};
+
+// ---------- Ranking da comunidade (em Tendências)
+const CIDKEY = "achei-o-anime:cliente", SENTKEY = "achei-o-anime:ranking-enviado";
+const clientId = () => {
+  try {
+    let id = localStorage.getItem(CIDKEY);
+    if (!id) { id = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => (b % 36).toString(36)).join(""); localStorage.setItem(CIDKEY, id); }
+    return id;
+  } catch { return "anonimo" + Math.random().toString(36).slice(2, 10); }
+};
+window.drawCommunity = (c) => {
+  const box = $("trComm");
+  const sent = (() => { try { return localStorage.getItem(SENTKEY); } catch { return null; } })();
+  $("crSend").firstElementChild.textContent = sent ? "Atualizar meu ranking" : "Enviar meu ranking";
+  if (c === null || c === undefined) { box.innerHTML = `<li class="empty">O ranking da comunidade ainda não está ligado no servidor.</li>`; $("crSend").hidden = true; return; }
+  $("crSend").hidden = false;
+  $("crHint").textContent = `O top 10 de todo mundo somado: 1º lugar vale 10 pontos, o 10º vale 1.${c.total ? ` ${c.total} ${c.total === 1 ? "ranking enviado" : "rankings enviados"} até agora.` : ""}`;
+  box.innerHTML = c.top.length ? c.top.map((x, i) => `<li><a class="tr-item" href="#personagem/${Number(x.id)}" style="--i:${i}"><span class="n">${i + 1}</span>${pic(x.image)}<span><b>${esc(x.name)}</b><small>${esc(x.anime)} · em ${x.listas} ${x.listas === 1 ? "ranking" : "rankings"}</small></span><span class="ct">${x.pontos} pts</span></a></li>`).join("")
+    : `<li class="empty">Ninguém mandou o ranking ainda. Monte o seu na aba Ranking e seja o primeiro!</li>`;
+};
+$("crSend").onclick = async () => {
+  const list = loadRank();
+  if (list.length < 3) { toast("Monte seu ranking com pelo menos 3 personagens na aba Ranking e Tier List."); return; }
+  const b = $("crSend"); b.disabled = true; b.firstElementChild.textContent = "Enviando…";
+  try {
+    const r = await api("/api/trends", { tipo: "ranking", cliente: clientId(), nomes: list.map((x) => ({ name: x.name, anime: x.anime || "" })) });
+    if (!r.ok) throw new Error("O ranking da comunidade ainda não está ligado.");
+    try { localStorage.setItem(SENTKEY, String(Date.now())); } catch {}
+    const miss = (r.achados || []).filter((a) => !a.id).map((a) => a.pedido);
+    $("crMsg").classList.remove("err");
+    $("crMsg").textContent = miss.length ? `Pronto! Só não achei: ${miss.join(", ")}.` : "Pronto! Seu ranking entrou na soma.";
+    Sfx.play("recorde");
+    window.reloadTrends?.();
+  } catch (err) { $("crMsg").textContent = err.message; $("crMsg").classList.add("err"); }
+  finally {
+    b.disabled = false;
+    const sent = (() => { try { return localStorage.getItem(SENTKEY); } catch { return null; } })();
+    b.firstElementChild.textContent = sent ? "Atualizar meu ranking" : "Enviar meu ranking";
+  }
+};
+
+const k0 = location.hash.slice(1);
+if (k0 === "assistir") showTab(k0);
+drawTour();
 })();
 </script>
 </body>

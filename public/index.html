@@ -922,6 +922,8 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 .cbg-pick input{position:absolute;opacity:0;width:1px;height:1px}
 .cbg-hint{margin:0;font-size:.8rem;color:var(--muted)}
 .cbg-hint.err{color:var(--warn)}
+.cbg-where{grid-template-columns:repeat(2,1fr)}
+.cbg-hint:empty{display:none}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1059,6 +1061,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
   window.Config = {
     get: () => cfg,
     effectsList: EFFECTS,
+    themes: THEMES,
     set(patch) { cfg = { ...cfg, ...patch }; save(cfg); apply(cfg); render(); },
     reset() { cfg = { ...DEFAULTS }; save(cfg); apply(cfg); render(); },
   };
@@ -1593,6 +1596,12 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
       <p class="cbg-hint" id="cbgMsg">Puxe uma imagem PNG ou JPG do seu computador ou celular. Ela fica salva só neste navegador.</p>
       <div id="cbgOpts" hidden>
         <label class="toggle"><input type="checkbox" id="cbgOn"> <span>Usar meu fundo</span></label>
+        <h3 class="sub-h">Mostrar em</h3>
+        <div class="seg cbg-where" id="cbgWhere" role="radiogroup" aria-label="Onde mostrar o fundo">
+          <button type="button" role="radio" data-w="todos">Todos os temas</button>
+          <button type="button" role="radio" data-w="tema" id="cbgWhereTheme">Só neste tema</button>
+        </div>
+        <p class="cbg-hint" id="cbgWhereHint"></p>
         <h3 class="sub-h">Escurecer <output id="cbgDimOut"></output></h3>
         <input type="range" id="cbgDim" min="0" max="85" step="5">
         <h3 class="sub-h">Desfocar <output id="cbgBlurOut"></output></h3>
@@ -3792,7 +3801,9 @@ drawTour();
   const msg = (t, err) => { $("cbgMsg").textContent = t; $("cbgMsg").classList.toggle("err", Boolean(err)); };
 
   function paint() {
-    const c = cfg(), on = Boolean(url) && c.cbgOn !== false;
+    const c = cfg();
+    const only = c.cbgTheme || null, themeName = (k) => window.Config.themes?.[k]?.name || k;
+    const on = Boolean(url) && c.cbgOn !== false && (!only || only === c.theme);
     const dim = c.cbgDim ?? 40, blur = c.cbgBlur ?? 0;
     const el = $("customBg");
     el.style.backgroundImage = url ? `url("${url}")` : "";
@@ -3804,6 +3815,9 @@ drawTour();
     $("cbgDel").hidden = !url; $("cbgOpts").hidden = !url;
     $("cbgOn").checked = on; $("cbgDim").value = dim; $("cbgBlur").value = blur;
     $("cbgDimOut").textContent = dim + "%"; $("cbgBlurOut").textContent = blur + "px";
+    document.querySelectorAll("#cbgWhere [data-w]").forEach((b) => b.setAttribute("aria-checked", String((b.dataset.w === "tema") === Boolean(only))));
+    $("cbgWhereTheme").textContent = only ? `Só no ${themeName(only)}` : `Só no ${themeName(c.theme)}`;
+    $("cbgWhereHint").textContent = only ? (only === c.theme ? `Seu fundo aparece só quando o tema ${themeName(only)} está ligado.` : `Seu fundo está guardado pro tema ${themeName(only)}. Escolha esse tema pra ver.`) : "";
   }
   // Reduz a imagem (até 1920px) pra caber bem no navegador; WebP mantém a transparência do PNG
   async function shrinkBg(file) {
@@ -3833,6 +3847,7 @@ drawTour();
   };
   $("cbgDel").onclick = async () => { await delImg(); if (url) URL.revokeObjectURL(url); url = null; msg("Fundo removido. O tema voltou ao normal."); paint(); };
   $("cbgOn").onchange = (e) => window.Config.set({ cbgOn: e.target.checked });
+  $("cbgWhere").onclick = (e) => { const b = e.target.closest("[data-w]"); if (!b) return; window.Config.set({ cbgTheme: b.dataset.w === "tema" ? cfg().theme : null, cbgOn: true }); };
   $("cbgDim").oninput = (e) => window.Config.set({ cbgDim: Number(e.target.value) });
   $("cbgBlur").oninput = (e) => window.Config.set({ cbgBlur: Number(e.target.value) });
   addEventListener("config", paint);

@@ -905,6 +905,23 @@ footer{gap:6px}
 .champ small{color:var(--muted)}
 .tour-detail{margin-top:16px}
 @media (max-width:760px){.bracket{grid-template-columns:1fr}.round{height:auto}.tour-chips{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---------- Fundo personalizado (imagem do próprio visitante) */
+.custom-bg{display:none;position:fixed;inset:-30px;z-index:0;pointer-events:none;background-size:cover;background-position:center;
+  filter:blur(var(--cbg-blur,0px)) brightness(var(--cbg-bright,.6));animation:bgIn .6s ease both}
+html.has-cbg .custom-bg{display:block}
+html.has-cbg .domain{display:none!important}
+html.has-cbg .aurora i{opacity:.12}
+html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
+.cbg-box{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center}
+.cbg-prev{width:120px;aspect-ratio:16/10;border-radius:12px;border:1px dashed var(--line-strong);background:var(--surface-2) center/cover no-repeat;display:grid;place-items:center;font-size:.72rem;color:var(--muted);text-align:center;overflow:hidden}
+.cbg-prev.has span{display:none}
+.cbg-prev.has{border-style:solid}
+.cbg-acts{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.cbg-pick{cursor:pointer}
+.cbg-pick input{position:absolute;opacity:0;width:1px;height:1px}
+.cbg-hint{margin:0;font-size:.8rem;color:var(--muted)}
+.cbg-hint.err{color:var(--warn)}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1203,6 +1220,7 @@ footer{gap:6px}
 <path d="M0 700 L260 640 L520 690 L800 630 L1080 690 L1360 640 L1600 680 L1600 900 L0 900 Z" fill="#070A12"/>
 <g fill="#03050A"><path d="M1270 700 C1268 640 1262 600 1250 560 L1258 558 C1272 600 1280 640 1282 700 Z"/><path d="M1252 590 C1220 570 1200 560 1176 548 L1180 542 C1206 552 1230 562 1256 580 Z"/><path d="M1262 610 C1296 590 1316 584 1344 572 L1346 578 C1320 590 1298 600 1266 620 Z"/><ellipse cx="1250" cy="540" rx="70" ry="38"/><ellipse cx="1300" cy="560" rx="60" ry="30"/><ellipse cx="1190" cy="546" rx="46" ry="24"/></g>
 </svg></div>
+<div class="custom-bg" id="customBg" aria-hidden="true"></div>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <button class="menu-btn" id="openMenu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
@@ -1561,6 +1579,25 @@ footer{gap:6px}
       <h3 class="sub-h">Quantidade <output id="amountOut"></output></h3>
       <input type="range" id="amount" min="10" max="100" step="5">
       <label class="toggle"><input type="checkbox" id="aurora"> <span>Fundo animado</span></label>
+    </section>
+
+    <section class="s-group">
+      <h3>Fundo personalizado</h3>
+      <div class="cbg-box">
+        <div class="cbg-prev" id="cbgPrev" aria-hidden="true"><span>Nenhuma imagem</span></div>
+        <div class="cbg-acts">
+          <label class="mini cbg-pick"><input type="file" id="cbgFile" accept="image/png,image/jpeg,image/webp,image/gif"> Escolher imagem</label>
+          <button type="button" class="ghost" id="cbgDel" hidden>Remover</button>
+        </div>
+      </div>
+      <p class="cbg-hint" id="cbgMsg">Puxe uma imagem PNG ou JPG do seu computador ou celular. Ela fica salva só neste navegador.</p>
+      <div id="cbgOpts" hidden>
+        <label class="toggle"><input type="checkbox" id="cbgOn"> <span>Usar meu fundo</span></label>
+        <h3 class="sub-h">Escurecer <output id="cbgDimOut"></output></h3>
+        <input type="range" id="cbgDim" min="0" max="85" step="5">
+        <h3 class="sub-h">Desfocar <output id="cbgBlurOut"></output></h3>
+        <input type="range" id="cbgBlur" min="0" max="20" step="1">
+      </div>
     </section>
 
     <section class="s-group">
@@ -3739,6 +3776,67 @@ $("crSend").onclick = async () => {
 const k0 = location.hash.slice(1);
 if (k0 === "assistir") showTab(k0);
 drawTour();
+})();
+</script>
+<script>
+// ---------- Fundo personalizado: a imagem fica guardada no próprio navegador (IndexedDB), nunca vai pro servidor
+(() => {
+  const DB = "detetive-anime", ST = "fundo";
+  const open = () => new Promise((res, rej) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(ST); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+  async function idb(mode, fn) { const db = await open(); return new Promise((res, rej) => { const tx = db.transaction(ST, mode); const q = fn(tx.objectStore(ST)); tx.oncomplete = () => res(q?.result); tx.onerror = () => rej(tx.error); }); }
+  const getImg = () => idb("readonly", (s) => s.get("img")).catch(() => null);
+  const putImg = (blob) => idb("readwrite", (s) => s.put(blob, "img"));
+  const delImg = () => idb("readwrite", (s) => s.delete("img")).catch(() => {});
+  let url = null;
+  const cfg = () => window.Config.get();
+  const msg = (t, err) => { $("cbgMsg").textContent = t; $("cbgMsg").classList.toggle("err", Boolean(err)); };
+
+  function paint() {
+    const c = cfg(), on = Boolean(url) && c.cbgOn !== false;
+    const dim = c.cbgDim ?? 40, blur = c.cbgBlur ?? 0;
+    const el = $("customBg");
+    el.style.backgroundImage = url ? `url("${url}")` : "";
+    el.style.setProperty("--cbg-bright", String(1 - dim / 100));
+    el.style.setProperty("--cbg-blur", blur + "px");
+    document.documentElement.classList.toggle("has-cbg", on);
+    $("cbgPrev").style.backgroundImage = url ? `url("${url}")` : "";
+    $("cbgPrev").classList.toggle("has", Boolean(url));
+    $("cbgDel").hidden = !url; $("cbgOpts").hidden = !url;
+    $("cbgOn").checked = on; $("cbgDim").value = dim; $("cbgBlur").value = blur;
+    $("cbgDimOut").textContent = dim + "%"; $("cbgBlurOut").textContent = blur + "px";
+  }
+  // Reduz a imagem (até 1920px) pra caber bem no navegador; WebP mantém a transparência do PNG
+  async function shrinkBg(file) {
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, 1920 / Math.max(bmp.width, bmp.height));
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+    cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+    return new Promise((r) => cv.toBlob((b) => r(b || file), "image/webp", 0.86));
+  }
+  $("cbgFile").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    if (!/^image\/(png|jpeg|webp|gif)$/.test(f.type)) { msg("Escolha uma imagem PNG, JPG, WebP ou GIF.", true); return; }
+    if (f.size > 25 * 1024 * 1024) { msg("Essa imagem é grande demais (máximo 25 MB).", true); return; }
+    msg("Preparando a imagem…");
+    try {
+      const blob = await shrinkBg(f);
+      await putImg(blob);
+      if (url) URL.revokeObjectURL(url);
+      url = URL.createObjectURL(blob);
+      window.Config.set({ cbgOn: true });
+      msg("Pronto! Esse é o seu fundo agora. Ele fica salvo só neste navegador.");
+      window.Sfx?.play("plim");
+    } catch { msg("Não consegui usar essa imagem. Tente outra.", true); }
+    paint();
+  };
+  $("cbgDel").onclick = async () => { await delImg(); if (url) URL.revokeObjectURL(url); url = null; msg("Fundo removido. O tema voltou ao normal."); paint(); };
+  $("cbgOn").onchange = (e) => window.Config.set({ cbgOn: e.target.checked });
+  $("cbgDim").oninput = (e) => window.Config.set({ cbgDim: Number(e.target.value) });
+  $("cbgBlur").oninput = (e) => window.Config.set({ cbgBlur: Number(e.target.value) });
+  addEventListener("config", paint);
+  getImg().then((b) => { if (b) url = URL.createObjectURL(b); paint(); });
 })();
 </script>
 </body>

@@ -20,7 +20,7 @@ Site onde você descreve o personagem (ou envia um print da cena) e descobre de 
 - **Teste**: "Qual personagem você é?" com 8 perguntas.
 - **Ranking e Tier List**: monte o seu top 10 e a sua tier list S, A, B, C e D.
 - **Favoritos** e **Últimas buscas**.
-- **Configurações**: temas de cores (Corte Carmesim, Vazio Infinito, Cachoeira, Neon na chuva e Tempestade têm cenário de fundo), modo claro/escuro, fontes, 15 efeitos de fundo e sons.
+- **Configurações**: fundo personalizado com uma imagem sua, temas de cores (Corte Carmesim, Vazio Infinito, Cachoeira, Neon na chuva e Tempestade têm cenário de fundo), modo claro/escuro, fontes, 15 efeitos de fundo e sons.
 
 Só aparecem plataformas oficiais. Conteúdo adulto é filtrado.
 

@@ -175,6 +175,9 @@ textarea::placeholder{color:var(--muted);opacity:.7}
   background:var(--surface-2);border:1px solid var(--line);transition:all .18s}
 .plat:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 8px 20px -10px var(--glow)}
 .plat img{width:22px;height:22px;border-radius:6px}
+.plat .pico{background:#fff;padding:2px;object-fit:contain}
+.ep .t .pl a{display:inline-flex;align-items:center;gap:5px}
+.ep .t .pl .pico,.ep .t .pl .dot{width:14px;height:14px;border-radius:4px;background:#fff;padding:1px;font-size:.6rem;display:grid;place-items:center}
 .plat .dot{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:.72rem;font-weight:700;color:var(--accent-ink);background:var(--grad)}
 .plat small{color:var(--muted);font-weight:400}
 .plat .free{font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--good,#2FD47C);color:#06210F}
@@ -1744,6 +1747,17 @@ async function shrink(file) {
   return { base64: btoa(bin), mediaType: "image/jpeg" };
 }
 
+// Ícone oficial de cada plataforma: o próprio favicon do site dela (via serviço de ícones do Google).
+const PLAT_HOST = { "Crunchyroll": "crunchyroll.com", "Netflix": "netflix.com", "Prime Video": "primevideo.com", "Disney+": "disneyplus.com", "Max": "max.com", "Globoplay": "globoplay.globo.com", "Pluto TV": "pluto.tv", "HIDIVE": "hidive.com", "YouTube": "youtube.com", "Hulu": "hulu.com", "Bilibili TV": "bilibili.tv", "iQ": "iq.com", "WeTV": "wetv.vip", "Tubi TV": "tubitv.com", "Apple TV": "tv.apple.com", "Hoopla": "hoopladigital.com" };
+function platIcon(name, url) {
+  let host = PLAT_HOST[name];
+  if (!host) { try { host = new URL(url).hostname.replace(/^www\./, ""); } catch { host = ""; } }
+  const dot = `<span class="dot">${esc((name || "?")[0])}</span>`;
+  if (!host) return dot;
+  return `<img class="pico" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'dot',textContent:${JSON.stringify((name || "?")[0]).replace(/"/g, "&quot;")}}))">`;
+}
+window.platIcon = platIcon;
+
 function platformLinks(r) {
   const q = encodeURIComponent(r.anime.romaji || r.anime.title || "");
   const tm = r.watch?.tmdb;
@@ -1754,7 +1768,7 @@ function platformLinks(r) {
     const official = [...(r.watch?.official || [])].sort((x, y) => (y.name === "Pluto TV") - (x.name === "Pluto TV"));
     for (const l of official) {
       const c = BRAND[l.name];
-      out.push(`<a class="plat${c ? " brand" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener"${c ? ` style="--brand:${c}"` : ""}><span class="dot">${esc(l.name[0])}</span>${esc(l.name)}${l.name === "Pluto TV" ? ` <small class="free">grátis</small>` : ""}</a>`);
+      out.push(`<a class="plat${c ? " brand" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener"${c ? ` style="--brand:${c}"` : ""}>${platIcon(l.name, l.url)}${esc(l.name)}${l.name === "Pluto TV" ? ` <small class="free">grátis</small>` : ""}</a>`);
     }
   }
   out.push(`<a class="plat alt" href="https://www.justwatch.com/br/busca?q=${q}" target="_blank" rel="noopener">Ver todas no JustWatch →</a>`);
@@ -3076,7 +3090,7 @@ function drawCal() {
       <span class="t">${last ? `<span class="new">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : ""}
         <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
         <small>Episódio ${e.ep}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
-        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name)}</a>`).join("")}</span>` : ""}</span>
+        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}</span>
       <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button></div>`;
   }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;
   drawNext();

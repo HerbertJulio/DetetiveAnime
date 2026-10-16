@@ -775,7 +775,7 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .ep .t small{color:var(--muted);font-size:.84em}
 .ep .t .pl{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .ep .t .pl a{font-size:.74em;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
-.ep .new{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#2FD47C;color:#06210F;align-self:flex-start}
+.ep .new,.ep-card .new{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#2FD47C;color:#06210F;align-self:flex-start}
 .follow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:1.2rem;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);transition:transform .15s,border-color .15s}
 .follow:hover{transform:scale(1.08);border-color:var(--accent)}
 .follow[aria-pressed="true"]{color:var(--accent-2);border-color:var(--accent-2)}
@@ -1335,6 +1335,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 .ec-eps b{font-weight:700}
 .ec-eps em{font:400 .7rem var(--mono);font-style:normal;color:var(--muted)}
 .ec-eps .out{opacity:.55}
+.ec-eps .rg{flex-direction:column;align-items:flex-start;gap:1px;white-space:nowrap}
 @media (prefers-reduced-motion:reduce){.ec-layer{transition:none}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
@@ -1651,7 +1652,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
     // Calendário
     "Calendário da temporada": "Season calendar", "Hoje": "Today", "Amanhã": "Tomorrow", "Dom": "Sun", "Seg": "Mon", "Ter": "Tue", "Qua": "Wed", "Qui": "Thu", "Sex": "Fri", "Sáb": "Sat",
     "Só os que eu acompanho": "Only the ones I follow", "Mostrar também os menos conhecidos": "Also show lesser-known ones", "já saiu": "aired", "estreia": "premiere",
-    "último episódio": "final episode", "Dias da semana": "Days of the week", "Nenhum episódio nesse dia.": "No episodes on this day.",
+    "temporada completa": "full season", "último episódio": "final episode", "Dias da semana": "Days of the week", "Nenhum episódio nesse dia.": "No episodes on this day.",
     "Nenhum anime que você acompanha sai nesse dia.": "None of the anime you follow air on this day.", "Sem episódio nesta semana": "No episode this week",
     "Horários de Brasília, segundo o AniList. O episódio pode chegar nas plataformas brasileiras algumas horas depois.": "Times are Brasília time (UTC−3), from AniList. Episodes may reach streaming services a few hours later.",
     "Toque na ☆ de um anime pra acompanhar. A contagem regressiva do próximo episódio aparece aqui.": "Tap the ☆ on an anime to follow it. The countdown to the next episode shows up here.",
@@ -1784,6 +1785,8 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
     [/^(\d+) episódios esta semana$/, (m, n) => `${n} episodes this week`],
     [/^semana (\d+) de (\d+)$/, (m, a, b) => `week ${a} of ${b}`],
     [/^(\d+) (visita|visitas)$/, (m, n) => `${n} visit${n === "1" ? "" : "s"}`],
+    [/^Episódios (\d+) a (\d+)(?: de (\d+))?(.*)$/, (m, a, b, t, r) => `Episodes ${a} to ${b}${t ? ` of ${t}` : ""}${r.replace(" · filme", " · movie")}`],
+    [/^Ep\. (\d+) a (\d+)$/, (m, a, b) => `Ep. ${a} to ${b}`], [/^todos às (.+)$/, (m, t) => `all at ${t}`], [/^(.+) até (.+)$/, (m, a, b) => `${a} to ${b}`], [/^(\d+) episódios$/, (m, n) => `${n} episodes`],
     [/^Episódio (\d+) de (\d+)(.*)$/, (m, a, b, r) => `Episode ${a} of ${b}${r.replace(" · filme", " · movie")}`],
     [/^Episódio (\d+)(.*)$/, (m, a, r) => `Episode ${a}${r.replace(" · filme", " · movie")}`],
     [/^Episódio (\d+) sai (\S+), (.+)$/, (m, a, d, t) => `Episode ${a} airs ${WEEK[d] || d}, ${t}`],
@@ -4278,10 +4281,11 @@ function drawCal() {
   // Episódios do mesmo anime no mesmo dia viram um "baralho"
   const groups = [];
   for (const e of today) { const g = groups.find((x) => x[0].id === e.id); if (g) g.push(e); else groups.push([e]); }
+  groups.forEach((g) => g.sort((x, y) => x.at - y.at || x.ep - y.ep));
   $("calList").innerHTML = today.length ? groups.map((g, i) => {
     const e = g[0], deck = g.length > 1, lastEp = g[g.length - 1];
     const past = (deck ? lastEp.at : e.at) <= now, last = e.total && lastEp.ep === e.total;
-    const badge = last ? `<span class="new fin">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : "";
+    const badge = deck && e.ep === 1 && last ? `<span class="new fin">temporada completa</span>` : last ? `<span class="new fin">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : "";
     const color = /^#[0-9a-f]{6}$/i.test(e.color || "") ? e.color : "var(--accent)";
     const nextEp = g.find((x) => x.at > now) || lastEp;
     return `<article class="ep-card${deck ? " deck" : ""}${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i};--c:${color}">
@@ -4295,7 +4299,12 @@ function drawCal() {
         <a class="ec-title" href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
         <small class="ec-ep">${deck ? `Episódios ${e.ep} a ${lastEp.ep}` : `Episódio ${e.ep}`}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
         ${e.total ? `<span class="ec-prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round((lastEp.ep / e.total) * 100))}%"></i></span>` : ""}
-        ${deck ? `<span class="ec-eps">${g.map((x) => `<span class="${x.at <= now ? "out" : ""}"><b>Ep. ${x.ep}</b><em>${hhmm(x.at)}</em></span>`).join("")}</span>` : ""}
+        ${deck ? (() => {
+          // Muitos episódios de uma vez (ex.: temporada inteira) viram um resumo "1 a 13"
+          const sameTime = g.every((x) => Math.abs(x.at - e.at) < 120);
+          if (g.length > 3 || sameTime) return `<span class="ec-eps"><span class="rg${past ? " out" : ""}"><b>Ep. ${e.ep} a ${lastEp.ep}</b><em>${sameTime ? `todos às ${hhmm(e.at)}` : `${hhmm(e.at)} até ${hhmm(lastEp.at)}`}</em></span></span>`;
+          return `<span class="ec-eps">${g.map((x) => `<span class="${x.at <= now ? "out" : ""}"><b>Ep. ${x.ep}</b><em>${hhmm(x.at)}</em></span>`).join("")}</span>`;
+        })() : ""}
         ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}
       </div></article>`;
   }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;

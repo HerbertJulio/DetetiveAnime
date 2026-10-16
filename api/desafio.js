@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { popularCharacterIds, challengeCharacter } from "../lib/anilist.js";
 import { readBody } from "../lib/common.js";
 import { withLang, currentLang } from "../lib/lang.js";
@@ -60,6 +61,11 @@ export function hints(a, tentativa, lang = "pt") {
 
 const flat = (c) => ({ id: c.id, name: c.name, image: c.image, anime: c.anime?.title || "", genres: c.anime?.genres || [], gender: c.gender, age: c.age, year: c.anime?.year || null, favourites: c.favourites });
 
+// "Prova" assinada de quantas tentativas a pessoa já fez hoje. Sem ela, não dá pra pular direto pra 6ª e ver a resposta.
+const SECRET = () => process.env.DESAFIO_SECRET || process.env.HASH_SALT || process.env.BLOB_READ_WRITE_TOKEN || process.env.GEMINI_API_KEY || "detetive";
+export const prova = (dia, n) => createHmac("sha256", SECRET()).update(`${dia}:${n}`).digest("hex").slice(0, 24);
+const provaOk = (dia, n, p) => { const a = Buffer.from(prova(dia, n)), b = Buffer.from(String(p || "")); return a.length === b.length && timingSafeEqual(a, b); };
+
 export default withLang(async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return res.status(405).json({ error: "Use POST." }); }
@@ -74,10 +80,13 @@ export default withLang(async function handler(req, res) {
     if (!Number.isInteger(id) || id <= 0) return res.status(400).json({ error: "Escolha um personagem." });
     const g = id === a.id ? a : await challengeCharacter(id);
     if (!g) return res.status(404).json({ error: "Não encontrei esse personagem." });
-    const tentativa = Math.max(1, Math.min(MAX, Number(b.tentativa) || 1));
+    let tentativa = Math.max(1, Math.min(MAX, Number(b.tentativa) || 1));
+    if (tentativa > 1 && !provaOk(key, tentativa - 1, b.prova)) tentativa = 1;
     const acertou = g.id === a.id;
     return res.status(200).json({
       numero,
+      tentativa,
+      prova: prova(key, tentativa),
       acertou,
       palpite: flat(g),
       comparacao: compare(g, a),

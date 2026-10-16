@@ -1,10 +1,13 @@
-import { charactersByIds, trendingCharacters, liteCard, searchMany, normalize, titleMatches } from "../lib/anilist.js";
-import { trendsEnabled, recordView, topIds, weekKey, saveRanking, communityRanking } from "../lib/trends.js";
+import { safeChar, charactersByIds, trendingCharacters, liteCard, searchMany, normalize, titleMatches } from "../lib/anilist.js";
+import { trendsEnabled, visitor, recordView, topIds, weekKey, saveRanking, communityRanking } from "../lib/trends.js";
 import { readBody } from "../lib/common.js";
 
 // GET: os mais procurados da semana aqui no site + os personagens dos animes em alta no mundo.
 // POST {id}: conta uma visita a um personagem.
-export default async function handler(req, res) {
+import { withLang } from "../lib/lang.js";
+
+export default withLang(handler);
+async function handler(req, res) {
   try {
     if (req.method === "POST" && readBody(req).tipo === "ranking") return await postRanking(req, res);
     if (req.method === "POST") {
@@ -12,7 +15,7 @@ export default async function handler(req, res) {
       if (!Number.isInteger(id) || id <= 0 || id > 1e8) return res.status(400).json({ error: "Personagem inválido." });
       res.setHeader("Cache-Control", "no-store");
       if (!trendsEnabled()) return res.status(200).json({ ok: false });
-      await recordView(id);
+      await recordView(id, visitor(req));
       return res.status(200).json({ ok: true });
     }
     if (req.method !== "GET") { res.setHeader("Allow", "GET, POST"); return res.status(405).json({ error: "Use GET ou POST." }); }
@@ -25,7 +28,7 @@ export default async function handler(req, res) {
           if (!top.length) return [];
           const chars = await charactersByIds(top.map((t) => t.id));
           const byId = new Map(chars.map((c) => [c.id, c]));
-          return top.filter((t) => byId.has(t.id)).map((t) => liteCard(byId.get(t.id), { count: t.count }));
+          return top.filter((t) => byId.has(t.id) && safeChar(byId.get(t.id))).map((t) => liteCard(byId.get(t.id), { count: t.count }));
         } catch (e) { console.error("Tendências:", e.message); return null; }
       })(),
       trendingCharacters().then((l) => l.map(({ c, anime, animeId }) => ({ ...liteCard(c), anime, animeId }))).catch(() => []),
@@ -36,7 +39,7 @@ export default async function handler(req, res) {
           if (!top.length) return { total, top: [] };
           const chars = await charactersByIds(top.map((t) => t.id));
           const byId = new Map(chars.map((c) => [c.id, c]));
-          return { total, top: top.filter((t) => byId.has(t.id)).map((t) => liteCard(byId.get(t.id), { pontos: t.pontos, listas: t.listas })) };
+          return { total, top: top.filter((t) => byId.has(t.id) && safeChar(byId.get(t.id))).map((t) => liteCard(byId.get(t.id), { pontos: t.pontos, listas: t.listas })) };
         } catch (e) { console.error("Ranking da comunidade:", e.message); return null; }
       })(),
     ]);
@@ -52,11 +55,12 @@ export default async function handler(req, res) {
 // Recebe o top 10 de um navegador (nomes digitados pela pessoa) e acha cada personagem no AniList.
 export function pickCharacter(list, name, anime) {
   const n = normalize(name);
-  const named = list.filter((c) => [c.name?.full, ...(c.name?.alternative || [])].some((x) => {
+  const safe = list.filter(safeChar);
+  const named = safe.filter((c) => [c.name?.full, ...(c.name?.alternative || [])].some((x) => {
     const t = normalize(x);
     return t && (t.includes(n) || n.split(" ").every((w) => t.split(" ").some((p) => p.startsWith(w))));
   }));
-  const pool = named.length ? named : list;
+  const pool = named.length ? named : safe;
   return (anime && pool.find((c) => (c.media?.nodes || []).some((m) => !m.isAdult && titleMatches(m, anime))))
     || [...pool].sort((a, b) => (b.favourites || 0) - (a.favourites || 0))[0] || null;
 }
@@ -64,8 +68,8 @@ export function pickCharacter(list, name, anime) {
 async function postRanking(req, res) {
   res.setHeader("Cache-Control", "no-store");
   const b = readBody(req);
-  const client = String(b.cliente || "");
-  if (!/^[a-z0-9]{8,40}$/i.test(client)) return res.status(400).json({ error: "Navegador inválido." });
+  // Um ranking por pessoa (pelo hash do IP), pra ninguém encher o ranking com várias listas.
+  const client = visitor(req);
   const nomes = (Array.isArray(b.nomes) ? b.nomes : []).slice(0, 10).map((x) => ({ name: String(x?.name || "").trim().slice(0, 40), anime: String(x?.anime || "").trim().slice(0, 40) })).filter((x) => x.name);
   if (nomes.length < 3) return res.status(400).json({ error: "Coloque pelo menos 3 personagens no seu ranking." });
   if (!trendsEnabled()) return res.status(200).json({ ok: false });

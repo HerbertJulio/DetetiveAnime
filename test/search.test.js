@@ -71,7 +71,7 @@ test("busca por print sem chaves configuradas", async () => {
   ]);
   const { default: handler } = await import("../api/search.js");
   const res = fakeRes();
-  await handler({ method: "POST", body: { image: { base64: Buffer.from("img").toString("base64"), mediaType: "image/jpeg" } } }, res);
+  await handler({ method: "POST", body: { image: { base64: Buffer.concat([Buffer.from([0xff,0xd8,0xff,0xe0]), Buffer.alloc(16)]).toString("base64"), mediaType: "image/jpeg" } } }, res);
   assert.equal(res.code, 200);
   const r = res.body.results[0];
   assert.equal(r.source, "print");

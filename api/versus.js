@@ -1,7 +1,7 @@
 import { charactersByIds, liteCard } from "../lib/anilist.js";
 import { askJson } from "../lib/ai.js";
 import { route, clip, needAi, readBody } from "../lib/common.js";
-import { trendsEnabled, recordVote, countVotes } from "../lib/trends.js";
+import { trendsEnabled, visitor, recordVote, countVotes } from "../lib/trends.js";
 import { withLang } from "../lib/lang.js";
 
 const STATS = ["forca", "velocidade", "inteligencia", "tecnica", "resistencia"];
@@ -12,14 +12,14 @@ const okIds = (a, b) => Number.isInteger(a) && Number.isInteger(b) && a > 0 && b
 
 // Votação dos fãs: GET ?a&b&votos=1 mostra o placar; POST {a, b, voto} registra um voto.
 async function votes(req, res) {
-  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Cache-Control", req.method === "POST" ? "no-store" : "public, s-maxage=30, stale-while-revalidate=60");
   const [a, b] = req.method === "POST" ? ids(readBody(req)) : ids(req.query);
   if (!okIds(a, b)) return res.status(400).json({ error: "Luta inválida." });
   if (!trendsEnabled()) return res.status(200).json({ ligado: false, votos: { [a]: 0, [b]: 0 } });
   if (req.method === "POST") {
     const v = Number(readBody(req).voto);
     if (v !== a && v !== b) return res.status(400).json({ error: "Voto inválido." });
-    await recordVote(a, b, v);
+    await recordVote(a, b, v, visitor(req));
   }
   return res.status(200).json({ ligado: true, votos: await countVotes(a, b) });
 }

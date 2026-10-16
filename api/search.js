@@ -6,6 +6,14 @@ import { guessCharacters, aiEnabled } from "../lib/ai.js";
 const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
+// Confere os primeiros bytes do arquivo pra ter certeza de que é mesmo JPG, PNG ou WebP.
+export function isImage(b) {
+  if (b.length < 12) return false;
+  if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return true;
+  if (b.readUInt32BE(0) === 0x89504e47) return true;
+  return b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP";
+}
+
 function mediaCard(media, fallbackName) {
   if (!media) return { id: null, title: fallbackName || "", romaji: fallbackName || "", native: null, cover: null, url: null, format: null };
   return {
@@ -27,7 +35,7 @@ async function handler(req, res) {
     return await search(req, res);
   } catch (err) {
     console.error("Falha na busca:", err);
-    return res.status(500).json({ error: `Erro no servidor: ${err.message}` });
+    return res.status(500).json({ error: "Algo deu errado no servidor. Tente de novo." });
   }
 }
 
@@ -44,6 +52,7 @@ async function search(req, res) {
     if (!IMAGE_TYPES.includes(body.image.mediaType)) return res.status(400).json({ error: "Envie o print em JPG, PNG ou WebP." });
     const buffer = Buffer.from(body.image.base64, "base64");
     if (buffer.length > MAX_IMAGE_BYTES) return res.status(413).json({ error: "O print é grande demais. Tente uma imagem menor." });
+    if (!isImage(buffer)) return res.status(400).json({ error: "Esse arquivo não parece uma imagem. Envie um print em JPG, PNG ou WebP." });
     image = { base64: body.image.base64, mediaType: body.image.mediaType, buffer };
   }
   if (!description && !image) return res.status(400).json({ error: "Descreva o personagem ou envie um print." });

@@ -74,3 +74,16 @@ Testes: `npm test`
 ## Créditos dos dados
 
 Personagens, fotos e aniversários: [AniList](https://anilist.co). Busca por cena: [trace.moe](https://trace.moe). Onde assistir: [JustWatch](https://www.justwatch.com/br) via [TMDB](https://www.themoviedb.org). O crédito ao JustWatch é exigido pelo TMDB e precisa continuar no rodapé.
+
+## Segurança
+
+- Cada pessoa (pelo hash do IP, o IP nunca é guardado) conta 1 visita por personagem por semana, tem 1 voto por luta e 1 ranking na comunidade.
+- Personagens de obras adultas nunca aparecem nas tendências nem no ranking.
+- O Desafio do dia usa uma prova assinada das tentativas, então não dá pra pular pra resposta.
+- Cada IP pode fazer até 90 pedidos por minuto na API.
+- O site manda cabeçalhos de segurança (CSP, nosniff, HSTS, sem iframe de outros sites).
+- O print enviado é conferido pelos primeiros bytes (JPG, PNG ou WebP).
+
+## Voltar para a versão antiga
+
+A versão antes da nova home está guardada no branch `versao-antes-da-home`.

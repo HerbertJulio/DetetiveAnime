@@ -184,13 +184,17 @@ test("calendário traz os episódios da semana sem conteúdo adulto", async () =
 
 test("votação dos fãs conta os votos de cada lado", async () => {
   process.env.BLOB_READ_WRITE_TOKEN = "x";
-  const saved = [];
-  globalThis.__blobMock = { put: async (p) => { saved.push(p); }, list: async ({ prefix }) => ({ blobs: saved.filter((p) => p.startsWith(prefix)).map((pathname) => ({ pathname })), hasMore: false }) };
+  let saved = [];
+  globalThis.__blobMock = { put: async (p) => { if (!saved.includes(p)) saved.push(p); }, del: async (urls) => { saved = saved.filter((p) => !urls.includes("u:" + p)); },
+    list: async ({ prefix }) => ({ blobs: saved.filter((p) => p.startsWith(prefix)).map((pathname) => ({ pathname, url: "u:" + pathname })), hasMore: false }) };
   const { default: handler } = await import("../api/versus.js");
-  for (const voto of [7, 7, 3]) await handler({ method: "POST", query: {}, body: { a: 7, b: 3, voto } }, fakeRes());
+  const vote = (ip, voto) => handler({ method: "POST", query: {}, headers: { "x-real-ip": ip }, body: { a: 7, b: 3, voto } }, fakeRes());
+  await vote("1.1.1.1", 7); await vote("2.2.2.2", 7); await vote("3.3.3.3", 3);
+  await vote("1.1.1.1", 7); // a mesma pessoa votando de novo não conta duas vezes
+  await vote("4.4.4.4", 7); await vote("4.4.4.4", 3); // mudou de ideia: o voto troca de lado
   const res = fakeRes();
   await handler({ method: "GET", query: { a: "3", b: "7", votos: "1" } }, res);
-  assert.deepEqual(res.body.votos, { 3: 1, 7: 2 });
+  assert.deepEqual(res.body.votos, { 3: 2, 7: 2 });
   const bad = fakeRes();
   await handler({ method: "POST", query: {}, body: { a: 7, b: 3, voto: 9 } }, bad);
   assert.equal(bad.code, 400);
@@ -231,10 +235,10 @@ test("ranking da comunidade soma os pontos dos rankings enviados", async () => {
     return { data: { Page: { media: [] } } };
   });
   const { default: handler } = await import("../api/trends.js");
-  const send = (cliente, nomes) => handler({ method: "POST", body: { tipo: "ranking", cliente, nomes: nomes.map((name) => ({ name })) } }, fakeRes());
-  await send("aaaaaaaa1", ["Gojo", "Luffy", "Naruto"]);
-  await send("aaaaaaaa1", ["Luffy", "Gojo", "Naruto"]); // mandou de novo: troca o antigo
-  await send("bbbbbbbb2", ["Luffy", "Naruto", "Gojo"]);
+  const send = (ip, nomes) => handler({ method: "POST", headers: { "x-forwarded-for": ip + ", 10.0.0.1" }, body: { tipo: "ranking", nomes: nomes.map((name) => ({ name })) } }, fakeRes());
+  await send("9.9.9.1", ["Gojo", "Luffy", "Naruto"]);
+  await send("9.9.9.1", ["Luffy", "Gojo", "Naruto"]); // mandou de novo: troca o antigo
+  await send("9.9.9.2", ["Luffy", "Naruto", "Gojo"]);
   const res = fakeRes();
   await handler({ method: "GET" }, res);
   assert.equal(res.body.comunidade.total, 2);
@@ -251,21 +255,30 @@ test("desafio do dia confere o palpite no servidor e só revela no fim", async (
     if (query.includes("FAVOURITES_DESC")) return { data: { Page: { characters: [{ id: 1 }] } } };
     return { data: { Character: people[variables.id] } };
   });
-  const { default: handler, compare } = await import("../api/desafio.js");
+  const { default: handler, compare, prova, todayKey } = await import("../api/desafio.js");
+  const pv = (n) => prova(todayKey(), n);
   const r1 = fakeRes();
   await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 1 } }, r1);
   assert.equal(r1.body.acertou, false);
   assert.equal(r1.body.resposta, null);
   assert.deepEqual(r1.body.comparacao, { anime: "errado", genero: "errado", idade: "mais", estreia: "mais", generos: "perto", generosIguais: ["Action"], fama: "mais" });
   const r3 = fakeRes();
-  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 5 } }, r3);
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 5, prova: pv(4) } }, r3);
   assert.equal(r3.body.dicas.length, 2);
+  // Sem a prova assinada não dá pra pular direto pra última tentativa e ver a resposta.
+  const cheat = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 6 } }, cheat);
+  assert.equal(cheat.body.resposta, null);
+  assert.equal(cheat.body.tentativa, 1);
+  const last = fakeRes();
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 6, prova: pv(5) } }, last);
+  assert.equal(last.body.resposta.id, 1);
   const win = fakeRes();
   await handler({ method: "POST", query: {}, body: { id: 1, tentativa: 2 } }, win);
   assert.equal(win.body.acertou, true);
   assert.equal(win.body.resposta.id, 1);
   const en = fakeRes();
-  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 3, lang: "en" } }, en);
+  await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 3, prova: pv(2), lang: "en" } }, en);
   assert.match(en.body.dicas[0], /^The anime's genres/);
 });
 

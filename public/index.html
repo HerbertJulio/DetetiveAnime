@@ -1007,6 +1007,155 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 .bar-r b{font-family:var(--mono);font-size:.78rem;text-align:right;color:var(--muted)}
 .bars .empty{padding:14px;font-size:.88em}
 @media (max-width:640px){.pf-hero{grid-template-columns:1fr;justify-items:center;text-align:center}.pf-title{align-self:center}.pf-badges{justify-content:center}.pf-stats{grid-template-columns:repeat(2,1fr)}.pf-charts{grid-template-columns:1fr}.pf-id input{text-align:center}}
+/* ---------- Início (home) */
+[data-tab="inicio"] .hero{display:none}
+html[data-tab="inicio"] .wrap{max-width:1180px}
+.home{display:flex;flex-direction:column;gap:56px}
+html[data-tab="inicio"] body{overflow-x:clip}
+.h-hero>*{min-width:0}
+.h-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;min-height:min(640px,78vh)}
+.h-status{display:inline-flex;align-items:center;gap:10px;font:500 .72rem/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--surface) 60%,transparent);backdrop-filter:blur(8px)}
+.h-status i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--glow);animation:hPulse 2s infinite}
+.h-status span{color:var(--fg)} .h-status b{font-weight:500}
+@keyframes hPulse{0%{box-shadow:0 0 0 0 var(--glow)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.h-title{font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(2.6rem,6.2vw,5rem);line-height:.98;letter-spacing:-.025em;margin:22px 0 0;color:var(--fg)}
+.h-title em{display:block;font-style:normal;margin-top:.12em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:.62em;letter-spacing:-.01em}
+.h-sub{color:var(--muted);font-size:1.06rem;line-height:1.6;max-width:34em;margin:22px 0 0}
+.h-search{margin-top:30px;display:flex;align-items:center;gap:10px;padding:7px 7px 7px 18px;border-radius:18px;max-width:560px;
+  background:color-mix(in srgb,var(--surface) 78%,transparent);border:1px solid var(--line-strong);backdrop-filter:blur(14px);
+  box-shadow:0 20px 60px -24px var(--glow),inset 0 1px 0 rgba(255,255,255,.06);transition:border-color .2s,box-shadow .2s}
+.h-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent),0 24px 70px -20px var(--glow)}
+.h-search svg{width:20px;height:20px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;flex:none}
+.h-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--fg);font:inherit;font-size:1.02rem;padding:12px 0}
+.h-search input::placeholder{color:var(--muted)}
+.h-search button{border:0;cursor:pointer;font:700 .95rem var(--body);color:var(--accent-ink);background:var(--grad);padding:13px 22px;border-radius:12px;transition:transform .15s,filter .15s}
+.h-search button:hover{filter:brightness(1.08)} .h-search button:active{transform:scale(.97)}
+.h-try{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.h-try button{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 55%,transparent);
+  color:var(--fg);font:500 .85rem var(--body);cursor:pointer;transition:border-color .2s,transform .2s}
+.h-try button:hover{border-color:var(--accent);transform:translateY(-1px)}
+.h-try img,.h-try .ph{width:24px;height:24px;border-radius:50%;object-fit:cover;background:var(--surface-2)}
+
+/* Scanner */
+.h-scan{position:relative;height:min(560px,70vh);perspective:1200px;--rx:0deg;--ry:0deg}
+.h-card{position:absolute;inset:6% 14% 6% 14%;border-radius:26px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line-strong);
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.h-back{background-size:cover;background-position:center top;filter:saturate(.6) brightness(.55)}
+.h-back.b1{transform:translate3d(-16%,4%,-80px) rotate(-7deg)}
+.h-back.b2{transform:translate3d(16%,7%,-140px) rotate(7deg);filter:saturate(.5) brightness(.4)}
+.h-main{display:block;color:inherit;text-decoration:none;transform:rotateX(var(--rx)) rotateY(var(--ry));
+  box-shadow:0 50px 100px -30px rgba(0,0,0,.8),0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent),0 0 80px -20px var(--glow)}
+.h-img{position:absolute;inset:0;background-size:cover;background-position:center top;transition:opacity .6s,transform 6s linear;transform:scale(1.04)}
+.h-img.out{opacity:0}
+.h-main::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85));pointer-events:none}
+.h-grid{position:absolute;inset:0;z-index:1;opacity:.18;background-image:linear-gradient(var(--line-strong) 1px,transparent 1px),linear-gradient(90deg,var(--line-strong) 1px,transparent 1px);background-size:28px 28px;
+  -webkit-mask:radial-gradient(circle at 50% 40%,#000 0,transparent 70%);mask:radial-gradient(circle at 50% 40%,#000 0,transparent 70%)}
+.h-beam{position:absolute;left:0;right:0;top:-30%;height:30%;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--accent) 30%,transparent) 85%,var(--accent) 99%,transparent);mix-blend-mode:screen;animation:hBeam 3.6s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes hBeam{0%{top:-30%}60%,100%{top:110%}}
+.h-corner{position:absolute;z-index:3;width:26px;height:26px;border:2px solid var(--accent);filter:drop-shadow(0 0 6px var(--glow))}
+.h-corner.c1{top:16px;left:16px;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
+.h-corner.c2{top:16px;right:16px;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+.h-corner.c3{bottom:16px;left:16px;border-right:0;border-top:0;border-radius:0 0 0 8px}
+.h-corner.c4{bottom:16px;right:16px;border-left:0;border-top:0;border-radius:0 0 8px 0}
+.h-tag{position:absolute;z-index:3;font:500 .66rem/1 var(--mono);letter-spacing:.2em;color:var(--fg);padding:6px 9px;border-radius:6px;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1px solid var(--line)}
+.h-tag.t1{top:22px;left:52px} .h-tag.t2{top:22px;right:52px;color:var(--accent)}
+.h-id{position:absolute;z-index:3;left:26px;right:26px;bottom:28px;display:flex;flex-direction:column;gap:6px}
+.h-id small{font:500 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--fg) 75%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-id b{font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.05;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.h-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:4px}
+.h-bar i{display:block;height:100%;width:0;background:var(--grad);box-shadow:0 0 10px var(--glow)}
+.h-bar i.run{animation:hBar 4.2s linear forwards}
+@keyframes hBar{to{width:100%}}
+
+/* Faixa de personagens */
+.h-strip{position:relative;display:flex;flex-direction:column;gap:12px;margin-inline:calc(50% - 50vw);overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.h-row{display:flex;gap:12px;width:max-content;animation:hMarq 60s linear infinite}
+.h-row.rev{animation-direction:reverse;animation-duration:75s}
+.h-strip:hover .h-row{animation-play-state:paused}
+@keyframes hMarq{to{transform:translateX(-50%)}}
+.h-p{position:relative;flex:none;width:118px;height:156px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2);text-decoration:none}
+.h-p img{width:100%;height:100%;object-fit:cover;filter:grayscale(.85) brightness(.75);transition:filter .35s,transform .35s}
+.h-p:hover img,.h-p:focus-visible img{filter:none;transform:scale(1.06)}
+.h-p span{position:absolute;left:8px;right:8px;bottom:7px;font:600 .74rem/1.2 var(--body);color:#fff;text-shadow:0 1px 8px #000;opacity:0;transform:translateY(4px);transition:.3s}
+.h-p:hover span,.h-p:focus-visible span{opacity:1;transform:none}
+
+/* Bento */
+.h-head{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:baseline}
+.h-k{font:500 .8rem var(--mono);color:var(--accent);letter-spacing:.1em;grid-row:span 2}
+.h-head h3{margin:0;font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.02em}
+.h-head p{margin:4px 0 0;color:var(--muted)}
+.h-bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(168px,auto);gap:14px}
+.hb{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:20px;border-radius:22px;overflow:hidden;color:var(--fg);text-decoration:none;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--surface-2) 85%,transparent),color-mix(in srgb,var(--surface) 85%,transparent));border:1px solid var(--line);
+  backdrop-filter:blur(10px);transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;isolation:isolate}
+.hb::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .3s;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--accent) 18%,transparent),transparent 60%)}
+.hb:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 24px 60px -30px var(--glow)}
+.hb:hover::before{opacity:1}
+.hb-t{font-weight:700;font-size:1.08rem}
+.hb-d{color:var(--muted);font-size:.9rem;line-height:1.45}
+.hb-ic{font-size:1.6rem;margin-bottom:auto;width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:color-mix(in srgb,var(--fg) 6%,transparent);border:1px solid var(--line)}
+.hb-des{grid-column:span 2;grid-row:span 2;justify-content:flex-end;min-height:360px}
+.hb-n{position:absolute;top:20px;left:20px;font:500 .72rem var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hb-n b{color:var(--accent);font-weight:500}
+.hb-mys{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 70% 35%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 55%),radial-gradient(circle at 20% 90%,color-mix(in srgb,var(--accent-2) 22%,transparent),transparent 50%);overflow:hidden}
+.hb-mys img{position:absolute;right:-6%;top:4%;height:78%;filter:brightness(0) drop-shadow(0 0 30px var(--glow));opacity:.75}
+.hb-mys i{position:absolute;right:12%;top:12%;font:800 clamp(7rem,14vw,11rem)/1 var(--display);font-style:normal;color:transparent;-webkit-text-stroke:2px color-mix(in srgb,var(--accent) 70%,transparent);text-shadow:0 0 60px var(--glow);animation:hFloat 5s ease-in-out infinite}
+@keyframes hFloat{50%{transform:translateY(-10px) rotate(4deg)}}
+.hb-des .hb-t{font-family:var(--display);font-weight:var(--display-weight);font-size:clamp(1.8rem,3vw,2.4rem);line-height:1}
+.hb-des .hb-d{max-width:24em}
+.hb-go{align-self:flex-start;margin-top:10px;font:700 .9rem var(--body);color:var(--accent-ink);background:var(--grad);padding:11px 18px;border-radius:12px}
+.hb-vs{grid-column:span 2}
+.hb-vsimg{position:absolute;inset:0;z-index:-1;display:grid;grid-template-columns:1fr 1fr}
+.hb-vsimg span{background-size:cover;background-position:center 20%;filter:saturate(.8) brightness(.55)}
+.hb-vsimg span:first-child{clip-path:polygon(0 0,100% 0,82% 100%,0 100%)}
+.hb-vsimg span:last-child{clip-path:polygon(18% 0,100% 0,100% 100%,0 100%);margin-left:-18%}
+.hb-vsimg b{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) skewX(-8deg);font:800 2.2rem/1 var(--display);color:#fff;padding:6px 14px;background:var(--grad);border-radius:10px;box-shadow:0 0 40px var(--glow)}
+.hb-vs::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.75))}
+.hb-cal{grid-row:span 2;justify-content:flex-start}
+.hb-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.hb-ep{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:center}
+.hb-ep img,.hb-ep .ph{width:40px;height:54px;border-radius:9px;object-fit:cover;background:var(--surface-2)}
+.hb-ep b{display:block;font-size:.86rem;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hb-ep small{font:500 .72rem var(--mono);color:var(--accent)}
+.hb-av{display:flex;margin-bottom:auto}
+.hb-av img,.hb-av .ph{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--surface);margin-left:-12px;background:var(--surface-2)}
+.hb-av img:first-child,.hb-av .ph:first-child{margin-left:0}
+.hb-prog{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
+.hb-prog i{display:block;height:100%;width:0;background:var(--grad);transition:width 1s}
+.h-reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.h-reveal.in{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .h-hero{grid-template-columns:1fr;min-height:0;gap:20px}
+  .h-scan{height:440px;order:-1;max-width:420px;width:100%;margin:0 auto}
+  .h-bento{grid-template-columns:repeat(2,1fr)}
+  .hb-cal{grid-row:span 1}
+}
+@media (max-width:560px){
+  .home{gap:40px}
+  .h-status{letter-spacing:.14em;font-size:.64rem;padding:7px 12px;flex-wrap:wrap;row-gap:4px}
+  .h-scan{height:360px}
+  .h-card{inset:4% 12% 4% 12%}
+  .h-tag.t2{display:none} .h-tag.t1{left:48px}
+  .h-title{font-size:clamp(2.3rem,11vw,3rem)}
+  .h-search{padding-left:14px}
+  .h-search button{padding:12px 14px}
+  .h-bento{grid-template-columns:1fr 1fr;gap:10px}
+  .hb{padding:16px;border-radius:18px}
+  .hb-des,.hb-vs,.hb-cal{grid-column:span 2}
+  .hb-des{min-height:300px}
+  .hb-vs{min-height:200px}
+  .hb-d{font-size:.84rem}
+  .h-p{width:96px;height:128px}
+}
+@media (prefers-reduced-motion:reduce){
+  .h-row,.h-beam,.hb-mys i,.h-status i{animation:none!important}
+  .h-img{transition:opacity .2s}
+  .h-reveal{opacity:1;transform:none}
+}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1242,6 +1391,17 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 
   const D = {
     // Menu e abas
+    "Início": "Home", "Sistema online": "System online", "· arquivos abertos": "· files open", "Todo personagem": "Every character", "deixa pistas.": "leaves clues.", "A gente segue todas.": "We follow every one.",
+    "Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.": "Find out who it is by name, by a detail or by a screenshot. See powers, fights, new episodes and where to watch for real.",
+    "Quem você quer investigar?": "Who do you want to investigate?", "Investigar": "Investigate", "Carregando arquivo…": "Loading file…", "ID CONFIRMADO": "ID CONFIRMED",
+    "O que o Detetive faz": "What the Detective does", "Tudo que dá pra investigar por aqui.": "Everything you can investigate here.", "Caso": "Case", "do dia": "of the day",
+    "Um personagem misterioso, o mesmo pra todo mundo. Você tem 6 tentativas.": "A mystery character, the same for everyone. You get 6 tries.", "Resolver o caso": "Solve the case", "Caso resolvido ✓": "Case solved ✓", "Ver a resposta": "See the answer",
+    "Lutas 1 contra 1, votação dos fãs e torneios de 8.": "1v1 fights, fan votes and 8-player tournaments.", "Episódios novos da temporada.": "New episodes this season.",
+    "Quem a galera mais procura e o ranking da comunidade.": "Who people search most and the community ranking.", "Busca por print": "Screenshot search", "Mande a foto da cena e descubra o anime e o episódio.": "Send a picture of the scene and find the anime and episode.",
+    "Fale um anime que curtiu e receba indicações.": "Name an anime you liked and get picks.", "Um novo personagem pra conhecer todo dia.": "A new character to meet every day.", "Jogo e Teste": "Game and Quiz",
+    "Adivinhe pelas pistas e descubra com quem você parece.": "Guess from clues and find out who you're like.", "Monte o seu top 10 e a sua tier list.": "Build your top 10 and your tier list.",
+    "Junte personagens em coleções com nome.": "Group characters into named collections.", "Desbloqueie medalhas explorando o site.": "Unlock medals by exploring the site.", "Desbloqueie 27 medalhas explorando o site.": "Unlock 27 medals by exploring the site.",
+    "Pronto pra investigar": "Ready to investigate", "Pesquisar personagem": "Search character", "Personagens em alta": "Trending characters",
     "Buscar": "Search", "Tendências": "Trends", "O que assistir": "What to watch", "Calendário": "Calendar", "Personagem do dia": "Character of the day",
     "Desafio do dia": "Daily challenge", "Quem ganha?": "Who wins?", "Jogo": "Game", "Teste": "Quiz", "Ranking e Tier List": "Ranking & Tier List",
     "Coleções": "Collections", "Conquistas": "Achievements", "Favoritos": "Favorites", "Últimas buscas": "Recent searches", "Menu": "Menu", "Seções": "Sections",
@@ -1439,6 +1599,9 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
     [/^Ep\. (\d+) · (\S+) (.+)$/, (m, a, d, t) => `Ep. ${a} · ${WEEK[d.replace(".", "")] || d} ${t}`],
     [/^(.+) · (\d+)\/(\d+) medalhas$/, (m, t, a, b) => `${tr(t)} · ${a}/${b} medals`],
     [/^Próximo desafio em (.+)$/, (m, t) => `Next challenge in ${t}`],
+    [/^ALVO (\d+)$/, (m, n) => `TARGET ${n}`], [/^· (\d+) personagens em alta agora$/, (m, n) => `· ${n} trending characters now`], [/^nº (\d+)$/, (m, n) => `#${n}`],
+    [/^(\d+) de 27 medalhas desbloqueadas\.$/, (m, n) => `${n} of 27 medals unlocked.`], [/^(\d+) episódios? novos? saem? hoje\.$/, (m, n) => `${n} new episode${n === "1" ? "" : "s"} out today.`], [/^(\d+) episódio novo sai hoje\.$/, (m, n) => `${n} new episode out today.`],
+    [/^(.+) contra (.+)\. Quem você acha que vence\?$/, (m, a, b) => `${a} vs ${b}. Who do you think wins?`],
     [/^há (\d+) min$/, (m, n) => `${n} min ago`], [/^há (\d+) h$/, (m, n) => `${n} h ago`], [/^agora$/, () => "now"],
     [/^Acertou em (\d+)! 🎉$/, (m, n) => `Got it in ${n}! 🎉`],
     [/^(.+) vence!$/, (m, a) => `${a} wins!`], [/^(.+) vence (.+)$/, (m, a, b) => `${a} beats ${b}`],
@@ -1584,7 +1747,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 
 <button class="menu-btn" id="openMenu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-  <span id="menuLabel">Buscar</span>
+  <span id="menuLabel">Início</span>
 </button>
 <div class="scrim" id="menuScrim" hidden></div>
 <aside class="menu" id="menu" aria-label="Menu" aria-hidden="true">
@@ -1594,7 +1757,8 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
   </div>
   <button type="button" class="m-profile" id="mProfile"><span class="m-av" id="mAv"></span><span><b id="mName">Meu perfil</b><small id="mTitle">Toque pra montar o seu</small></span></button>
   <nav class="m-list" role="tablist" aria-label="Seções">
-    <button type="button" role="tab" id="tabBtnBuscar" aria-selected="true" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
+    <button type="button" role="tab" id="tabBtnHome" aria-selected="false" aria-controls="tabHome"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span>Início</span></button>
+    <button type="button" role="tab" id="tabBtnBuscar" aria-selected="false" aria-controls="tabBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></button>
     <button type="button" role="tab" id="tabBtnDes" aria-selected="false" aria-controls="tabDes"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M15 16.5l1.5 1.5 3-3"/></svg><span>Desafio do dia</span><span class="count" id="desDot"></span></button>
     <button type="button" role="tab" id="tabBtnTrend" aria-selected="false" aria-controls="tabTrend"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Tendências</span></button>
     <button type="button" role="tab" id="tabBtnRec" aria-selected="false" aria-controls="tabRec"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><path d="M8 21h8M12 17v4"/><path d="m10.5 8.5 4 2.5-4 2.5z"/></svg><span>O que assistir</span></button>
@@ -1616,14 +1780,77 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 </button>
 
 <nav class="bnav" id="bnav" aria-label="Atalhos">
+  <a href="#inicio" data-t="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span>Início</span></a>
   <a href="#buscar" data-t="buscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></a>
   <a href="#tendencias" data-t="tendencias"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Em alta</span></a>
-  <a href="#calendario" data-t="calendario"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Calendário</span></a>
   <a href="#comparar" data-t="comparar"><svg viewBox="0 0 24 24"><path d="M4 4l9 9M4 4v4M4 4h4M20 4l-9 9M20 4v4M20 4h-4"/><path d="M7 14l-3 3 3 3M17 14l3 3-3 3"/></svg><span>Lutas</span></a>
   <button type="button" id="bnavMenu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Mais</span></button>
 </nav>
 
 <div class="wrap">
+  <section id="tabHome" class="tabpanel home">
+    <div class="h-hero">
+      <div class="h-copy">
+        <div class="h-status"><i></i><span>Sistema online</span><b id="hLive">· arquivos abertos</b></div>
+        <h2 class="h-title">Todo personagem<br>deixa pistas.<em>A gente segue todas.</em></h2>
+        <p class="h-sub">Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.</p>
+        <form class="h-search" id="hForm" role="search" novalidate>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="hQ" type="search" maxlength="80" autocomplete="off" spellcheck="false" placeholder="Quem você quer investigar?" aria-label="Pesquisar personagem">
+          <button type="submit">Investigar</button>
+        </form>
+        <div class="h-try" id="hTry"></div>
+      </div>
+      <div class="h-scan" id="hScan" aria-hidden="true">
+        <div class="h-card h-back b2"></div>
+        <div class="h-card h-back b1"></div>
+        <a class="h-card h-main" id="hMain" href="#buscar" tabindex="-1">
+          <span class="h-img" id="hImg"></span>
+          <span class="h-beam"></span>
+          <span class="h-grid"></span>
+          <span class="h-corner c1"></span><span class="h-corner c2"></span><span class="h-corner c3"></span><span class="h-corner c4"></span>
+          <span class="h-tag t1" id="hNum">ALVO 01</span>
+          <span class="h-tag t2">ID CONFIRMADO</span>
+          <span class="h-id"><small id="hAnime">Carregando arquivo…</small><b id="hName">&nbsp;</b><span class="h-bar"><i id="hBar"></i></span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="h-strip" id="hStrip" aria-label="Personagens em alta"></div>
+
+    <div class="h-head"><span class="h-k">◆</span><h3>O que o Detetive faz</h3><p>Tudo que dá pra investigar por aqui.</p></div>
+    <div class="h-bento" id="hBento">
+      <a class="hb hb-des" href="#desafio">
+        <span class="hb-n">Caso <b id="hDesN">do dia</b></span>
+        <span class="hb-mys" id="hDesImg"><i>?</i></span>
+        <span class="hb-t">Desafio do dia</span>
+        <span class="hb-d">Um personagem misterioso, o mesmo pra todo mundo. Você tem 6 tentativas.</span>
+        <span class="hb-go" id="hDesGo">Resolver o caso</span>
+      </a>
+      <a class="hb hb-vs" href="#comparar" id="hVs">
+        <span class="hb-vsimg"><span id="hVsA"></span><span id="hVsB"></span><b>VS</b></span>
+        <span class="hb-t">Quem ganha?</span>
+        <span class="hb-d" id="hVsD">Lutas 1 contra 1, votação dos fãs e torneios de 8.</span>
+      </a>
+      <a class="hb hb-cal" href="#calendario">
+        <span class="hb-t">Calendário</span>
+        <span class="hb-d" id="hCalD">Episódios novos da temporada.</span>
+        <span class="hb-list" id="hCal"></span>
+      </a>
+      <a class="hb hb-trend" href="#tendencias">
+        <span class="hb-av" id="hTrAv"></span>
+        <span class="hb-t">Tendências</span>
+        <span class="hb-d">Quem a galera mais procura e o ranking da comunidade.</span>
+      </a>
+      <a class="hb" href="#buscar" data-focus="desc"><span class="hb-ic">📸</span><span class="hb-t">Busca por print</span><span class="hb-d">Mande a foto da cena e descubra o anime e o episódio.</span></a>
+      <a class="hb" href="#assistir"><span class="hb-ic">🍿</span><span class="hb-t">O que assistir</span><span class="hb-d">Fale um anime que curtiu e receba indicações.</span></a>
+      <a class="hb" href="#diario"><span class="hb-ic">✨</span><span class="hb-t">Personagem do dia</span><span class="hb-d">Um novo personagem pra conhecer todo dia.</span></a>
+      <a class="hb" href="#jogo"><span class="hb-ic">🎮</span><span class="hb-t">Jogo e Teste</span><span class="hb-d">Adivinhe pelas pistas e descubra com quem você parece.</span></a>
+      <a class="hb" href="#ranking"><span class="hb-ic">🏆</span><span class="hb-t">Ranking e Tier List</span><span class="hb-d">Monte o seu top 10 e a sua tier list.</span></a>
+      <a class="hb" href="#colecoes"><span class="hb-ic">🗂️</span><span class="hb-t">Coleções</span><span class="hb-d">Junte personagens em coleções com nome.</span></a>
+      <a class="hb hb-ach" href="#conquistas"><span class="hb-ic">🎖️</span><span class="hb-t">Conquistas</span><span class="hb-d" id="hAchD">Desbloqueie medalhas explorando o site.</span><span class="hb-prog"><i id="hAchBar"></i></span></a>
+    </div>
+  </section>
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
     <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Detetive Anime"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Detetive <em>Anime</em></h1>
@@ -1631,7 +1858,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
   </header>
 
 
-  <div id="tabBuscar" role="tabpanel" aria-labelledby="tabBtnBuscar" class="tabpanel">
+  <div id="tabBuscar" role="tabpanel" aria-labelledby="tabBtnBuscar" class="tabpanel" hidden>
 
   <div class="qsearch" id="qsearch">
     <form class="qbox" id="qForm" role="search" novalidate>
@@ -2448,6 +2675,7 @@ html.has-cbg .aurora::before,html.has-cbg .aurora::after{display:none}
 <script>
 // Busca: descrição e/ou print -> /api/search -> fichas de resultado.
 const $ = (id) => document.getElementById(id);
+const safeHash = () => { try { return decodeURIComponent(location.hash); } catch { return location.hash; } };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 let imageFile = null;
 
@@ -2786,9 +3014,9 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest(".rt-switch [data-go]"); if (!b) return;
   $(b.dataset.go).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
 });
-const TABS = { buscar: ["tabBtnBuscar", "tabBuscar"], jogo: ["tabBtnJogo", "tabJogo"], teste: ["tabBtnTeste", "tabTeste"], diario: ["tabBtnDaily", "tabDaily"], ranking: ["tabBtnRank", ["tabRank", "tabTier"]], favoritos: ["tabBtnFav", "tabFav"], historico: ["tabBtnHist", "tabHist"] };
+const TABS = { inicio: ["tabBtnHome", "tabHome"], buscar: ["tabBtnBuscar", "tabBuscar"], jogo: ["tabBtnJogo", "tabJogo"], teste: ["tabBtnTeste", "tabTeste"], diario: ["tabBtnDaily", "tabDaily"], ranking: ["tabBtnRank", ["tabRank", "tabTier"]], favoritos: ["tabBtnFav", "tabFav"], historico: ["tabBtnHist", "tabHist"] };
 function showTab(t) {
-  if (!TABS[t]) t = "buscar";
+  if (!TABS[t]) t = "inicio";
   for (const [k, [btn, panels]] of Object.entries(TABS)) {
     for (const panel of [].concat(panels)) $(panel).hidden = k !== t;
     if (btn) $(btn).setAttribute("aria-selected", String(k === t));
@@ -3356,11 +3584,11 @@ const lite = (d) => ({ id: d.id, name: d.name, image: d.image, anime: d.anime?.t
 let movedInside = false;
 window.goTo = (path) => { if (location.hash === "#" + path) route(); else location.hash = path; };
 function route() {
-  const [k, arg] = decodeURIComponent(location.hash.slice(1)).split("/");
+  const [k, arg] = safeHash().slice(1).split("/");
   if (k === "personagem" && Number(arg)) { showTab("personagem"); loadChar(Number(arg)); return; }
   if (k === "comparar") { showTab("comparar"); if (arg) vsFromPath(arg); return; }
   if (k === "colecoes") { showTab("colecoes"); renderCols(arg || null); return; }
-  showTab(TABS[k] ? k : "buscar");
+  showTab(TABS[k] ? k : "inicio");
 }
 addEventListener("hashchange", () => { movedInside = true; route(); window.scrollTo({ top: 0, behavior: RM() ? "auto" : "smooth" }); });
 window.onTab = (t) => {
@@ -3500,7 +3728,7 @@ async function loadChar(id) {
     <p class="hint" style="margin:0">Montando a ficha completa… na primeira vez pode levar alguns segundos.</p>`;
   try {
     const d = await getChar(id);
-    if (decodeURIComponent(location.hash).split("/")[1] != id) return;
+    if (safeHash().split("/")[1] != id) return;
     renderChar(d);
     countView(id);
     window.trackTaste?.(d.anime?.genres, d.anime?.title, 1);
@@ -3578,7 +3806,7 @@ async function loadTrends(fresh) {
   $("trLocal").innerHTML = Array.from({ length: 4 }, () => `<li class="tr-ph shim"></li>`).join("");
   $("trWorld").innerHTML = skelTiles(8);
   try {
-    const d = await api(fresh ? `/api/trends?agora=${Date.now()}` : "/api/trends");
+    const d = await api("/api/trends");
     trendsAt = Date.now();
     window.drawCommunity?.(d.comunidade);
     $("trWeek").textContent = d.semana ? `semana ${Number(d.semana.split("-W")[1])} de ${d.semana.slice(0, 4)}` : "";
@@ -4376,7 +4604,8 @@ async function guess(c) {
   if (D.rows.some((r) => r.p.id === c.id)) { window.toast?.(`${c.name} já foi tentado.`); return; }
   busy = true; $("desIn").disabled = true;
   try {
-    const r = await api("/api/desafio", { id: c.id, tentativa: D.rows.length + 1, dia: D.dia });
+    const r = await api("/api/desafio", { id: c.id, tentativa: D.rows.length + 1, dia: D.dia, prova: D.prova });
+    if (r.prova) D.prova = r.prova;
     D.numero = r.numero;
     D.rows.push({ p: r.palpite, c: r.comparacao });
     D.dicas = r.dicas?.length ? r.dicas : D.dicas;
@@ -4486,6 +4715,148 @@ loadAvatar();
 
 const k0 = location.hash.slice(1);
 if (k0 === "desafio" || k0 === "perfil") showTab(k0);
+})();
+</script>
+<script>
+// ---------- Início: a home com o "scanner" de personagens e tudo que o site faz
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const cssUrl = (u) => u ? `url("${String(u).replace(/["\\\n\r]/g, "")}")` : "none";
+  const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const img = (src) => src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="ph"></span>`;
+  let loaded = false, chars = [], timer = 0, idx = 0;
+
+  // Pesquisa da home: leva pra aba Buscar e já procura
+  $("hForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = $("hQ").value.trim();
+    if (!q) { $("hQ").focus(); return; }
+    $("q").value = q; goTo("buscar");
+    setTimeout(() => window.DA?.runFind(q), 30);
+  });
+  document.querySelector('#hBento [data-focus="desc"]').addEventListener("click", () => setTimeout(() => { $("desc")?.scrollIntoView({ block: "center" }); $("desc")?.focus(); }, 120));
+
+  // Luz que segue o mouse nos cartões
+  $("hBento").addEventListener("pointermove", (e) => {
+    const c = e.target.closest(".hb"); if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", `${e.clientX - r.left}px`); c.style.setProperty("--my", `${e.clientY - r.top}px`);
+  });
+  // Cartão principal inclina com o mouse
+  const scan = $("hScan");
+  scan.addEventListener("pointermove", (e) => {
+    if (RM()) return;
+    const r = scan.getBoundingClientRect();
+    scan.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - .5) * 14}deg`);
+    scan.style.setProperty("--rx", `${-((e.clientY - r.top) / r.height - .5) * 10}deg`);
+  });
+  scan.addEventListener("pointerleave", () => { scan.style.setProperty("--rx", "0deg"); scan.style.setProperty("--ry", "0deg"); });
+
+  function show(i) {
+    if (!chars.length) return;
+    idx = (i + chars.length) % chars.length;
+    const c = chars[idx], n1 = chars[(idx + 1) % chars.length], n2 = chars[(idx + 2) % chars.length];
+    const im = $("hImg");
+    im.classList.add("out");
+    setTimeout(() => {
+      im.style.backgroundImage = cssUrl(c.image);
+      im.classList.remove("out");
+      $("hName").textContent = c.name;
+      $("hAnime").textContent = c.anime || "";
+      $("hNum").textContent = `ALVO ${String(idx + 1).padStart(2, "0")}`;
+      $("hMain").href = `#personagem/${c.id}`;
+      $("hMain").setAttribute("aria-label", c.name);
+      const bar = $("hBar"); bar.classList.remove("run"); void bar.offsetWidth; if (!RM()) bar.classList.add("run"); else bar.style.width = "100%";
+    }, RM() ? 0 : 350);
+    document.querySelector(".h-back.b1").style.backgroundImage = cssUrl(n1.image);
+    document.querySelector(".h-back.b2").style.backgroundImage = cssUrl(n2.image);
+  }
+  function cycle() {
+    clearInterval(timer);
+    if (RM() || chars.length < 2) return;
+    timer = setInterval(() => { if (!document.hidden && !$("tabHome").hidden) show(idx + 1); }, 4200);
+  }
+
+  function strip() {
+    if (chars.length < 4) { $("hStrip").hidden = true; return; }
+    const p = (c) => `<a class="h-p" href="#personagem/${Number(c.id)}" aria-label="${esc(c.name)}">${img(c.image)}<span>${esc(c.name)}</span></a>`;
+    const half = Math.ceil(chars.length / 2);
+    const rows = [chars.slice(0, half), chars.slice(half).concat(chars.slice(0, Math.max(0, half - (chars.length - half))))];
+    // Cada fileira aparece duas vezes seguidas, pra a rolagem nunca ter buraco
+    $("hStrip").innerHTML = rows.map((r, i) => { let list = r; while (list.length < 10) list = list.concat(r); return `<div class="h-row${i ? " rev" : ""}">${list.map(p).join("")}${list.map(p).join("")}</div>`; }).join("");
+    $("hStrip").querySelectorAll(".h-row").forEach((row) => row.querySelectorAll(".h-p").forEach((a, k, all) => { if (k >= all.length / 2) { a.tabIndex = -1; a.setAttribute("aria-hidden", "true"); } }));
+  }
+
+  function bento() {
+    const a = chars[0], b = chars.find((c) => c.anime && c.anime !== a?.anime) || chars[1];
+    if (a && b) {
+      $("hVsA").style.backgroundImage = cssUrl(a.image); $("hVsB").style.backgroundImage = cssUrl(b.image);
+      $("hVs").href = `#comparar/${Number(a.id)}-${Number(b.id)}`;
+      $("hVsD").textContent = `${a.name} contra ${b.name}. Quem você acha que vence?`;
+    }
+    const tr = chars.slice(0, 5);
+    $("hTrAv").innerHTML = tr.map((c) => img(c.image)).join("");
+    // Desafio do dia (o que está salvo neste navegador)
+    try {
+      const d = JSON.parse(localStorage.getItem("achei-o-anime:desafio") || "null");
+      if (d?.numero) $("hDesN").textContent = `nº ${d.numero}`;
+      if (d?.fim && d.dia === new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" })) $("hDesGo").textContent = d.venceu ? "Caso resolvido ✓" : "Ver a resposta";
+    } catch {}
+    const got = Number($("achCount")?.textContent) || 0;
+    $("hAchD").textContent = got ? `${got} de 27 medalhas desbloqueadas.` : "Desbloqueie 27 medalhas explorando o site.";
+    requestAnimationFrame(() => { $("hAchBar").style.width = `${Math.round((got / 27) * 100)}%`; });
+  }
+
+  async function calendar() {
+    try {
+      const d = await api("/api/schedule");
+      const now = Date.now() / 1000;
+      const end = new Date(); end.setHours(23, 59, 59, 999);
+      const eps = (d.episodios || []).filter((e) => e.at >= now - 3 * 3600);
+      const today = eps.filter((e) => e.at <= end / 1000);
+      $("hCalD").textContent = today.length ? `${today.length} ${today.length === 1 ? "episódio novo sai" : "episódios novos saem"} hoje.` : "Episódios novos da temporada.";
+      const next = [...eps].sort((x, y) => (y.popular || 0) - (x.popular || 0)).slice(0, 4).sort((x, y) => x.at - y.at);
+      const when = (t) => { const dt = new Date(t * 1000); const same = dt.toDateString() === new Date().toDateString(); return (same ? "" : dt.toLocaleDateString(window.Lang?.get() === "en" ? "en-US" : "pt-BR", { weekday: "short" }) + " ") + dt.toLocaleTimeString(window.Lang?.get() === "en" ? "en-US" : "pt-BR", { hour: "2-digit", minute: "2-digit" }); };
+      $("hCal").innerHTML = next.map((e) => `<span class="hb-ep">${img(e.cover)}<span><b>${esc(e.title)}</b><small>EP ${Number(e.ep) || "?"} · ${esc(when(e.at))}</small></span></span>`).join("");
+    } catch { $("hCal").innerHTML = ""; }
+  }
+
+  function fallbackTry() {
+    const names = ["Gojo", "Luffy", "Naruto", "Frieren", "Tanjiro"];
+    $("hTry").innerHTML = names.map((n) => `<button type="button" data-q="${esc(n)}"><span class="ph"></span>${esc(n)}</button>`).join("");
+  }
+  $("hTry").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.id) { goTo(`personagem/${b.dataset.id}`); return; }
+    $("hQ").value = b.dataset.q; $("hForm").requestSubmit();
+  });
+
+  function reveal() {
+    const els = document.querySelectorAll("#tabHome .h-head, #tabHome .hb");
+    if (!("IntersectionObserver" in window) || RM()) return;
+    const io = new IntersectionObserver((list) => list.forEach((x) => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }), { rootMargin: "0px 0px -8% 0px" });
+    els.forEach((el, i) => { el.classList.add("h-reveal"); el.style.transitionDelay = `${(i % 4) * 70}ms`; io.observe(el); });
+  }
+
+  async function load() {
+    if (loaded) { bento(); cycle(); return; }
+    loaded = true;
+    fallbackTry(); reveal(); bento(); calendar();
+    try {
+      const d = await api("/api/trends");
+      const seen = new Set();
+      chars = [...(d.mundo || []), ...(d.local || []), ...(d.comunidade?.top || [])].filter((c) => c?.id && c.image && !seen.has(c.id) && seen.add(c.id));
+      $("hLive").textContent = `· ${chars.length} personagens em alta agora`;
+    } catch { chars = []; $("hLive").textContent = "· arquivos abertos"; }
+    if (!chars.length) { $("hName").textContent = "Detetive Anime"; $("hAnime").textContent = "Pronto pra investigar"; $("hMain").href = "#buscar"; return; }
+    $("hTry").innerHTML = chars.slice(0, 5).map((c) => `<button type="button" data-id="${Number(c.id)}">${img(c.image)}${esc(String(c.name).split(" ")[0])}</button>`).join("");
+    show(0); cycle(); strip(); bento();
+  }
+
+  const prev = window.onTab;
+  window.onTab = (t) => { prev?.(t); if (t === "inicio") load(); else clearInterval(timer); };
+  if (document.documentElement.dataset.tab === "inicio") load();
 })();
 </script>
 <script>

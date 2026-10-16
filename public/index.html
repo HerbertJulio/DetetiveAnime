@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&display=swap">
 <style>
 /* Layout: coluna central; aurora colorida ao fundo, busca em vidro com borda em degradê, fichas de personagem com retrato vertical.
    As cores e fontes reais vêm de settings.js; aqui ficam os valores iniciais. */
@@ -1302,6 +1303,14 @@ html[data-tab="inicio"] body{overflow-x:clip}
 html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .rhead h2,.sec-h{letter-spacing:-.01em}
+
+/* Fonte só do nome do site */
+:root{--brand:'Unbounded','Zen Kaku Gothic New',system-ui,sans-serif}
+.hero h1,.tb-brand,.site-foot .f-brand{font-family:var(--brand)!important;font-weight:800!important;letter-spacing:-.035em}
+.hero h1{font-size:clamp(2.2rem,7vw,4.4rem)}
+html:not([data-tab="buscar"]) .hero h1{font-size:clamp(1.4rem,4vw,2rem)}
+.tb-brand{font-size:1.12rem!important}
+.site-foot .f-brand{font-size:1.02rem!important}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>

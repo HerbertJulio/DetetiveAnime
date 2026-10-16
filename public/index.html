@@ -18,7 +18,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&display=swap">
 <style>
 /* Layout: coluna central; aurora colorida ao fundo, busca em vidro com borda em degradê, fichas de personagem com retrato vertical.
    As cores e fontes reais vêm de settings.js; aqui ficam os valores iniciais. */
@@ -709,7 +708,7 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .cal-tools{display:flex;flex-wrap:wrap;gap:10px 22px}
 .cal-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;perspective:1200px}
 .cal-list > .empty,.cal-list > .tr-ph{grid-column:1/-1}
-.ep-card{--rx:0deg;--ry:0deg;position:relative;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;isolation:isolate;
+.ep-card{--rx:0deg;--ry:0deg;position:relative;display:flex;flex-direction:column;border-radius:22px;isolation:isolate;
   background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--c) 22%,var(--line));
   box-shadow:0 18px 40px -30px rgba(0,0,0,.8);transform:rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;
   transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s;animation:ecIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 55ms)}
@@ -719,17 +718,34 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .ep-card.mine{border-color:color-mix(in srgb,var(--accent) 65%,transparent)}
 .ep-card.past{filter:saturate(.55)}
 .ep-card.past:hover{filter:none}
-.ec-poster{position:relative;display:block;aspect-ratio:3/4;overflow:hidden;background:var(--surface-2)}
+.ec-poster{position:relative;display:block;aspect-ratio:3/4;overflow:hidden;background:var(--surface-2);border-radius:21px 21px 0 0}
+.ep-card:hover,.ep-card:focus-within{z-index:3}
+/* Personagens saindo da carta */
+.ec-pop{position:absolute;z-index:3;left:0;right:0;top:0;aspect-ratio:3/4;pointer-events:none;clip-path:inset(-80% -30% 0 -30%);transform:translateZ(40px)}
+.ec-pop img{position:absolute;bottom:0;width:68%;aspect-ratio:2/3;object-fit:cover;object-position:center top;border-radius:18px 18px 0 0;
+  -webkit-mask:linear-gradient(to top,transparent 0,#000 34%);mask:linear-gradient(to top,transparent 0,#000 34%);
+  filter:drop-shadow(0 18px 24px rgba(0,0,0,.6)) saturate(1.1);transform:translateY(105%) scale(.9);opacity:0;
+  transition:transform .65s cubic-bezier(.2,1.25,.3,1),opacity .35s}
+.ec-pop.n1 img{left:11%;width:78%}
+.ec-pop.n2 .p0{left:0;width:62%} .ec-pop.n2 .p1{right:0;width:62%}
+.ep-card:hover .ec-pop.n1 img,.ep-card:focus-within .ec-pop.n1 img,.ep-card.pop .ec-pop.n1 img{opacity:1;transform:translateY(-40%) scale(1)}
+.ep-card:hover .ec-pop.n2 .p0,.ep-card:focus-within .ec-pop.n2 .p0,.ep-card.pop .ec-pop.n2 .p0{opacity:1;transform:translateY(-72%) rotate(-4deg)}
+.ep-card:hover .ec-pop.n2 .p1,.ep-card:focus-within .ec-pop.n2 .p1,.ep-card.pop .ec-pop.n2 .p1{opacity:1;transform:translateY(-58%) rotate(4deg);transition-delay:.09s}
+.ec-who{position:absolute;z-index:2;left:50%;bottom:52px;transform:translate(-50%,10px);opacity:0;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;
+  font:600 .72rem var(--body);padding:4px 10px;border-radius:999px;background:var(--grad);color:var(--accent-ink);box-shadow:0 8px 20px -6px var(--glow);transition:opacity .3s .3s,transform .4s .3s}
+.ep-card:hover .ec-who,.ep-card:focus-within .ec-who,.ep-card.pop .ec-who{opacity:1;transform:translate(-50%,0)}
+.ec-time{transition:opacity .3s}
+.ep-card:hover:has(.ec-pop) .ec-time,.ep-card.pop:has(.ec-pop) .ec-time{opacity:0}
 .ec-poster img,.ec-poster .ph{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .ep-card:hover .ec-poster img{transform:scale(1.08)}
 .ec-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 28%,transparent 55%,color-mix(in srgb,var(--surface) 96%,transparent))}
 .ec-shine{position:absolute;inset:0;z-index:1;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.28) 48%,transparent 62%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .ep-card:hover .ec-shine{transform:translateX(120%)}
-.ec-time{position:absolute;z-index:2;top:12px;left:12px;display:flex;flex-direction:column;padding:6px 10px;border-radius:12px;background:rgba(8,6,12,.62);
+.ec-time{position:absolute;z-index:4;top:12px;left:12px;display:flex;flex-direction:column;padding:6px 10px;border-radius:12px;background:rgba(8,6,12,.62);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#fff;line-height:1.1}
 .ec-time b{font:500 1.05rem var(--mono);font-variant-numeric:tabular-nums}
 .ec-time small{font:400 .64rem var(--mono);color:rgba(255,255,255,.7);letter-spacing:.04em}
-.ep-card .follow{position:absolute;z-index:2;top:12px;right:12px;width:38px;height:38px;font-size:1.05rem;background:rgba(8,6,12,.55);border-color:rgba(255,255,255,.14);color:#fff;
+.ep-card .follow{position:absolute;z-index:5;top:12px;right:12px;width:38px;height:38px;font-size:1.05rem;background:rgba(8,6,12,.55);border-color:rgba(255,255,255,.14);color:#fff;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .ep-card .follow[aria-pressed="true"]{color:var(--accent-2);border-color:var(--accent-2);background:rgba(8,6,12,.75)}
 .ec-body{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;padding:0 16px 16px;margin-top:-34px}
@@ -745,7 +761,7 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .ec-body .pl img{width:14px;height:14px;border-radius:4px}
 .new.fin{background:var(--accent-2);color:var(--accent-ink)}
 @media (max-width:560px){.cal-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ec-body{padding:0 12px 12px}.ec-title{font-size:.92rem}.ec-time b{font-size:.92rem}}
-@media (prefers-reduced-motion:reduce){.ep-card{animation:none}.ep-card,.ec-poster img,.ec-shine{transition:none}}
+@media (prefers-reduced-motion:reduce){.ep-card{animation:none}.ep-card,.ec-poster img,.ec-shine,.ec-pop img{transition:none}}
 .ep{display:grid;grid-template-columns:62px 54px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px;border-radius:18px;
   background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .35s both;animation-delay:calc(var(--i,0) * 25ms)}
 .ep.mine{border-color:color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 14px 34px -24px var(--glow)}
@@ -1304,13 +1320,22 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .rhead h2,.sec-h{letter-spacing:-.01em}
 
-/* Fonte só do nome do site */
-:root{--brand:'Unbounded','Zen Kaku Gothic New',system-ui,sans-serif}
-.hero h1,.tb-brand,.site-foot .f-brand{font-family:var(--brand)!important;font-weight:800!important;letter-spacing:-.035em}
-.hero h1{font-size:clamp(2.2rem,7vw,4.4rem)}
-html:not([data-tab="buscar"]) .hero h1{font-size:clamp(1.4rem,4vw,2rem)}
-.tb-brand{font-size:1.12rem!important}
-.site-foot .f-brand{font-size:1.02rem!important}
+/* Baralho: vários episódios do mesmo anime no mesmo dia */
+.ec-layer{position:absolute;inset:0;z-index:-1;border-radius:22px;border:1px solid color-mix(in srgb,var(--c) 30%,var(--line));
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 22%,var(--surface)),var(--surface));box-shadow:0 14px 30px -20px rgba(0,0,0,.8);
+  transition:transform .55s cubic-bezier(.2,1.2,.3,1)}
+.ec-layer.l1{transform:translate(7px,-7px) rotate(2.5deg)}
+.ec-layer.l2{transform:translate(14px,-13px) rotate(5deg);opacity:.75}
+.ep-card.deck:hover .ec-layer.l1,.ep-card.deck.pop .ec-layer.l1{transform:translate(22px,-10px) rotate(7deg)}
+.ep-card.deck:hover .ec-layer.l2,.ep-card.deck.pop .ec-layer.l2{transform:translate(40px,-16px) rotate(13deg)}
+.ep-card.deck{margin:10px 16px 0 0}
+.ec-count{position:absolute;z-index:6;right:-10px;top:-12px;font:700 .7rem var(--mono);letter-spacing:.06em;padding:5px 10px;border-radius:999px;background:var(--grad);color:var(--accent-ink);box-shadow:0 8px 20px -6px var(--glow)}
+.ec-eps{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ec-eps span{display:inline-flex;gap:6px;align-items:baseline;padding:3px 9px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,var(--surface-2));border:1px solid color-mix(in srgb,var(--c) 30%,var(--line));font-size:.74rem}
+.ec-eps b{font-weight:700}
+.ec-eps em{font:400 .7rem var(--mono);font-style:normal;color:var(--muted)}
+.ec-eps .out{opacity:.55}
+@media (prefers-reduced-motion:reduce){.ec-layer{transition:none}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -4250,19 +4275,27 @@ function drawCal() {
     return `<button type="button" role="tab" data-d="${i}" aria-selected="${i === calSel}"><b>${name.charAt(0).toUpperCase() + name.slice(1)}</b><small>${d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })} · ${n}</small></button>`;
   }).join("");
   const today = shown.filter((e) => dayKey(e.at) === days[calSel]);
-  $("calList").innerHTML = today.length ? today.map((e, i) => {
-    const past = e.at <= now, last = e.total && e.ep === e.total;
+  // Episódios do mesmo anime no mesmo dia viram um "baralho"
+  const groups = [];
+  for (const e of today) { const g = groups.find((x) => x[0].id === e.id); if (g) g.push(e); else groups.push([e]); }
+  $("calList").innerHTML = today.length ? groups.map((g, i) => {
+    const e = g[0], deck = g.length > 1, lastEp = g[g.length - 1];
+    const past = (deck ? lastEp.at : e.at) <= now, last = e.total && lastEp.ep === e.total;
     const badge = last ? `<span class="new fin">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : "";
     const color = /^#[0-9a-f]{6}$/i.test(e.color || "") ? e.color : "var(--accent)";
-    return `<article class="ep-card${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i};--c:${color}">
+    const nextEp = g.find((x) => x.at > now) || lastEp;
+    return `<article class="ep-card${deck ? " deck" : ""}${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i};--c:${color}">
+      ${deck ? `<span class="ec-layer l1" aria-hidden="true"></span><span class="ec-layer l2" aria-hidden="true"></span><span class="ec-count">${g.length} episódios</span>` : ""}
       <a class="ec-poster" href="${esc(e.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${pic(e.cover)}<span class="ec-shine"></span></a>
-      <span class="ec-time"><b>${hhmm(e.at)}</b><small data-at="${e.at}">${past ? "já saiu" : until(e.at)}</small></span>
+      ${(e.personagens || []).length ? `<span class="ec-pop n${e.personagens.length}" aria-hidden="true">${e.personagens.map((c, k) => `<img class="p${k}" src="${esc(c.image)}" alt="" loading="lazy">`).join("")}<span class="ec-who">${esc(e.personagens.map((c) => c.name.split(" ")[0]).join(" & "))}</span></span>` : ""}
+      <span class="ec-time"><b>${hhmm(nextEp.at)}</b><small data-at="${nextEp.at}">${nextEp.at <= now ? "já saiu" : until(nextEp.at)}</small></span>
       <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button>
       <div class="ec-body">
         ${badge}
         <a class="ec-title" href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
-        <small class="ec-ep">Episódio ${e.ep}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
-        ${e.total ? `<span class="ec-prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round((e.ep / e.total) * 100))}%"></i></span>` : ""}
+        <small class="ec-ep">${deck ? `Episódios ${e.ep} a ${lastEp.ep}` : `Episódio ${e.ep}`}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
+        ${e.total ? `<span class="ec-prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round((lastEp.ep / e.total) * 100))}%"></i></span>` : ""}
+        ${deck ? `<span class="ec-eps">${g.map((x) => `<span class="${x.at <= now ? "out" : ""}"><b>Ep. ${x.ep}</b><em>${hhmm(x.at)}</em></span>`).join("")}</span>` : ""}
         ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}
       </div></article>`;
   }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;
@@ -4290,6 +4323,12 @@ $("calList").addEventListener("pointermove", (e) => {
   c.style.setProperty("--rx", `${-((e.clientY - r.top) / r.height - .5) * 8}deg`);
 });
 $("calList").addEventListener("pointerout", (e) => { const c = e.target.closest(".ep-card"); if (c && !c.contains(e.relatedTarget)) { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); } });
+$("calList").addEventListener("pointerdown", (e) => {
+  if (e.pointerType === "mouse") return;
+  const c = e.target.closest(".ep-card"); if (!c || e.target.closest("a,button")) return;
+  document.querySelectorAll(".ep-card.pop").forEach((x) => x !== c && x.classList.remove("pop"));
+  c.classList.toggle("pop");
+});
 $("calList").onclick = (e) => {
   const b = e.target.closest("[data-f]"); if (!b) return;
   const id = Number(b.dataset.f), ep = cal.episodios.find((x) => x.id === id);

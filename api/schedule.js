@@ -24,6 +24,7 @@ export default route("GET", async (req, res) => {
       pais: s.media.countryOfOrigin,
       popular: s.media.popularity || 0,
       onde: streamingLinks(s.media).slice(0, 3),
+      personagens: (s.media.characters?.nodes || []).filter((c) => c?.image?.large && !/default/.test(c.image.large)).slice(0, 2).map((c) => ({ id: c.id, name: c.name?.full || "", image: c.image.large })),
     })),
   });
 });

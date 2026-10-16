@@ -1227,16 +1227,11 @@ html[data-tab="inicio"] body{overflow-x:clip}
     gotas:     "Respingos",
   };
 
-  const DEFAULTS = { original: true, theme: "original", c1: "#FF4F9A", c2: "#4F8BFF", mode: "dark", title: "mincho", body: "zen", size: 16, effect: "estrelas", amount: 50, aurora: true, sound: true, volume: 60 };
+  const DEFAULTS = { theme: "original", c1: "#FF4F9A", c2: "#4F8BFF", mode: "dark", title: "mincho", body: "zen", size: 16, effect: "estrelas", amount: 50, aurora: true, sound: true, volume: 60 };
 
   function load() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
-      const c = { ...DEFAULTS, ...saved };
-      // Uma vez só: quem já tinha visitado também abre no tema Original. Depois vale o que a pessoa escolher.
-      if (!saved.original) { c.original = true; c.theme = "original"; c.effect = "estrelas"; save(c); }
-      return c;
-    } catch { return { ...DEFAULTS, original: true }; }
+    // Quem entra pela primeira vez começa no tema Original. Quem já tem um tema escolhido continua com o seu.
+    try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; }
   }
   function save(cfg) { try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch {} }
 

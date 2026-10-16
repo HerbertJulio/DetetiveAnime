@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Detetive Anime</title>
+<title>Arquivo Otaku</title>
 <meta name="description" content="Pesquise personagens de anime por nome, obra, poder ou descrição, veja fichas completas, o calendário da temporada e onde assistir oficialmente.">
 <meta name="theme-color" content="#0E0A14">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon.svg">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Detetive Anime">
-<meta property="og:title" content="Detetive Anime">
+<meta property="og:site_name" content="Arquivo Otaku">
+<meta property="og:title" content="Arquivo Otaku">
 <meta property="og:description" content="Pesquise por nome, poder ou descrição, descubra o personagem e veja onde assistir oficialmente.">
 <meta property="og:url" content="https://detetive-anime.howlks.com/">
 <meta name="twitter:card" content="summary">
@@ -706,7 +706,45 @@ html:not([data-tab="buscar"]) .hero .sub{display:none}
 .cal-days button[aria-selected="true"]{background:var(--grad);color:var(--accent-ink);border-color:transparent}
 .cal-days button[aria-selected="true"] small{color:inherit;opacity:.8}
 .cal-tools{display:flex;flex-wrap:wrap;gap:10px 22px}
-.cal-list{display:flex;flex-direction:column;gap:10px}
+.cal-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;perspective:1200px}
+.cal-list > .empty,.cal-list > .tr-ph{grid-column:1/-1}
+.ep-card{--rx:0deg;--ry:0deg;position:relative;display:flex;flex-direction:column;border-radius:22px;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 10%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--c) 22%,var(--line));
+  box-shadow:0 18px 40px -30px rgba(0,0,0,.8);transform:rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s;animation:ecIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 55ms)}
+@keyframes ecIn{from{opacity:0;translate:0 22px;scale:.96}to{opacity:1;translate:0 0;scale:1}}
+.ep-card:hover{transform:translateY(-8px) rotateX(var(--rx)) rotateY(var(--ry));border-color:color-mix(in srgb,var(--c) 70%,transparent);
+  box-shadow:0 36px 70px -30px color-mix(in srgb,var(--c) 70%,transparent),0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent)}
+.ep-card.mine{border-color:color-mix(in srgb,var(--accent) 65%,transparent)}
+.ep-card.past{filter:saturate(.55)}
+.ep-card.past:hover{filter:none}
+.ec-poster{position:relative;display:block;aspect-ratio:3/4;overflow:hidden;background:var(--surface-2)}
+.ec-poster img,.ec-poster .ph{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.ep-card:hover .ec-poster img{transform:scale(1.08)}
+.ec-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 28%,transparent 55%,color-mix(in srgb,var(--surface) 96%,transparent))}
+.ec-shine{position:absolute;inset:0;z-index:1;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.28) 48%,transparent 62%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.ep-card:hover .ec-shine{transform:translateX(120%)}
+.ec-time{position:absolute;z-index:2;top:12px;left:12px;display:flex;flex-direction:column;padding:6px 10px;border-radius:12px;background:rgba(8,6,12,.62);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:#fff;line-height:1.1}
+.ec-time b{font:500 1.05rem var(--mono);font-variant-numeric:tabular-nums}
+.ec-time small{font:400 .64rem var(--mono);color:rgba(255,255,255,.7);letter-spacing:.04em}
+.ep-card .follow{position:absolute;z-index:2;top:12px;right:12px;width:38px;height:38px;font-size:1.05rem;background:rgba(8,6,12,.55);border-color:rgba(255,255,255,.14);color:#fff;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ep-card .follow[aria-pressed="true"]{color:var(--accent-2);border-color:var(--accent-2);background:rgba(8,6,12,.75)}
+.ec-body{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;padding:0 16px 16px;margin-top:-34px}
+.ec-body .new{align-self:flex-start}
+.ec-title{font-weight:700;font-size:1.02rem;line-height:1.25;color:var(--fg);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ec-title:hover{color:var(--accent)}
+.ec-ep{color:var(--muted);font-size:.82rem}
+.ec-prog{height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.ec-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--c),var(--accent-2));border-radius:3px}
+.ec-body .pl{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ec-body .pl a{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:500;padding:3px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg);text-decoration:none;transition:border-color .2s}
+.ec-body .pl a:hover{border-color:var(--c)}
+.ec-body .pl img{width:14px;height:14px;border-radius:4px}
+.new.fin{background:var(--accent-2);color:var(--accent-ink)}
+@media (max-width:560px){.cal-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ec-body{padding:0 12px 12px}.ec-title{font-size:.92rem}.ec-time b{font-size:.92rem}}
+@media (prefers-reduced-motion:reduce){.ep-card{animation:none}.ep-card,.ec-poster img,.ec-shine{transition:none}}
 .ep{display:grid;grid-template-columns:62px 54px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px;border-radius:18px;
   background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);animation:rise .35s both;animation-delay:calc(var(--i,0) * 25ms)}
 .ep.mine{border-color:color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 14px 34px -24px var(--glow)}
@@ -1513,7 +1551,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
     "Início": "Home", "Sistema online": "System online", "· arquivos abertos": "· files open", "Todo personagem": "Every character", "deixa pistas.": "leaves clues.", "A gente segue todas.": "We follow every one.",
     "Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.": "Find out who it is by name, by a detail or by a screenshot. See powers, fights, new episodes and where to watch for real.",
     "Quem você quer investigar?": "Who do you want to investigate?", "Investigar": "Investigate", "Carregando arquivo…": "Loading file…", "ID CONFIRMADO": "ID CONFIRMED",
-    "O que o Detetive faz": "What the Detective does", "Tudo que dá pra investigar por aqui.": "Everything you can investigate here.", "Caso": "Case", "do dia": "of the day",
+    "O que tem no Arquivo": "What's in the Archive", "Tudo que dá pra investigar por aqui.": "Everything you can investigate here.", "Caso": "Case", "do dia": "of the day",
     "Um personagem misterioso, o mesmo pra todo mundo. Você tem 6 tentativas.": "A mystery character, the same for everyone. You get 6 tries.", "Resolver o caso": "Solve the case", "Caso resolvido ✓": "Case solved ✓", "Ver a resposta": "See the answer",
     "Lutas 1 contra 1, votação dos fãs e torneios de 8.": "1v1 fights, fan votes and 8-player tournaments.", "Episódios novos da temporada.": "New episodes this season.",
     "Quem a galera mais procura e o ranking da comunidade.": "Who people search most and the community ranking.", "Busca por print": "Screenshot search", "Mande a foto da cena e descubra o anime e o episódio.": "Send a picture of the scene and find the anime and episode.",
@@ -1526,7 +1564,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
     "Coleções": "Collections", "Conquistas": "Achievements", "Favoritos": "Favorites", "Últimas buscas": "Recent searches", "Menu": "Menu", "Seções": "Sections",
     "Meu perfil": "My profile", "Perfil": "Profile", "Personagem": "Character", "Em alta": "Trending", "Lutas": "Fights", "Mais": "More", "Atalhos": "Shortcuts",
     "Abrir menu": "Open menu", "Fechar menu": "Close menu", "Abrir configurações": "Open settings", "Fechar configurações": "Close settings", "Fechar": "Close",
-    "busca por personagem": "character finder", "Logo do Detetive Anime": "Detetive Anime logo",
+    "busca por personagem": "character finder", "Logo do Arquivo Otaku": "Arquivo Otaku logo",
     "Pesquise pelo nome, obra, apelido ou poder. Não lembra o nome? Descreva o personagem ou mande um print da cena. A gente descobre quem é, de qual anime, e onde assistir oficialmente.":
       "Search by name, series, nickname or power. Don't remember the name? Describe the character or send a screenshot. We'll find who it is, which anime, and where to watch it officially.",
     // Busca
@@ -1899,7 +1937,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 </button>
 
 <header class="topbar" id="topbar">
-  <a class="tb-brand" href="#inicio" aria-label="Detetive Anime, início"><img src="/icon.svg" alt="" width="30" height="30"><span>Detetive <em>Anime</em></span></a>
+  <a class="tb-brand" href="#inicio" aria-label="Arquivo Otaku, início"><img src="/icon.svg" alt="" width="30" height="30"><span>Arquivo <em>Otaku</em></span></a>
   <nav class="tb-nav" aria-label="Principal">
     <a href="#inicio" data-t="inicio">Início</a><a href="#buscar" data-t="buscar">Buscar</a><a href="#tendencias" data-t="tendencias">Em alta</a><a href="#calendario" data-t="calendario">Calendário</a><a href="#comparar" data-t="comparar">Quem ganha?</a><a href="#desafio" data-t="desafio">Desafio</a>
   </nav>
@@ -1920,7 +1958,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
   <section id="tabHome" class="tabpanel home">
     <div class="h-hero">
       <div class="h-copy">
-        <div class="h-status"><i></i><span>Sistema online</span><b id="hLive">· arquivos abertos</b></div>
+        <div class="h-status"><i></i><span>Arquivo Otaku</span><b id="hLive">· arquivos abertos</b></div>
         <h2 class="h-title">Todo personagem<br>deixa pistas.<em>A gente segue todas.</em></h2>
         <p class="h-sub">Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.</p>
         <form class="h-search" id="hForm" role="search" novalidate>
@@ -1947,7 +1985,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 
     <div class="h-strip" id="hStrip" aria-label="Personagens em alta"></div>
 
-    <div class="h-head"><span class="h-k">◆</span><h3>O que o Detetive faz</h3><p>Tudo que dá pra investigar por aqui.</p></div>
+    <div class="h-head"><span class="h-k">◆</span><h3>O que tem no Arquivo</h3><p>Tudo que dá pra investigar por aqui.</p></div>
     <div class="h-bento" id="hBento">
       <a class="hb hb-des" href="#desafio">
         <span class="hb-n">Caso <b id="hDesN">do dia</b></span>
@@ -1982,7 +2020,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
   </section>
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
-    <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Detetive Anime"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Detetive <em>Anime</em></h1>
+    <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Arquivo Otaku"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Arquivo <em>Otaku</em></h1>
     <p class="sub">Ache qualquer personagem de anime, descubra de qual obra ele é e onde assistir oficialmente.</p>
   </header>
 
@@ -2282,7 +2320,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 
   <footer class="site-foot">
     <div class="sf-top">
-      <div class="sf-brand"><span class="f-brand"><img src="/icon.svg" alt="" width="26" height="26">Detetive Anime</span><p>Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.</p></div>
+      <div class="sf-brand"><span class="f-brand"><img src="/icon.svg" alt="" width="26" height="26">Arquivo Otaku</span><p>Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.</p></div>
       <nav class="sf-col" aria-label="Descobrir"><b>Descobrir</b><a href="#buscar">Buscar</a><a href="#tendencias">Tendências</a><a href="#calendario">Calendário</a><a href="#assistir">O que assistir</a></nav>
       <nav class="sf-col" aria-label="Jogar"><b>Jogar</b><a href="#desafio">Desafio do dia</a><a href="#comparar">Quem ganha?</a><a href="#jogo">Jogo</a><a href="#teste">Teste</a></nav>
       <nav class="sf-col" aria-label="Seu espaço"><b>Seu espaço</b><a href="#perfil">Meu perfil</a><a href="#colecoes">Coleções</a><a href="#conquistas">Conquistas</a><a href="#favoritos">Favoritos</a></nav>
@@ -3726,7 +3764,7 @@ function route() {
 }
 addEventListener("hashchange", () => { movedInside = true; route(); window.scrollTo({ top: 0, behavior: RM() ? "auto" : "smooth" }); });
 window.onTab = (t) => {
-  if (t !== "personagem") { document.title = "Detetive Anime"; setAmbient(null); }
+  if (t !== "personagem") { document.title = "Arquivo Otaku"; setAmbient(null); }
   document.querySelectorAll("#bnav [data-t]").forEach((a) => a.classList.toggle("on", a.dataset.t === t));
   if (t === "tendencias") loadTrends();
   if (t === "comparar") drawSlots();
@@ -3878,7 +3916,7 @@ function renderChar(d) {
   const box = $("tabChar");
   if (d.cor1) box.style.setProperty("--c1", d.cor1);
   if (d.cor2 || d.cor1) box.style.setProperty("--c2", d.cor2 || d.cor1);
-  document.title = `${d.name} · Detetive Anime`;
+  document.title = `${d.name} · Arquivo Otaku`;
   setAmbient(d.image);
   const r = charToResult(d);
   const nx = d.anime?.next && d.anime.next.airingAt > Date.now() / 1000 ? d.anime.next : null;
@@ -3921,7 +3959,7 @@ function renderChar(d) {
   $("cpRank").onclick = () => { const ok = addToRank(d.name, d.anime.title); toast(ok ? `${d.name} entrou no seu ranking!` : $("rankMsg").textContent || "Não deu pra adicionar."); if (ok) Sfx.play("pop"); };
   $("cpShare").onclick = async () => {
     const url = location.href;
-    try { if (navigator.share) { await navigator.share({ title: `${d.name} · Detetive Anime`, url }); return; } } catch { return; }
+    try { if (navigator.share) { await navigator.share({ title: `${d.name} · Arquivo Otaku`, url }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(url); toast("Link copiado!"); } catch { toast(url); }
   };
 }
@@ -4111,7 +4149,7 @@ function renderCols(openId) {
     box.querySelectorAll("[data-rm]").forEach((b) => b.onclick = () => { toggleInCol(col.id, { id: Number(b.dataset.rm) }); Sfx.play("desfav"); renderCols(col.id); });
     $("colRen").onclick = () => { const n = prompt("Novo nome da coleção:", col.nome); if (n && n.trim()) { const l = loadCols(); l.find((c) => c.id === col.id).nome = n.trim().slice(0, 30); saveCols(l); renderCols(col.id); } };
     $("colDel").onclick = () => { if (confirm(`Apagar a coleção “${col.nome}”?`)) { saveCols(loadCols().filter((c) => c.id !== col.id)); Sfx.play("lixo"); goTo("colecoes"); } };
-    $("colCopy").onclick = async () => { const t = `${col.emoji} ${col.nome}\n` + col.itens.map((c, i) => `${i + 1}. ${c.name}${c.anime ? ` (${c.anime})` : ""}`).join("\n") + "\n\nFeito no Detetive Anime"; try { await navigator.clipboard.writeText(t); toast("Lista copiada!"); } catch { toast("Não consegui copiar."); } };
+    $("colCopy").onclick = async () => { const t = `${col.emoji} ${col.nome}\n` + col.itens.map((c, i) => `${i + 1}. ${c.name}${c.anime ? ` (${c.anime})` : ""}`).join("\n") + "\n\nFeito no Arquivo Otaku"; try { await navigator.clipboard.writeText(t); toast("Lista copiada!"); } catch { toast("Não consegui copiar."); } };
     return;
   }
   box.innerHTML = `<div class="rhead"><h2>Minhas coleções</h2><span>${list.length ? `${list.length} ${list.length === 1 ? "coleção" : "coleções"}` : ""}</span></div>
@@ -4205,14 +4243,19 @@ function drawCal() {
   const today = shown.filter((e) => dayKey(e.at) === days[calSel]);
   $("calList").innerHTML = today.length ? today.map((e, i) => {
     const past = e.at <= now, last = e.total && e.ep === e.total;
-    return `<div class="ep${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i}">
-      <span class="hr">${hhmm(e.at)}<small data-at="${e.at}">${past ? "já saiu" : until(e.at)}</small></span>
-      ${pic(e.cover)}
-      <span class="t">${last ? `<span class="new">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : ""}
-        <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
-        <small>Episódio ${e.ep}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
-        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}</span>
-      <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button></div>`;
+    const badge = last ? `<span class="new fin">último episódio</span>` : e.ep === 1 ? `<span class="new">estreia</span>` : "";
+    const color = /^#[0-9a-f]{6}$/i.test(e.color || "") ? e.color : "var(--accent)";
+    return `<article class="ep-card${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i};--c:${color}">
+      <a class="ec-poster" href="${esc(e.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${pic(e.cover)}<span class="ec-shine"></span></a>
+      <span class="ec-time"><b>${hhmm(e.at)}</b><small data-at="${e.at}">${past ? "já saiu" : until(e.at)}</small></span>
+      <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button>
+      <div class="ec-body">
+        ${badge}
+        <a class="ec-title" href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>
+        <small class="ec-ep">Episódio ${e.ep}${e.total ? ` de ${e.total}` : ""}${e.format === "MOVIE" ? " · filme" : ""}</small>
+        ${e.total ? `<span class="ec-prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round((e.ep / e.total) * 100))}%"></i></span>` : ""}
+        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}
+      </div></article>`;
   }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;
   drawNext();
 }
@@ -4230,6 +4273,14 @@ function liveTimes() {
 $("calDays").onclick = (e) => { const b = e.target.closest("[data-d]"); if (b) { calSel = Number(b.dataset.d); drawCal(); } };
 $("calMine").onchange = drawCal;
 $("calAll").onchange = drawCal;
+// Cartas do calendário inclinam com o mouse
+$("calList").addEventListener("pointermove", (e) => {
+  const c = e.target.closest(".ep-card"); if (!c || matchMedia("(prefers-reduced-motion: reduce)").matches || e.pointerType !== "mouse") return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - .5) * 10}deg`);
+  c.style.setProperty("--rx", `${-((e.clientY - r.top) / r.height - .5) * 8}deg`);
+});
+$("calList").addEventListener("pointerout", (e) => { const c = e.target.closest(".ep-card"); if (c && !c.contains(e.relatedTarget)) { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); } });
 $("calList").onclick = (e) => {
   const b = e.target.closest("[data-f]"); if (!b) return;
   const id = Number(b.dataset.f), ep = cal.episodios.find((x) => x.id === id);
@@ -4474,7 +4525,7 @@ function drawBracket(champ) {
   if (champ) {
     $("tourCopy").onclick = async () => {
       const lines = T.rounds.map((r) => `${ROUND_NAMES[r.length]}: ${r.map((m) => `${m.a.name} x ${m.b.name} → ${m.winner?.name}`).join(" | ")}`);
-      try { await navigator.clipboard.writeText(`🏆 Torneio no Detetive Anime\n${lines.join("\n")}\nCampeão: ${champ.name} 👑`); toast("Resultado copiado!"); } catch { toast("Não consegui copiar."); }
+      try { await navigator.clipboard.writeText(`🏆 Torneio no Arquivo Otaku\n${lines.join("\n")}\nCampeão: ${champ.name} 👑`); toast("Resultado copiado!"); } catch { toast("Não consegui copiar."); }
     };
     $("tourAgain").onclick = () => { T.rounds = null; $("tourOut").innerHTML = ""; drawTour(); $("vsTour").scrollIntoView({ behavior: RM() ? "auto" : "smooth" }); };
   }
@@ -4719,7 +4770,7 @@ function tickNext() {
 }
 function emojiRow(c) { return COLS.map(([k]) => ({ certo: "🟩", perto: "🟨", errado: "🟥", mais: "⬆️", menos: "⬇️" }[c[k]] || "⬛")).join(""); }
 async function shareDes() {
-  const txt = `🕵️ Desafio do Detetive Anime nº ${D.numero} — ${D.venceu ? D.rows.length : "X"}/${MAXT}\n${D.rows.map((r) => emojiRow(r.c)).join("\n")}\nhttps://detetive-anime.howlks.com/#desafio`;
+  const txt = `🕵️ Desafio do Arquivo Otaku nº ${D.numero} — ${D.venceu ? D.rows.length : "X"}/${MAXT}\n${D.rows.map((r) => emojiRow(r.c)).join("\n")}\nhttps://detetive-anime.howlks.com/#desafio`;
   try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch { return; }
   try { await navigator.clipboard.writeText(txt); window.toast?.("Resultado copiado! Cole pros amigos."); } catch { window.toast?.("Não consegui copiar."); }
 }
@@ -4985,7 +5036,7 @@ if (k0 === "desafio" || k0 === "perfil") showTab(k0);
       chars = [...(d.mundo || []), ...(d.local || []), ...(d.comunidade?.top || [])].filter((c) => c?.id && c.image && !seen.has(c.id) && seen.add(c.id));
       $("hLive").textContent = `· ${chars.length} personagens em alta agora`;
     } catch { chars = []; $("hLive").textContent = "· arquivos abertos"; }
-    if (!chars.length) { $("hName").textContent = "Detetive Anime"; $("hAnime").textContent = "Pronto pra investigar"; $("hMain").href = "#buscar"; return; }
+    if (!chars.length) { $("hName").textContent = "Arquivo Otaku"; $("hAnime").textContent = "Pronto pra investigar"; $("hMain").href = "#buscar"; return; }
     $("hTry").innerHTML = chars.slice(0, 5).map((c) => `<button type="button" data-id="${Number(c.id)}">${img(c.image)}${esc(String(c.name).split(" ")[0])}</button>`).join("");
     show(0); cycle(); strip(); bento();
   }

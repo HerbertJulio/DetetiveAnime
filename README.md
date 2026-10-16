@@ -1,4 +1,4 @@
-# Detetive Anime
+# Arquivo Otaku
 
 Site onde você descreve o personagem (ou envia um print da cena) e descobre de qual anime ele é, em que episódio aparece e onde assistir de forma oficial no Brasil. Tem também jogo, teste, ranking, tier list, favoritos e o personagem do dia.
 

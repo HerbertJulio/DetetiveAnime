@@ -1169,6 +1169,101 @@ html[data-tab="inicio"] body{overflow-x:clip}
   .h-img{transition:opacity .2s}
   .h-reveal{opacity:1;transform:none}
 }
+/* ---------- Central de busca (abas: nome, descrição, print) */
+.finder{position:relative;display:flex;flex-direction:column;gap:14px;padding:14px;border-radius:30px;
+  background:linear-gradient(color-mix(in srgb,var(--surface) 80%,transparent),color-mix(in srgb,var(--surface) 80%,transparent)) padding-box,
+    linear-gradient(140deg,color-mix(in srgb,var(--accent) 60%,transparent),var(--line) 35%,var(--line) 65%,color-mix(in srgb,var(--accent-2) 55%,transparent)) border-box;
+  border:1px solid transparent;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 50px 120px -60px var(--glow),inset 0 1px 0 rgba(255,255,255,.05)}
+.f-modes{position:relative;display:grid;grid-template-columns:repeat(3,1fr);padding:4px;border-radius:18px;background:color-mix(in srgb,var(--bg) 55%,transparent);border:1px solid var(--line)}
+.f-modes button{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 10px;border:0;border-radius:14px;background:none;cursor:pointer;
+  font:600 .92rem var(--body);color:var(--muted);transition:color .25s}
+.f-modes button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.f-modes button[aria-selected="true"]{color:var(--accent-ink)}
+.f-modes button:not([aria-selected="true"]):hover{color:var(--fg)}
+.f-modes button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.f-ind{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:14px;background:var(--grad);
+  box-shadow:0 8px 24px -8px var(--glow);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.finder[data-mode="descricao"] .f-ind{transform:translateX(100%)}
+.finder[data-mode="print"] .f-ind{transform:translateX(200%)}
+.f-help{margin:2px 6px 0;color:var(--muted);font-size:.9rem}
+.finder .qsearch{padding:0 2px 4px}
+.finder .qbox{background:color-mix(in srgb,var(--bg) 45%,transparent);border:1px solid var(--line-strong);box-shadow:none;padding:7px 7px 7px 18px;border-radius:18px}
+.finder .qbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.finder .qbox .go{border-radius:13px}
+.finder .qsug{top:66px}
+.finder .qhints{padding:0 4px}
+.finder .search{background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:6px 6px 4px;border-radius:0}
+.finder .search::before,.finder .search::after{display:none}
+.finder[data-mode="nome"] .search,.finder:not([data-mode="nome"]) .qsearch{display:none}
+.finder textarea{min-height:110px;padding:14px 16px;border:1px solid var(--line-strong);border-radius:16px;background:color-mix(in srgb,var(--bg) 45%,transparent)}
+.finder textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.finder .field label{margin-left:4px}
+.finder .go{border-radius:14px}
+.d-big{display:none}
+.finder[data-mode="print"] .chips{display:none}
+.finder[data-mode="print"] .field{display:none}
+.finder[data-mode="print"] .row{flex-direction:column;align-items:stretch}
+.finder[data-mode="print"] .drop{flex-direction:column;justify-content:center;text-align:center;gap:12px;min-height:200px;padding:28px;border-width:1.5px;border-radius:20px;
+  background:repeating-linear-gradient(135deg,transparent 0 12px,color-mix(in srgb,var(--accent) 4%,transparent) 12px 24px)}
+.finder[data-mode="print"] .drop .ico{width:64px;height:64px;border-radius:18px;background:color-mix(in srgb,var(--accent) 14%,var(--surface-2))}
+.finder[data-mode="print"] .drop .ico svg{width:30px;height:30px}
+.finder[data-mode="print"] .drop img{width:auto;height:150px;max-width:100%;border-radius:14px}
+.finder[data-mode="print"] .drop .txt strong{font-size:1.1rem;white-space:normal}
+.finder[data-mode="print"] .d-opt{display:none}
+.finder[data-mode="print"] .d-big{display:block;margin-top:4px}
+.finder[data-mode="print"] .btns{justify-content:flex-end}
+.finder .status:empty{display:none}
+@media (max-width:560px){
+  .finder{padding:10px;border-radius:24px}
+  .f-modes button{flex-direction:column;gap:4px;font-size:.78rem;padding:9px 4px}
+  .finder[data-mode="print"] .drop{min-height:170px}
+}
+
+/* ---------- Barra do topo (computador) */
+.topbar{display:none}
+@media (min-width:980px){
+  .topbar{position:fixed;z-index:19;top:0;left:0;right:0;height:74px;display:flex;align-items:center;gap:28px;padding:0 84px 0 28px;
+    transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
+  html.scrolled .topbar{background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom-color:var(--line)}
+  .menu-btn{display:none}
+  .gear{top:14px}
+  .tb-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg);font-family:var(--display);font-weight:var(--display-weight);font-size:1.28rem;letter-spacing:-.01em;white-space:nowrap}
+  .tb-brand em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tb-nav{display:flex;gap:2px;margin:0 auto;padding:4px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 55%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .tb-nav a{position:relative;padding:9px 16px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s,background .2s;white-space:nowrap}
+  .tb-nav a:hover{color:var(--fg)}
+  .tb-nav a.on{color:var(--fg);background:color-mix(in srgb,var(--fg) 9%,transparent)}
+  .tb-nav a.on::after{content:"";position:absolute;left:50%;bottom:3px;width:16px;height:2px;margin-left:-8px;border-radius:2px;background:var(--grad)}
+  .tb-right{display:flex;align-items:center;gap:10px}
+  .tb-more{display:flex;align-items:center;gap:8px;height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--line-strong);background:color-mix(in srgb,var(--surface) 70%,transparent);color:var(--fg);font:500 .9rem var(--body);cursor:pointer}
+  .tb-more svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+  .tb-more:hover,.tb-av:hover{border-color:var(--accent)}
+  .tb-av{width:42px;height:42px;border-radius:50%;padding:0;overflow:hidden;border:1px solid var(--line-strong);background:var(--surface-2);cursor:pointer;display:grid;place-items:center;color:var(--fg);font-weight:700}
+  .tb-av img{width:100%;height:100%;object-fit:cover}
+  .tb-av > *{width:100%;height:100%;display:grid;place-items:center}
+  html:not([data-tab="buscar"]) .hero{display:none}
+  .wrap{padding-top:112px}
+}
+
+/* ---------- Rodapé */
+.site-foot{display:flex;flex-direction:column;gap:26px;padding-top:34px;margin-top:20px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+.sf-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:28px}
+.sf-brand p{margin:10px 0 0;max-width:30ch;line-height:1.55}
+.site-foot .f-brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:var(--display-weight);font-size:1.15rem;color:var(--fg)}
+.sf-col{display:flex;flex-direction:column;gap:9px}
+.sf-col b{font:500 .7rem var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--fg);margin-bottom:4px}
+.sf-col a{color:var(--muted);text-decoration:none;transition:color .2s;width:fit-content}
+.sf-col a:hover{color:var(--accent)}
+.sf-bot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;padding-top:18px;border-top:1px solid var(--line);font-size:.78rem}
+.sf-bot a{color:inherit}
+@media (max-width:720px){.sf-top{grid-template-columns:1fr 1fr}.sf-brand{grid-column:1/-1}}
+
+/* ---------- Acabamento geral */
+::selection{background:color-mix(in srgb,var(--accent) 40%,transparent);color:var(--fg)}
+html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.rhead h2,.sec-h{letter-spacing:-.01em}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1406,6 +1501,15 @@ html[data-tab="inicio"] body{overflow-x:clip}
 
   const D = {
     // Menu e abas
+    "Ache qualquer personagem de anime, descubra de qual obra ele é e onde assistir oficialmente.": "Find any anime character, discover which show they're from and where to watch officially.",
+    "Pelo nome": "By name", "Pela descrição": "By description", "Por print": "By screenshot", "Como você quer procurar?": "How do you want to search?",
+    "Digite um nome, anime, apelido, poder ou organização.": "Type a name, anime, nickname, power or organization.",
+    "Não lembra o nome? Conte como o personagem é: cabelo, olhos, roupa, poderes.": "Can't remember the name? Describe the character: hair, eyes, outfit, powers.",
+    "Mande um print da cena e a gente acha o anime, o episódio e o minuto.": "Send a screenshot of the scene and we'll find the anime, episode and minute.",
+    "Arraste a imagem aqui, cole com Ctrl+V ou toque pra escolher": "Drag the image here, paste with Ctrl+V or tap to choose",
+    "Mais": "More", "Em alta": "Trending", "Desafio": "Challenge", "Descobrir": "Discover", "Jogar": "Play", "Seu espaço": "Your space", "Meu perfil": "My profile",
+    "Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.": "Find any anime character by name, by a detail or by a screenshot. And see where to watch for real.",
+    "Dados:": "Data:", "Cenas:": "Scenes:", "Onde assistir:": "Where to watch:", "Mais seções": "More sections",
     "Início": "Home", "Sistema online": "System online", "· arquivos abertos": "· files open", "Todo personagem": "Every character", "deixa pistas.": "leaves clues.", "A gente segue todas.": "We follow every one.",
     "Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.": "Find out who it is by name, by a detail or by a screenshot. See powers, fights, new episodes and where to watch for real.",
     "Quem você quer investigar?": "Who do you want to investigate?", "Investigar": "Investigate", "Carregando arquivo…": "Loading file…", "ID CONFIRMADO": "ID CONFIRMED",
@@ -1794,6 +1898,16 @@ html[data-tab="inicio"] body{overflow-x:clip}
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
 </button>
 
+<header class="topbar" id="topbar">
+  <a class="tb-brand" href="#inicio" aria-label="Detetive Anime, início"><img src="/icon.svg" alt="" width="30" height="30"><span>Detetive <em>Anime</em></span></a>
+  <nav class="tb-nav" aria-label="Principal">
+    <a href="#inicio" data-t="inicio">Início</a><a href="#buscar" data-t="buscar">Buscar</a><a href="#tendencias" data-t="tendencias">Em alta</a><a href="#calendario" data-t="calendario">Calendário</a><a href="#comparar" data-t="comparar">Quem ganha?</a><a href="#desafio" data-t="desafio">Desafio</a>
+  </nav>
+  <div class="tb-right">
+    <button type="button" class="tb-more" id="tbMore" aria-label="Mais seções"><span>Mais</span><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <button type="button" class="tb-av" id="tbAv" aria-label="Meu perfil"></button>
+  </div>
+</header>
 <nav class="bnav" id="bnav" aria-label="Atalhos">
   <a href="#inicio" data-t="inicio"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span>Início</span></a>
   <a href="#buscar" data-t="buscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></a>
@@ -1869,12 +1983,20 @@ html[data-tab="inicio"] body{overflow-x:clip}
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
     <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Detetive Anime"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Detetive <em>Anime</em></h1>
-    <p class="sub">Pesquise pelo nome, obra, apelido ou poder. Não lembra o nome? Descreva o personagem ou mande um print da cena. A gente descobre quem é, de qual anime, e onde assistir oficialmente.</p>
+    <p class="sub">Ache qualquer personagem de anime, descubra de qual obra ele é e onde assistir oficialmente.</p>
   </header>
 
 
   <div id="tabBuscar" role="tabpanel" aria-labelledby="tabBtnBuscar" class="tabpanel" hidden>
 
+  <div class="finder" id="finder" data-mode="nome">
+  <div class="f-modes" role="tablist" aria-label="Como você quer procurar?">
+    <button type="button" role="tab" data-m="nome" aria-selected="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Pelo nome</span></button>
+    <button type="button" role="tab" data-m="descricao" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/><path d="m15 18 2 2 4-4"/></svg><span>Pela descrição</span></button>
+    <button type="button" role="tab" data-m="print" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10.5" r="1.8"/><path d="m21 16-5-5-8 8"/></svg><span>Por print</span></button>
+    <i class="f-ind" aria-hidden="true"></i>
+  </div>
+  <p class="f-help" id="fHelp">Digite um nome, anime, apelido, poder ou organização.</p>
   <div class="qsearch" id="qsearch">
     <form class="qbox" id="qForm" role="search" novalidate>
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -1890,16 +2012,7 @@ html[data-tab="inicio"] body{overflow-x:clip}
     </div>
   </div>
 
-  <section class="qres" id="findRes" hidden aria-live="polite">
-    <div class="rhead"><h2 id="qTitle">Resultados</h2><span id="qTag"></span></div>
-    <p class="qexp" id="qExp" hidden></p>
-    <div class="ctiles" id="qList"></div>
-    <div id="qObra"></div>
-  </section>
 
-  <div class="qrecent" id="qRecent" hidden></div>
-
-  <div class="or-line"><span>Não sabe o nome? Descreva ou mande um print</span></div>
 
   <form class="search" id="form" novalidate>
     <div class="field">
@@ -1920,7 +2033,7 @@ html[data-tab="inicio"] body{overflow-x:clip}
         <input type="file" id="img" accept="image/jpeg,image/png,image/webp">
         <span class="ico" id="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg></span>
         <img id="thumb" alt="" hidden>
-        <span class="txt"><strong id="dropText">Enviar print da cena</strong><small>Opcional · ajuda a acertar o anime e a cena</small></span>
+        <span class="txt"><strong id="dropText">Enviar print da cena</strong><small class="d-opt">Opcional · ajuda a acertar o anime e a cena</small><small class="d-big">Arraste a imagem aqui, cole com Ctrl+V ou toque pra escolher</small></span>
       </label>
       <div class="btns">
         <button class="ghost" id="clear" type="button">Limpar</button>
@@ -1929,6 +2042,16 @@ html[data-tab="inicio"] body{overflow-x:clip}
     </div>
     <p class="status" id="status" role="status" aria-live="polite"></p>
   </form>
+  </div>
+
+  <section class="qres" id="findRes" hidden aria-live="polite">
+    <div class="rhead"><h2 id="qTitle">Resultados</h2><span id="qTag"></span></div>
+    <p class="qexp" id="qExp" hidden></p>
+    <div class="ctiles" id="qList"></div>
+    <div id="qObra"></div>
+  </section>
+
+  <div class="qrecent" id="qRecent" hidden></div>
 
   <section class="results" id="out" hidden>
     <div class="rhead"><h2 id="rtitle">Resultados</h2><span id="rtag"></span></div>
@@ -1936,17 +2059,6 @@ html[data-tab="inicio"] body{overflow-x:clip}
     <div class="list" id="list"></div>
   </section>
 
-  <section class="explore" aria-labelledby="exploreH">
-    <h2 class="sec-h" id="exploreH">Explore</h2>
-    <div class="ex-grid">
-      <a class="ex" href="#tendencias" style="--x1:#FF4F9A;--x2:#FF9F45"><span class="ex-ic">📈</span><b>Tendências</b><small>Quem a galera mais procura esta semana</small></a>
-      <a class="ex" href="#calendario" style="--x1:#3FD0FF;--x2:#4F8BFF"><span class="ex-ic">📅</span><b>Calendário</b><small>Episódios novos de cada dia da temporada</small></a>
-      <a class="ex" href="#comparar" style="--x1:#E3122D;--x2:#FF6A2B"><span class="ex-ic">⚔️</span><b>Quem ganha?</b><small>Lutas 1 contra 1 e torneios de 8</small></a>
-      <a class="ex" href="#jogo" style="--x1:#2FD47C;--x2:#F5CE3A"><span class="ex-ic">🎮</span><b>Jogo</b><small>Adivinhe o personagem pelas pistas</small></a>
-      <a class="ex" href="#colecoes" style="--x1:#9B6BFF;--x2:#FF4F9A"><span class="ex-ic">🗂️</span><b>Coleções</b><small>Monte coleções com os seus favoritos</small></a>
-      <a class="ex" href="#assistir" style="--x1:#FFD84D;--x2:#E8A317"><span class="ex-ic">🍿</span><b>O que assistir</b><small>Diga um anime que curtiu e receba indicações</small></a>
-    </div>
-  </section>
   </div>
 
   <section id="tabJogo" role="tabpanel" aria-labelledby="tabBtnJogo" class="tabpanel game" hidden>
@@ -2168,10 +2280,17 @@ html[data-tab="inicio"] body{overflow-x:clip}
     </form>
   </dialog>
 
-  <footer>
-    <span class="f-brand"><img src="/icon.svg" alt="" width="22" height="22">Detetive Anime</span>
-    <span>Só mostramos plataformas oficiais. Assista sempre pelos serviços que pagam quem faz os animes.</span>
-    <span>Personagens, fotos e aniversários: <a href="https://anilist.co" target="_blank" rel="noopener">AniList</a> · Busca por cena: <a href="https://trace.moe" target="_blank" rel="noopener">trace.moe</a> · Onde assistir: <a href="https://www.justwatch.com/br" target="_blank" rel="noopener">JustWatch</a></span>
+  <footer class="site-foot">
+    <div class="sf-top">
+      <div class="sf-brand"><span class="f-brand"><img src="/icon.svg" alt="" width="26" height="26">Detetive Anime</span><p>Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.</p></div>
+      <nav class="sf-col" aria-label="Descobrir"><b>Descobrir</b><a href="#buscar">Buscar</a><a href="#tendencias">Tendências</a><a href="#calendario">Calendário</a><a href="#assistir">O que assistir</a></nav>
+      <nav class="sf-col" aria-label="Jogar"><b>Jogar</b><a href="#desafio">Desafio do dia</a><a href="#comparar">Quem ganha?</a><a href="#jogo">Jogo</a><a href="#teste">Teste</a></nav>
+      <nav class="sf-col" aria-label="Seu espaço"><b>Seu espaço</b><a href="#perfil">Meu perfil</a><a href="#colecoes">Coleções</a><a href="#conquistas">Conquistas</a><a href="#favoritos">Favoritos</a></nav>
+    </div>
+    <div class="sf-bot">
+      <span>Só mostramos plataformas oficiais. Assista sempre pelos serviços que pagam quem faz os animes.</span>
+      <span>Dados: <a href="https://anilist.co" target="_blank" rel="noopener">AniList</a> · Cenas: <a href="https://trace.moe" target="_blank" rel="noopener">trace.moe</a> · Onde assistir: <a href="https://www.justwatch.com/br" target="_blank" rel="noopener">JustWatch</a></span>
+    </div>
   </footer>
 </div>
 
@@ -3631,7 +3750,7 @@ window.countView = (id) => {
 // ---------- Sugestões enquanto digita (AniList, sem IA)
 function suggest(input, box, onPick, opts = {}) {
   let t = 0, ctl = null, items = [], idx = -1;
-  const close = () => { box.hidden = true; input.setAttribute("aria-expanded", "false"); idx = -1; };
+  const close = () => { clearTimeout(t); ctl?.abort(); box.hidden = true; input.setAttribute("aria-expanded", "false"); idx = -1; };
   const mark = () => box.querySelectorAll(".sug").forEach((b, i) => b.setAttribute("aria-selected", String(i === idx)));
   function draw(q) {
     const rows = items.map((c, i) => `<button type="button" class="sug" role="option" data-i="${i}" aria-selected="false">${pic(c.image)}<span><b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small></span><span class="k">${c._obra ? "obra" : ""}</span></button>`).join("");
@@ -3682,7 +3801,7 @@ $("qForm").addEventListener("submit", (e) => { e.preventDefault(); qs.close(); r
 $("qHints").addEventListener("click", (e) => { const b = e.target.closest("[data-q]"); if (!b) return; $("q").value = b.dataset.q; runFind(b.dataset.q); });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "/" || e.ctrlKey || e.metaKey || /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable) return;
-  e.preventDefault(); if ($("tabBuscar").hidden) goTo("buscar"); setTimeout(() => $("q").focus(), 30);
+  e.preventDefault(); if ($("tabBuscar").hidden) goTo("buscar"); window.setFinderMode?.("nome"); setTimeout(() => $("q").focus(), 30);
 });
 
 // Pesquisas recentes (só neste navegador)
@@ -4752,7 +4871,7 @@ if (k0 === "desafio" || k0 === "perfil") showTab(k0);
     $("q").value = q; goTo("buscar");
     setTimeout(() => window.DA?.runFind(q), 30);
   });
-  document.querySelector('#hBento [data-focus="desc"]').addEventListener("click", () => setTimeout(() => { $("desc")?.scrollIntoView({ block: "center" }); $("desc")?.focus(); }, 120));
+  
 
   // Luz que segue o mouse nos cartões
   $("hBento").addEventListener("pointermove", (e) => {
@@ -4874,6 +4993,52 @@ if (k0 === "desafio" || k0 === "perfil") showTab(k0);
   const prev = window.onTab;
   window.onTab = (t) => { prev?.(t); if (t === "inicio") load(); else clearInterval(timer); };
   if (document.documentElement.dataset.tab === "inicio") load();
+})();
+</script>
+<script>
+// ---------- Central de busca (abas) e barra do topo
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const HELP = {
+    nome: "Digite um nome, anime, apelido, poder ou organização.",
+    descricao: "Não lembra o nome? Conte como o personagem é: cabelo, olhos, roupa, poderes.",
+    print: "Mande um print da cena e a gente acha o anime, o episódio e o minuto.",
+  };
+  function setMode(m, focus) {
+    if (!HELP[m]) m = "nome";
+    const f = $("finder"); f.dataset.mode = m;
+    f.querySelectorAll(".f-modes [data-m]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.m === m)));
+    $("fHelp").textContent = HELP[m];
+    if (focus) setTimeout(() => (m === "nome" ? $("q") : m === "descricao" ? $("desc") : $("drop"))?.focus(), 30);
+  }
+  window.setFinderMode = setMode;
+  $("finder").querySelector(".f-modes").addEventListener("click", (e) => { const b = e.target.closest("[data-m]"); if (b) setMode(b.dataset.m, true); });
+  $("finder").querySelector(".f-modes").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const order = ["nome", "descricao", "print"], i = order.indexOf($("finder").dataset.mode);
+    setMode(order[(i + (e.key === "ArrowRight" ? 1 : 2)) % 3]);
+    $("finder").querySelector('[aria-selected="true"]').focus();
+  });
+  // Se a busca por descrição for usada por outro lugar (histórico, jogo), mostra essa aba
+  $("form").addEventListener("submit", () => { if ($("finder").dataset.mode === "nome") setMode("descricao"); }, true);
+  const hist = $("histList"); if (hist) hist.addEventListener("click", () => setMode("descricao"), true);
+  // Colou ou arrastou uma imagem: vai pra aba do print
+  $("img").addEventListener("change", () => setMode("print"));
+  addEventListener("paste", (e) => { if ([...(e.clipboardData?.items || [])].some((x) => x.type.startsWith("image/")) && document.documentElement.dataset.tab === "buscar") setMode("print"); });
+  const homePrint = document.querySelector('#hBento [data-focus="desc"]');
+  if (homePrint) homePrint.addEventListener("click", () => setTimeout(() => setMode("print", true), 140));
+
+  // Barra do topo
+  $("tbMore").onclick = () => $("openMenu").click();
+  $("tbAv").onclick = () => goTo("perfil");
+  const syncAv = () => { $("tbAv").innerHTML = $("mAv")?.innerHTML || ""; };
+  syncAv(); if ($("mAv")) new MutationObserver(syncAv).observe($("mAv"), { childList: true, subtree: true, attributes: true });
+  const onScroll = () => document.documentElement.classList.toggle("scrolled", scrollY > 8);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  const mark = (t) => document.querySelectorAll("#topbar [data-t]").forEach((a) => a.classList.toggle("on", a.dataset.t === t));
+  const prev = window.onTab;
+  window.onTab = (t) => { prev?.(t); mark(t); };
+  mark(document.documentElement.dataset.tab);
 })();
 </script>
 <script>

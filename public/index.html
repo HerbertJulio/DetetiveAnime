@@ -3904,13 +3904,15 @@ async function loadVotes(d) {
   if (!myVote(d)) return; // o placar aparece depois que a pessoa vota, pra não influenciar
   try { drawVotes(d, await api(`/api/versus?a=${d.a.id}&b=${d.b.id}&votos=1`)); } catch {}
 }
+// O voto vale na hora: os botões travam no primeiro toque e o placar chega logo depois.
+const saveVote = (d, id) => { try { const all = JSON.parse(localStorage.getItem(VKEY) || "{}"); if (id) all[pairK(d)] = id; else delete all[pairK(d)]; localStorage.setItem(VKEY, JSON.stringify(all)); } catch {} };
 async function castVote(d, id) {
   if (myVote(d)) return;
-  try {
-    const v = await api("/api/versus", { a: d.a.id, b: d.b.id, voto: id });
-    try { const all = JSON.parse(localStorage.getItem(VKEY) || "{}"); all[pairK(d)] = id; localStorage.setItem(VKEY, JSON.stringify(all)); } catch {}
-    Sfx.play("pop"); drawVotes(d, v);
-  } catch (err) { toast(err.message); }
+  saveVote(d, id);
+  Sfx.play("pop");
+  drawVotes(d, null);
+  try { drawVotes(d, await api("/api/versus", { a: d.a.id, b: d.b.id, voto: id })); }
+  catch (err) { saveVote(d, null); drawVotes(d, null); toast(err.message); }
 }
 
 const STAT = { forca: "Força", velocidade: "Velocidade", inteligencia: "Inteligência", tecnica: "Técnica", resistencia: "Resistência" };

@@ -294,3 +294,9 @@ test("com lang=en a IA recebe o pedido pra responder em inglês", async () => {
   assert.doesNotMatch(sent, /natural English/);
 });
 
+
+test("onde assistir não mostra o YouTube", async () => {
+  const { streamingLinks } = await import("../lib/anilist.js");
+  const links = streamingLinks({ externalLinks: [{ type: "STREAMING", site: "YouTube", url: "https://www.youtube.com/x" }, { type: "STREAMING", site: "Crunchyroll", url: "https://cr.com/x" }] });
+  assert.deepEqual(links.map((l) => l.name), ["Crunchyroll"]);
+});

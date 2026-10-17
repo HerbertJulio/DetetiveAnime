@@ -75,6 +75,7 @@ Como analisar:
 3. MUNDO: considere a escala de poder do universo de cada obra (nível de rua, cidade, país, planeta, estrela, universo) e onde cada um fica dentro dela. Um personagem de um universo com escala muito maior tem notas MUITO maiores nos atributos ligados a isso.
 4. HABILIDADES ESPECIAIS: pense em poderes que anulam ou contornam o outro (defesas absolutas, ataques que ignoram defesa, imortalidade, velocidade de reação).
 5. Se os dois já lutaram na própria obra, considere COMO a luta aconteceu: ataque surpresa, ajuda de outros, condições especiais ou o roteiro. Aqui a luta é justa: 1 contra 1, os dois no auge, cada um sabendo quem é o outro, sem ajuda e sem favorecimento do roteiro.
+   Só valem os poderes do PRÓPRIO personagem: técnicas, invocações ou adaptações que ele só teve usando o corpo, a técnica ou a ajuda de outro personagem não contam, nem o que ele só aprendeu graças a isso.
 6. Dê notas de 0 a 100 usando a MESMA régua para os dois. "poderes" mede o quanto os poderes especiais e a escala dele decidem uma luta.
 7. Decida o vencedor pela análise acima. Depois dê as notas: a SOMA das notas do vencedor tem que ser maior que a do perdedor, e a diferença mostra o quanto ele é superior.
 Responda SOMENTE com JSON, nesta ordem:

@@ -1360,6 +1360,10 @@ html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
 @media (min-width:980px){html[data-tab="inicio"]:not(.scrolled) .tb-brand{opacity:0;pointer-events:none}.tb-brand{transition:opacity .3s}}
 @media (max-width:980px){.h-brand{margin:0 0 -10px}}
 @media (prefers-reduced-motion:reduce){.h-brand img,.h-brand::before{animation:none}}
+
+.vs-base{padding:16px;border-radius:16px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 80%,transparent)}
+.vs-base h4{margin:0 0 10px;font:600 .74rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.vs-base b em{font:500 .72rem var(--mono);font-style:normal;color:var(--accent);margin-left:6px}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -4107,7 +4111,7 @@ async function fight(idA, idB) {
   const go = $("vsGo"); go.disabled = true; go.firstElementChild.textContent = "Lutando…";
   $("vsOut").innerHTML = `<div class="vs-res"><div class="vs-banner"><h3>A IA está analisando a luta…</h3><p>Comparando poderes, técnicas e feitos.</p></div></div>`;
   try {
-    const d = await api(`/api/versus?a=${idA}&b=${idB}`);
+    const d = await api(`/api/versus?a=${idA}&b=${idB}&v=2`);
     vs.a = d.a; vs.b = d.b; drawSlots();
     history.replaceState(null, "", `#comparar/${idA}-${idB}`);
     renderFight(d);
@@ -4158,12 +4162,13 @@ function renderFight(d) {
     <div class="stats">${Object.entries(STAT).map(([k, n]) => `<div class="stat"><span class="v">${d.a.stats[k]}</span><span class="bar l"><i data-w="${d.a.stats[k]}"></i></span><span class="lb">${n}</span><span class="bar r"><i data-w="${d.b.stats[k]}"></i></span><span class="v">${d.b.stats[k]}</span></div>`).join("")}</div>
     ${d.explicacao ? `<p class="cp-text">${esc(d.explicacao)}</p>` : ""}
     ${d.momento_decisivo ? `<div class="vs-key"><b>Momento decisivo:</b> ${esc(d.momento_decisivo)}</div>` : ""}
+    ${(d.a.habilidades?.length || d.b.habilidades?.length) ? `<div class="vs-base"><h4>No que a IA se baseou</h4><div class="vs-cols">${[d.a, d.b].map((c) => `<div><b>${esc(c.name)}${c.total ? ` <em>${c.total} pontos</em>` : ""}</b><ul>${(c.habilidades || []).map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>`).join("")}</div></div>` : ""}
     <div class="vs-cols"><div><b>Vantagens de ${esc(d.a.name)}</b><ul>${d.a.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div><div><b>Vantagens de ${esc(d.b.name)}</b><ul>${d.b.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div></div>
     <div class="vote" id="vsVote"><h4>E você, quem acha que ganha?</h4>
       <div class="vbtns"><button type="button" data-v="${d.a.id}">${esc(d.a.name)}</button><button type="button" data-v="${d.b.id}">${esc(d.b.name)}</button></div>
       <div id="vsVotes"></div></div>
     <div class="row-btns"><button type="button" class="mini" id="vsShare">↗ Compartilhar luta</button><button type="button" class="mini" id="vsNew">Nova luta</button></div>
-    <p class="cp-note">É só uma brincadeira de fã: a IA dá um palpite pelo que aparece nas obras.</p></div>`;
+    <p class="cp-note">É só uma brincadeira de fã. A IA lê a ficha de cada personagem, dá as notas dos atributos, e vence quem soma mais pontos.</p></div>`;
   requestAnimationFrame(() => requestAnimationFrame(() => $("vsOut").querySelectorAll("[data-w]").forEach((i) => { i.style.width = i.dataset.w + "%"; })));
   loadVotes(d);
   $("vsVote").querySelector(".vbtns").onclick = (e) => { const b = e.target.closest("[data-v]"); if (b) castVote(d, Number(b.dataset.v)); };
@@ -4244,7 +4249,7 @@ function openColDialog(item) {
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
 }
 saveCols(loadCols());
-window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}`), pic };
+window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}&v=2`), pic };
 window.reloadTrends = () => { trendsAt = 0; loadTrends(true); };
 
 route();

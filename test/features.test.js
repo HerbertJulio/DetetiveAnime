@@ -94,9 +94,13 @@ test("página do personagem junta AniList e IA", async () => {
 test("comparar devolve o vencedor do lado certo mesmo com a ordem trocada", async () => {
   process.env.GEMINI_API_KEY = "g";
   const sukuna = { ...gojo, id: 5, name: { full: "Ryoumen Sukuna" } };
-  globalThis.fetch = fakeFetch((u) => {
-    if (u.includes("generativelanguage")) return gemini({ vencedor: "B", confianca: 70, manchete: "Duelo!", atributos: { A: { forca: 90 }, B: { forca: 95 } }, vantagens_A: ["x"], vantagens_B: ["y"] });
-    return { data: { Page: { characters: [gojo, sukuna] } } };
+  let prompt = "";
+  const full = (c, desc) => ({ ...c, description: desc, media: { edges: [{ characterRole: "MAIN", node: { id: 1, type: "ANIME", isAdult: false, title: { english: "JUJUTSU KAISEN" } } }] } });
+  globalThis.fetch = fakeFetch((u, o) => {
+    if (u.includes("generativelanguage")) { prompt = JSON.parse(o.body).contents[0].parts.at(-1).text;
+      return gemini({ vencedor: "A", manchete: "Duelo!", atributos: { A: { forca: 90 }, B: { forca: 95 } }, habilidades_B: ["Infinito", "Vazio Infinito"], vantagens_A: ["x"], vantagens_B: ["y"] }); }
+    const { variables } = JSON.parse(o.body);
+    return { data: { Character: variables.id === 5 ? full(sukuna, "King of Curses with Malevolent Shrine.") : full(gojo, "Uses Limitless and the Six Eyes.") } };
   });
   const { default: handler } = await import("../api/versus.js");
   const res = fakeRes();
@@ -107,6 +111,10 @@ test("comparar devolve o vencedor do lado certo mesmo com a ordem trocada", asyn
   assert.equal(res.body.vencedor, "a");
   assert.equal(res.body.a.stats.forca, 95);
   assert.equal(res.body.b.stats.forca, 90);
+  // A IA recebe a ficha de verdade e o vencedor sai da soma dos atributos (mesmo se a IA disser outro)
+  assert.match(prompt, /Limitless and the Six Eyes/);
+  assert.match(prompt, /Malevolent Shrine/);
+  assert.deepEqual(res.body.a.habilidades, ["Infinito", "Vazio Infinito"]);
 });
 
 test("tendências contam as visitas da semana", async () => {

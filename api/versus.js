@@ -4,7 +4,7 @@ import { route, clip, needAi, readBody } from "../lib/common.js";
 import { trendsEnabled, visitor, recordVote, countVotes } from "../lib/trends.js";
 import { withLang } from "../lib/lang.js";
 
-const STATS = ["forca", "velocidade", "inteligencia", "tecnica", "resistencia"];
+const STATS = ["forca", "velocidade", "inteligencia", "tecnica", "resistencia", "poderes"];
 const num = (v) => Math.max(0, Math.min(100, Math.round(Number(v) || 0)));
 
 const ids = (q) => [Number(q?.a), Number(q?.b)];
@@ -61,26 +61,32 @@ const fight = route("GET", async (req, res) => {
   const ca = card(FA), cb = card(FB);
 
   const r = await askJson(`Batalha de fãs, só por diversão, num site brasileiro para jovens: ${ca.name} (${ca.anime}) contra ${cb.name} (${cb.anime}).
-Use a FICHA de cada personagem abaixo (do AniList, em inglês) junto com o que acontece na obra. Pense na versão mais forte que aparece no anime ou mangá.
+Você é um especialista em "power scaling" (comparar a força de personagens de obras diferentes). Analise com cuidado e com honestidade de fã que conhece as obras.
 
-FICHA DE A — ${ca.name}:
+FICHA DE A — ${ca.name} (${ca.anime}):
 """${ficha(FA)}"""
 
-FICHA DE B — ${cb.name}:
+FICHA DE B — ${cb.name} (${cb.anime}):
 """${ficha(FB)}"""
 
-Passo 1: liste as habilidades, poderes e feitos mais importantes de cada um (com base nas fichas e na obra).
-Passo 2: dê notas de 0 a 100 para cada atributo, justificadas por essas habilidades. Use a mesma régua para os dois (um personagem que destrói planetas tem força muito maior que um lutador comum).
-Passo 3: o vencedor é quem tiver a MAIOR SOMA de atributos. A explicação tem que concordar com as notas.
+Como analisar:
+1. PODERES: liste os poderes, técnicas e habilidades especiais de cada um, incluindo transformações e formas mais fortes (ex.: formas super, expansões de domínio, itens que dão poder).
+2. HISTÓRIA: lembre os maiores feitos de cada um na obra (o que destruíram, quem venceram, o que aguentaram).
+3. MUNDO: considere a escala de poder do universo de cada obra (nível de rua, cidade, país, planeta, estrela, universo) e onde cada um fica dentro dela. Um personagem de um universo com escala muito maior tem notas MUITO maiores nos atributos ligados a isso.
+4. HABILIDADES ESPECIAIS: pense em poderes que anulam ou contornam o outro (defesas absolutas, ataques que ignoram defesa, imortalidade, velocidade de reação).
+5. Se os dois já lutaram na própria obra, considere COMO a luta aconteceu: ataque surpresa, ajuda de outros, condições especiais ou o roteiro. Aqui a luta é justa: 1 contra 1, os dois no auge, cada um sabendo quem é o outro, sem ajuda e sem favorecimento do roteiro.
+6. Dê notas de 0 a 100 usando a MESMA régua para os dois. "poderes" mede o quanto os poderes especiais e a escala dele decidem uma luta.
+7. O vencedor é quem tiver a MAIOR SOMA das notas, então as notas precisam refletir de verdade quem ganharia.
 Responda SOMENTE com JSON:
-{"habilidades_A":["3 a 5 habilidades ou feitos curtos"],"habilidades_B":["3 a 5 habilidades ou feitos curtos"],"atributos":{"A":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100},"B":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100}},"manchete":"1 frase curta e empolgante","explicacao":"3 a 5 frases dizendo quem ganharia e por quê, citando os atributos e habilidades, em tom de narrador de luta empolgado, sem violência pesada","momento_decisivo":"1 frase com o lance que decide","vantagens_A":["2 ou 3 vantagens curtas"],"vantagens_B":["2 ou 3 vantagens curtas"]}
-A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 1600 });
+{"nivel_A":"escala de poder curta, ex.: nível de cidade","nivel_B":"...","habilidades_A":["3 a 5 poderes ou feitos curtos"],"habilidades_B":["3 a 5 poderes ou feitos curtos"],"atributos":{"A":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100},"B":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100}},"manchete":"1 frase curta e empolgante","explicacao":"3 a 5 frases dizendo quem ganharia e por quê, citando poderes, feitos e a escala de cada mundo, em tom de narrador de luta empolgado, sem violência pesada","momento_decisivo":"1 frase com o lance que decide","vantagens_A":["2 ou 3 vantagens curtas"],"vantagens_B":["2 ou 3 vantagens curtas"]}
+A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 2000 });
   if (!r) throw Object.assign(new Error("resposta vazia"), { publicMessage: "A IA não respondeu agora. Tente de novo." });
 
   const side = (k) => ({
     stats: Object.fromEntries(STATS.map((s) => [s, num(r.atributos?.[k]?.[s])])),
     vantagens: (Array.isArray(r[`vantagens_${k}`]) ? r[`vantagens_${k}`] : []).slice(0, 3).map((x) => clip(x, 90)),
     habilidades: (Array.isArray(r[`habilidades_${k}`]) ? r[`habilidades_${k}`] : []).slice(0, 5).map((x) => clip(x, 80)).filter(Boolean),
+    nivel: clip(r[`nivel_${k}`], 60),
   });
   const A = side("A"), B = side("B");
   // O vencedor sai da soma dos atributos (assim o resultado sempre bate com as barrinhas).
@@ -93,7 +99,7 @@ A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 1600 });
     a: swap ? right : left,
     b: swap ? left : right,
     vencedor: win === "empate" ? "empate" : (win === "A") !== swap ? "a" : "b",
-    confianca: win === "empate" ? 50 : Math.min(97, 55 + Math.round(diff / 3)),
+    confianca: win === "empate" ? 50 : Math.min(97, 55 + Math.round(diff / 3.6)),
     manchete: clip(r.manchete, 140),
     explicacao: clip(r.explicacao, 900),
     momento_decisivo: clip(r.momento_decisivo, 240),

@@ -1363,7 +1363,25 @@ html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
 
 .vs-base{padding:16px;border-radius:16px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 80%,transparent)}
 .vs-base h4{margin:0 0 10px;font:600 .74rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.vs-tier{display:inline-block;margin:6px 0 2px;font:600 .7rem var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.vs-base b{display:block}
 .vs-base b em{font:500 .72rem var(--mono);font-style:normal;color:var(--accent);margin-left:6px}
+
+/* Barra de quem está ganhando */
+.vs-meter{--p:50%;display:flex;flex-direction:column;gap:8px;padding:4px 2px}
+.vm-names,.vm-pct{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:.92rem}
+.vm-names span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vm-pct b{font:600 1.25rem var(--mono);font-variant-numeric:tabular-nums}
+.vm-pct .vm-pa{color:var(--accent)} .vm-pct .vm-pb{color:#4F8BFF}
+.vm-bar{position:relative;height:22px;border-radius:999px;overflow:visible;background:var(--surface-2);border:1px solid var(--line-strong);box-shadow:inset 0 2px 8px rgba(0,0,0,.4)}
+.vm-bar i{position:absolute;top:0;bottom:0}
+.vm-a{left:0;width:var(--p);border-radius:999px 0 0 999px;background:linear-gradient(90deg,var(--accent-2),var(--accent));box-shadow:0 0 18px var(--glow)}
+.vm-b{right:0;width:calc(100% - var(--p));border-radius:0 999px 999px 0;background:linear-gradient(90deg,#3E6BE0,#4F8BFF 60%,#7FB6FF)}
+.vm-knot{position:absolute;top:50%;left:var(--p);width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 3px rgba(0,0,0,.35),0 0 18px rgba(255,255,255,.6);display:grid;place-items:center}
+.vm-knot::after{content:"⚔";font-size:.72rem;color:#14101C}
+.vs-meter.done .vm-knot{animation:knotPop .5s cubic-bezier(.2,1.6,.3,1)}
+@keyframes knotPop{50%{transform:scale(1.35)}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -4111,7 +4129,7 @@ async function fight(idA, idB) {
   const go = $("vsGo"); go.disabled = true; go.firstElementChild.textContent = "Lutando…";
   $("vsOut").innerHTML = `<div class="vs-res"><div class="vs-banner"><h3>A IA está analisando a luta…</h3><p>Comparando poderes, técnicas e feitos.</p></div></div>`;
   try {
-    const d = await api(`/api/versus?a=${idA}&b=${idB}&v=2`);
+    const d = await api(`/api/versus?a=${idA}&b=${idB}&v=3`);
     vs.a = d.a; vs.b = d.b; drawSlots();
     history.replaceState(null, "", `#comparar/${idA}-${idB}`);
     renderFight(d);
@@ -4152,24 +4170,46 @@ async function castVote(d, id) {
   catch (err) { saveVote(d, null); drawVotes(d, null); toast(err.message); }
 }
 
-const STAT = { forca: "Força", velocidade: "Velocidade", inteligencia: "Inteligência", tecnica: "Técnica", resistencia: "Resistência" };
+const STAT = { forca: "Força", velocidade: "Velocidade", inteligencia: "Inteligência", tecnica: "Técnica", resistencia: "Resistência", poderes: "Poderes" };
+// Barra de porcentagem: começa no meio, balança como cabo de guerra e para em quem está ganhando
+function tugOfWar(d) {
+  const m = $("vsMeter"); if (!m) return;
+  const conf = Number(d.confianca) || 50;
+  const finalA = d.vencedor === "a" ? conf : d.vencedor === "b" ? 100 - conf : 50;
+  const set = (p) => { m.style.setProperty("--p", p + "%"); m.querySelector(".vm-pa").textContent = Math.round(p) + "%"; m.querySelector(".vm-pb").textContent = Math.round(100 - p) + "%"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { set(finalA); return; }
+  const t0 = performance.now(), dur = 2600;
+  set(50);
+  const tick = (t) => {
+    const k = Math.min(1, (t - t0) / dur);
+    const wobble = Math.sin(k * Math.PI * 7) * 14 * (1 - k) * (1 - k);
+    const ease = 1 - Math.pow(1 - k, 3);
+    set(Math.max(3, Math.min(97, 50 + (finalA - 50) * ease + wobble)));
+    if (k < 1) requestAnimationFrame(tick); else { set(finalA); m.classList.add("done"); window.Sfx?.play("pop"); }
+  };
+  requestAnimationFrame(tick);
+}
 function renderFight(d) {
   const face = (c, side) => `<div class="vs-face ${d.vencedor === side ? "win" : d.vencedor === "empate" ? "" : "lose"}">${d.vencedor === side ? `<span class="crown" aria-hidden="true">👑</span>` : ""}${pic(c.image)}<b>${esc(c.name)}</b><small>${esc(c.anime || "")}</small></div>`;
   const win = d.vencedor === "empate" ? null : d[d.vencedor];
   $("vsOut").innerHTML = `<div class="vs-res">
     <div class="vs-head">${face(d.a, "a")}<div class="vs-mark">VS</div>${face(d.b, "b")}</div>
     <div class="vs-banner"><h3>${win ? `${esc(win.name)} vence!` : "Empate!"}</h3><p>${esc(d.manchete || "")}${d.manchete ? " · " : ""}${d.confianca}% de certeza</p></div>
+    <div class="vs-meter" id="vsMeter" aria-label="Chance de vitória"><div class="vm-names"><span>${esc(d.a.name)}</span><span>${esc(d.b.name)}</span></div>
+      <div class="vm-bar"><i class="vm-a"></i><i class="vm-b"></i><span class="vm-knot"></span></div>
+      <div class="vm-pct"><b class="vm-pa">50%</b><b class="vm-pb">50%</b></div></div>
     <div class="stats">${Object.entries(STAT).map(([k, n]) => `<div class="stat"><span class="v">${d.a.stats[k]}</span><span class="bar l"><i data-w="${d.a.stats[k]}"></i></span><span class="lb">${n}</span><span class="bar r"><i data-w="${d.b.stats[k]}"></i></span><span class="v">${d.b.stats[k]}</span></div>`).join("")}</div>
     ${d.explicacao ? `<p class="cp-text">${esc(d.explicacao)}</p>` : ""}
     ${d.momento_decisivo ? `<div class="vs-key"><b>Momento decisivo:</b> ${esc(d.momento_decisivo)}</div>` : ""}
-    ${(d.a.habilidades?.length || d.b.habilidades?.length) ? `<div class="vs-base"><h4>No que a IA se baseou</h4><div class="vs-cols">${[d.a, d.b].map((c) => `<div><b>${esc(c.name)}${c.total ? ` <em>${c.total} pontos</em>` : ""}</b><ul>${(c.habilidades || []).map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>`).join("")}</div></div>` : ""}
+    ${(d.a.habilidades?.length || d.b.habilidades?.length) ? `<div class="vs-base"><h4>No que a IA se baseou</h4><div class="vs-cols">${[d.a, d.b].map((c) => `<div><b>${esc(c.name)}${c.total ? ` <em>${c.total} pontos</em>` : ""}</b>${c.nivel ? `<span class="vs-tier">${esc(c.nivel)}</span>` : ""}<ul>${(c.habilidades || []).map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>`).join("")}</div></div>` : ""}
     <div class="vs-cols"><div><b>Vantagens de ${esc(d.a.name)}</b><ul>${d.a.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div><div><b>Vantagens de ${esc(d.b.name)}</b><ul>${d.b.vantagens.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div></div>
     <div class="vote" id="vsVote"><h4>E você, quem acha que ganha?</h4>
       <div class="vbtns"><button type="button" data-v="${d.a.id}">${esc(d.a.name)}</button><button type="button" data-v="${d.b.id}">${esc(d.b.name)}</button></div>
       <div id="vsVotes"></div></div>
     <div class="row-btns"><button type="button" class="mini" id="vsShare">↗ Compartilhar luta</button><button type="button" class="mini" id="vsNew">Nova luta</button></div>
-    <p class="cp-note">É só uma brincadeira de fã. A IA lê a ficha de cada personagem, dá as notas dos atributos, e vence quem soma mais pontos.</p></div>`;
+    <p class="cp-note">É só uma brincadeira de fã. A IA compara poderes, feitos na história e a escala de cada mundo, numa luta justa com os dois no auge, e vence quem soma mais pontos.</p></div>`;
   requestAnimationFrame(() => requestAnimationFrame(() => $("vsOut").querySelectorAll("[data-w]").forEach((i) => { i.style.width = i.dataset.w + "%"; })));
+  tugOfWar(d);
   loadVotes(d);
   $("vsVote").querySelector(".vbtns").onclick = (e) => { const b = e.target.closest("[data-v]"); if (b) castVote(d, Number(b.dataset.v)); };
   $("vsShare").onclick = async () => { try { await navigator.clipboard.writeText(location.href); toast("Link da luta copiado!"); } catch { toast(location.href); } };
@@ -4249,7 +4289,7 @@ function openColDialog(item) {
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
 }
 saveCols(loadCols());
-window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}&v=2`), pic };
+window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}&v=3`), pic };
 window.reloadTrends = () => { trendsAt = 0; loadTrends(true); };
 
 route();

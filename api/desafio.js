@@ -51,12 +51,17 @@ export function compare(g, a) {
 
 export function hints(a, tentativa, lang = "pt") {
   const en = lang === "en";
+  const first = (a.name || "").split(" ")[0] || a.name || "";
+  const title = a.anime?.title || "";
+  const words = title.split(/\s+/).filter(Boolean).length;
   const all = [
     en ? `The anime's genres: ${a.anime.genres.slice(0, 3).join(", ")}` : `Gêneros do anime: ${a.anime.genres.slice(0, 3).join(", ")}`,
     en ? `The anime first aired in ${a.anime.year || "?"}` : `O anime estreou em ${a.anime.year || "?"}`,
-    en ? `The name starts with "${a.name.charAt(0)}"` : `O nome começa com "${a.name.charAt(0)}"`,
+    en ? `The name starts with "${a.name.charAt(0)}" and the first name has ${first.length} letters` : `O nome começa com "${a.name.charAt(0)}" e o primeiro nome tem ${first.length} letras`,
+    en ? `The anime's name starts with "${title.charAt(0)}" and has ${words} word${words === 1 ? "" : "s"}` : `O nome do anime começa com "${title.charAt(0)}" e tem ${words} ${words === 1 ? "palavra" : "palavras"}`,
+    en ? `The anime is: ${title}` : `O anime é: ${title}`,
   ];
-  return all.slice(0, Math.floor((tentativa - 1) / 2)); // 1 dica na 3ª tentativa, 2 na 5ª
+  return all.slice(0, Math.max(0, tentativa - 1)); // uma dica nova a cada erro
 }
 
 const flat = (c) => ({ id: c.id, name: c.name, image: c.image, anime: c.anime?.title || "", genres: c.anime?.genres || [], gender: c.gender, age: c.age, year: c.anime?.year || null, favourites: c.favourites });

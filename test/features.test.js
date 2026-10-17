@@ -264,7 +264,7 @@ test("desafio do dia confere o palpite no servidor e só revela no fim", async (
   assert.deepEqual(r1.body.comparacao, { anime: "errado", genero: "errado", idade: "mais", estreia: "mais", generos: "perto", generosIguais: ["Action"], fama: "mais" });
   const r3 = fakeRes();
   await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 5, prova: pv(4) } }, r3);
-  assert.equal(r3.body.dicas.length, 2);
+  assert.equal(r3.body.dicas.length, 5);
   // Sem a prova assinada não dá pra pular direto pra última tentativa e ver a resposta.
   const cheat = fakeRes();
   await handler({ method: "POST", query: {}, body: { id: 2, tentativa: 6 } }, cheat);

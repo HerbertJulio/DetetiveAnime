@@ -6,12 +6,14 @@
 <title>Arquivo Otaku</title>
 <meta name="description" content="Pesquise personagens de anime por nome, obra, poder ou descrição, veja fichas completas, o calendário da temporada e onde assistir oficialmente.">
 <meta name="theme-color" content="#0E0A14">
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Arquivo Otaku">
 <meta property="og:title" content="Arquivo Otaku">
+<meta property="og:image" content="https://arquivo-otaku.howlks.com/icon-512.png">
 <meta property="og:description" content="Pesquise por nome, poder ou descrição, descubra o personagem e veja onde assistir oficialmente.">
 <meta property="og:url" content="https://arquivo-otaku.howlks.com/">
 <meta name="twitter:card" content="summary">
@@ -1339,6 +1341,13 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 .ec-lang{display:flex;flex-wrap:wrap;gap:6px}
 .ec-lang span{font-size:.72rem;font-weight:500;padding:3px 8px;border-radius:8px;background:color-mix(in srgb,var(--fg) 6%,transparent);border:1px solid var(--line);color:var(--fg)}
 .ec-body .pl .lg{font:500 .62rem var(--mono);color:var(--muted);margin-left:2px;text-transform:uppercase}
+
+/* Logo oficial */
+.brand-h1{line-height:0;margin:0}
+.brand-h1 img{height:clamp(84px,13vw,150px);width:auto;max-width:100%;filter:drop-shadow(0 10px 30px rgba(229,72,77,.25))}
+html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
+.tb-logo{height:44px;width:auto;display:block}
+.site-foot .f-logo{height:46px;width:auto;display:block}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1976,7 +1985,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 </button>
 
 <header class="topbar" id="topbar">
-  <a class="tb-brand" href="#inicio" aria-label="Arquivo Otaku, início"><img src="/icon.svg" alt="" width="30" height="30"><span>Arquivo <em>Otaku</em></span></a>
+  <a class="tb-brand" href="#inicio" aria-label="Arquivo Otaku, início"><img class="tb-logo" src="/logo.png" alt="Arquivo Otaku" height="44"></a>
   <nav class="tb-nav" aria-label="Principal">
     <a href="#inicio" data-t="inicio">Início</a><a href="#buscar" data-t="buscar">Buscar</a><a href="#tendencias" data-t="tendencias">Em alta</a><a href="#calendario" data-t="calendario">Calendário</a><a href="#comparar" data-t="comparar">Quem ganha?</a><a href="#desafio" data-t="desafio">Desafio</a>
   </nav>
@@ -2059,7 +2068,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
   </section>
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
-    <h1><img class="logo" src="/icon.svg" alt="Logo do Arquivo Otaku" width="64" height="64">Arquivo <em>Otaku</em></h1>
+    <h1 class="brand-h1"><img src="/logo.png" alt="Arquivo Otaku"></h1>
     <p class="sub">Ache qualquer personagem de anime, descubra de qual obra ele é e onde assistir oficialmente.</p>
   </header>
 
@@ -2359,7 +2368,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 
   <footer class="site-foot">
     <div class="sf-top">
-      <div class="sf-brand"><span class="f-brand"><img src="/icon.svg" alt="" width="26" height="26">Arquivo Otaku</span><p>Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.</p></div>
+      <div class="sf-brand"><span class="f-brand"><img class="f-logo" src="/logo.png" alt="Arquivo Otaku" height="46"></span><p>Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.</p></div>
       <nav class="sf-col" aria-label="Descobrir"><b>Descobrir</b><a href="#buscar">Buscar</a><a href="#tendencias">Tendências</a><a href="#calendario">Calendário</a><a href="#assistir">O que assistir</a></nav>
       <nav class="sf-col" aria-label="Jogar"><b>Jogar</b><a href="#desafio">Desafio do dia</a><a href="#comparar">Quem ganha?</a><a href="#jogo">Jogo</a><a href="#teste">Teste</a></nav>
       <nav class="sf-col" aria-label="Seu espaço"><b>Seu espaço</b><a href="#perfil">Meu perfil</a><a href="#colecoes">Coleções</a><a href="#conquistas">Conquistas</a><a href="#favoritos">Favoritos</a></nav>

@@ -28,18 +28,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "detetive-anime.howlks.com"
-        }
-      ],
-      "destination": "https://arquivo-otaku.howlks.com/$1",
-      "permanent": true
-    }
   ]
 }

@@ -4303,7 +4303,7 @@ function drawCal() {
     return `<article class="ep-card${deck ? " deck" : ""}${mine.has(e.id) ? " mine" : ""}${past ? " past" : ""}" style="--i:${i};--c:${color}">
       ${deck ? `<span class="ec-layer l1" aria-hidden="true"></span><span class="ec-layer l2" aria-hidden="true"></span><span class="ec-count">${g.length} episódios</span>` : ""}
       <a class="ec-poster" href="${esc(e.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${pic(e.cover)}<span class="ec-shine"></span></a>
-      ${(e.personagens || []).length ? `<span class="ec-pop n${e.personagens.length}" aria-hidden="true">${e.personagens.map((c, k) => `<img class="p${k}" src="${esc(c.image)}" alt="" loading="lazy">`).join("")}<span class="ec-who">${esc(e.personagens.map((c) => c.name.split(" ")[0]).join(" & "))}</span></span>` : ""}
+      ${(e.personagens || []).length >= 2 ? `<span class="ec-pop n${e.personagens.length}" aria-hidden="true">${e.personagens.map((c, k) => `<img class="p${k}" src="${esc(c.image)}" data-n="${esc(c.name.split(" ")[0])}" alt="" loading="lazy">`).join("")}<span class="ec-who">${esc(e.personagens.map((c) => c.name.split(" ")[0]).join(" & "))}</span></span>` : ""}
       <span class="ec-time"><b>${hhmm(nextEp.at)}</b><small data-at="${nextEp.at}">${nextEp.at <= now ? "já saiu" : until(nextEp.at)}</small></span>
       <button type="button" class="follow" data-f="${e.id}" aria-pressed="${mine.has(e.id)}" aria-label="${mine.has(e.id) ? "Parar de acompanhar" : "Acompanhar"} ${esc(e.title)}">${mine.has(e.id) ? "★" : "☆"}</button>
       <div class="ec-body">
@@ -4345,6 +4345,18 @@ $("calList").addEventListener("pointermove", (e) => {
   c.style.setProperty("--rx", `${-((e.clientY - r.top) / r.height - .5) * 8}deg`);
 });
 $("calList").addEventListener("pointerout", (e) => { const c = e.target.closest(".ep-card"); if (c && !c.contains(e.relatedTarget)) { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); } });
+// Foto de personagem que não carregou some, e a carta não fica com um quadro vazio
+$("calList").addEventListener("error", (e) => {
+  const img = e.target; if (!(img instanceof HTMLImageElement) || !img.closest(".ec-pop")) return;
+  const pop = img.closest(".ec-pop"); img.remove();
+  const left = [...pop.querySelectorAll("img")];
+  if (left.length < 2) { pop.remove(); return; }
+  left.forEach((x, k) => { x.className = "p" + k; });
+  pop.className = `ec-pop n${left.length}`;
+  const who = pop.querySelector(".ec-who"); if (who) who.textContent = left.map((x) => x.dataset.n).join(" & ");
+}, true);
+// Foto muito pequena (sem imagem de verdade) também sai
+$("calList").addEventListener("load", (e) => { const img = e.target; if (img instanceof HTMLImageElement && img.closest(".ec-pop") && img.naturalWidth < 40) img.dispatchEvent(new Event("error")); }, true);
 $("calList").addEventListener("pointerdown", (e) => {
   if (e.pointerType === "mouse") return;
   const c = e.target.closest(".ep-card"); if (!c || e.target.closest("a,button")) return;
@@ -5070,7 +5082,7 @@ if (k0 === "desafio" || k0 === "perfil") showTab(k0);
       const d = await api("/api/schedule");
       const now = Date.now() / 1000;
       const end = new Date(); end.setHours(23, 59, 59, 999);
-      const eps = (d.episodios || []).filter((e) => e.at >= now - 3 * 3600);
+      const eps = (d.episodios || []).filter((e) => e.at >= now - 3 * 3600 && e.onde?.length);
       const today = eps.filter((e) => e.at <= end / 1000);
       $("hCalD").textContent = today.length ? `${today.length} ${today.length === 1 ? "episódio novo sai" : "episódios novos saem"} hoje.` : "Episódios novos da temporada.";
       const next = [...eps].sort((x, y) => (y.popular || 0) - (x.popular || 0)).slice(0, 4).sort((x, y) => x.at - y.at);

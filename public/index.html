@@ -1348,6 +1348,18 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
 .tb-logo{height:44px;width:auto;display:block}
 .site-foot .f-logo{height:46px;width:auto;display:block}
+
+/* Logo em destaque no topo da página inicial */
+.h-brand{position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;margin:-8px 0 -18px;text-align:center}
+.h-brand::before{content:"";position:absolute;left:50%;top:50%;width:min(780px,90vw);height:220px;transform:translate(-50%,-55%);
+  background:radial-gradient(closest-side,rgba(255,96,40,.28),rgba(229,36,47,.12) 55%,transparent);filter:blur(10px);z-index:-1;animation:hBrandGlow 5s ease-in-out infinite}
+.h-brand img{height:clamp(96px,13vw,190px);width:auto;max-width:100%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.6));animation:hBrandIn 1s cubic-bezier(.2,.8,.2,1) both}
+.h-brand-line{width:min(420px,60vw);height:1px;background:linear-gradient(90deg,transparent,rgba(242,181,68,.6),transparent)}
+@keyframes hBrandIn{from{opacity:0;transform:translateY(14px) scale(.96);filter:blur(6px) drop-shadow(0 18px 40px rgba(0,0,0,.6))}to{opacity:1;transform:none}}
+@keyframes hBrandGlow{50%{opacity:.6}}
+@media (min-width:980px){html[data-tab="inicio"]:not(.scrolled) .tb-brand{opacity:0;pointer-events:none}.tb-brand{transition:opacity .3s}}
+@media (max-width:980px){.h-brand{margin:0 0 -10px}}
+@media (prefers-reduced-motion:reduce){.h-brand img,.h-brand::before{animation:none}}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1594,7 +1606,7 @@ html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
     "Mais": "More", "Em alta": "Trending", "Desafio": "Challenge", "Descobrir": "Discover", "Jogar": "Play", "Seu espaço": "Your space", "Meu perfil": "My profile",
     "Descubra qualquer personagem de anime pelo nome, por um detalhe ou por um print. E veja onde assistir de verdade.": "Find any anime character by name, by a detail or by a screenshot. And see where to watch for real.",
     "Dados:": "Data:", "Cenas:": "Scenes:", "Onde assistir:": "Where to watch:", "Mais seções": "More sections",
-    "Início": "Home", "Sistema online": "System online", "· arquivos abertos": "· files open", "Todo personagem": "Every character", "deixa pistas.": "leaves clues.", "A gente segue todas.": "We follow every one.",
+    "Arquivo aberto": "Archive open", "Início": "Home", "Sistema online": "System online", "· arquivos abertos": "· files open", "Todo personagem": "Every character", "deixa pistas.": "leaves clues.", "A gente segue todas.": "We follow every one.",
     "Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.": "Find out who it is by name, by a detail or by a screenshot. See powers, fights, new episodes and where to watch for real.",
     "Quem você quer investigar?": "Who do you want to investigate?", "Investigar": "Investigate", "Carregando arquivo…": "Loading file…", "ID CONFIRMADO": "ID CONFIRMED",
     "O que tem no Arquivo": "What's in the Archive", "Tudo que dá pra investigar por aqui.": "Everything you can investigate here.", "Caso": "Case", "do dia": "of the day",
@@ -2004,9 +2016,10 @@ html:not([data-tab="buscar"]) .brand-h1 img{height:clamp(54px,8vw,72px)}
 
 <div class="wrap">
   <section id="tabHome" class="tabpanel home">
+    <div class="h-brand"><img src="/logo.png" alt="Arquivo Otaku" width="900" height="240"><span class="h-brand-line" aria-hidden="true"></span></div>
     <div class="h-hero">
       <div class="h-copy">
-        <div class="h-status"><i></i><span>Arquivo Otaku</span><b id="hLive">· arquivos abertos</b></div>
+        <div class="h-status"><i></i><span>Arquivo aberto</span><b id="hLive">· arquivos abertos</b></div>
         <h2 class="h-title">Todo personagem<br>deixa pistas.<em>A gente segue todas.</em></h2>
         <p class="h-sub">Descubra quem é pelo nome, por um detalhe ou por um print. Veja poderes, lutas, episódios novos e onde assistir de verdade.</p>
         <form class="h-search" id="hForm" role="search" novalidate>

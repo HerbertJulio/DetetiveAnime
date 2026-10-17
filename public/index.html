@@ -4129,7 +4129,7 @@ async function fight(idA, idB) {
   const go = $("vsGo"); go.disabled = true; go.firstElementChild.textContent = "Lutando…";
   $("vsOut").innerHTML = `<div class="vs-res"><div class="vs-banner"><h3>A IA está analisando a luta…</h3><p>Comparando poderes, técnicas e feitos.</p></div></div>`;
   try {
-    const d = await api(`/api/versus?a=${idA}&b=${idB}&v=3`);
+    const d = await api(`/api/versus?a=${idA}&b=${idB}&v=4`);
     vs.a = d.a; vs.b = d.b; drawSlots();
     history.replaceState(null, "", `#comparar/${idA}-${idB}`);
     renderFight(d);
@@ -4289,7 +4289,7 @@ function openColDialog(item) {
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
 }
 saveCols(loadCols());
-window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}&v=3`), pic };
+window.DA = { suggest, tile, skelTiles, lite, getChar, runFind, quickPicks, fight: (a, b) => api(`/api/versus?a=${a}&b=${b}&v=4`), pic };
 window.reloadTrends = () => { trendsAt = 0; loadTrends(true); };
 
 route();

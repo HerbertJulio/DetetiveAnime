@@ -76,9 +76,9 @@ Como analisar:
 4. HABILIDADES ESPECIAIS: pense em poderes que anulam ou contornam o outro (defesas absolutas, ataques que ignoram defesa, imortalidade, velocidade de reação).
 5. Se os dois já lutaram na própria obra, considere COMO a luta aconteceu: ataque surpresa, ajuda de outros, condições especiais ou o roteiro. Aqui a luta é justa: 1 contra 1, os dois no auge, cada um sabendo quem é o outro, sem ajuda e sem favorecimento do roteiro.
 6. Dê notas de 0 a 100 usando a MESMA régua para os dois. "poderes" mede o quanto os poderes especiais e a escala dele decidem uma luta.
-7. O vencedor é quem tiver a MAIOR SOMA das notas, então as notas precisam refletir de verdade quem ganharia.
-Responda SOMENTE com JSON:
-{"nivel_A":"escala de poder curta, ex.: nível de cidade","nivel_B":"...","habilidades_A":["3 a 5 poderes ou feitos curtos"],"habilidades_B":["3 a 5 poderes ou feitos curtos"],"atributos":{"A":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100},"B":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100}},"manchete":"1 frase curta e empolgante","explicacao":"3 a 5 frases dizendo quem ganharia e por quê, citando poderes, feitos e a escala de cada mundo, em tom de narrador de luta empolgado, sem violência pesada","momento_decisivo":"1 frase com o lance que decide","vantagens_A":["2 ou 3 vantagens curtas"],"vantagens_B":["2 ou 3 vantagens curtas"]}
+7. Decida o vencedor pela análise acima. Depois dê as notas: a SOMA das notas do vencedor tem que ser maior que a do perdedor, e a diferença mostra o quanto ele é superior.
+Responda SOMENTE com JSON, nesta ordem:
+{"nivel_A":"escala de poder curta, ex.: nível de cidade","nivel_B":"...","habilidades_A":["3 a 5 poderes ou feitos curtos"],"habilidades_B":["3 a 5 poderes ou feitos curtos"],"explicacao":"3 a 5 frases dizendo quem ganharia e por quê, citando poderes, feitos e a escala de cada mundo, em tom de narrador de luta empolgado, sem violência pesada","vencedor":"A ou B ou empate","confianca":50 a 100,"atributos":{"A":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100},"B":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100}},"manchete":"1 frase curta e empolgante","momento_decisivo":"1 frase com o lance que decide","vantagens_A":["2 ou 3 vantagens curtas"],"vantagens_B":["2 ou 3 vantagens curtas"]}
 A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 2000 });
   if (!r) throw Object.assign(new Error("resposta vazia"), { publicMessage: "A IA não respondeu agora. Tente de novo." });
 
@@ -89,9 +89,15 @@ A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 2000 });
     nivel: clip(r[`nivel_${k}`], 60),
   });
   const A = side("A"), B = side("B");
-  // O vencedor sai da soma dos atributos (assim o resultado sempre bate com as barrinhas).
+  // Vale o veredito da análise da IA; as notas são ajustadas pra sempre concordar com ele.
+  let win = String(r.vencedor || "").trim().toUpperCase();
+  win = win.startsWith("A") ? "A" : win.startsWith("B") ? "B" : win.startsWith("E") ? "empate" : (total(A.stats) === total(B.stats) ? "empate" : total(A.stats) > total(B.stats) ? "A" : "B");
+  if (win !== "empate") {
+    const W = win === "A" ? A : B, L = win === "A" ? B : A;
+    const gap = total(L.stats) - total(W.stats) + 6;
+    if (total(L.stats) >= total(W.stats)) { const cut = Math.ceil(gap / STATS.length); STATS.forEach((k) => { L.stats[k] = Math.max(0, L.stats[k] - cut); }); }
+  }
   const tA = total(A.stats), tB = total(B.stats), diff = Math.abs(tA - tB);
-  const win = diff === 0 ? "empate" : tA > tB ? "A" : "B";
   const left = { ...ca, ...A, total: tA }, right = { ...cb, ...B, total: tB };
 
   res.setHeader("Cache-Control", "public, s-maxage=604800, stale-while-revalidate=86400");
@@ -99,7 +105,7 @@ A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 2000 });
     a: swap ? right : left,
     b: swap ? left : right,
     vencedor: win === "empate" ? "empate" : (win === "A") !== swap ? "a" : "b",
-    confianca: win === "empate" ? 50 : Math.min(97, 55 + Math.round(diff / 3.6)),
+    confianca: win === "empate" ? 50 : Math.max(52, Math.min(97, num(r.confianca) || 55 + Math.round(diff / 3.6))),
     manchete: clip(r.manchete, 140),
     explicacao: clip(r.explicacao, 900),
     momento_decisivo: clip(r.momento_decisivo, 240),

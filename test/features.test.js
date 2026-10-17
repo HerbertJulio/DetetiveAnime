@@ -98,7 +98,7 @@ test("comparar devolve o vencedor do lado certo mesmo com a ordem trocada", asyn
   const full = (c, desc) => ({ ...c, description: desc, media: { edges: [{ characterRole: "MAIN", node: { id: 1, type: "ANIME", isAdult: false, title: { english: "JUJUTSU KAISEN" } } }] } });
   globalThis.fetch = fakeFetch((u, o) => {
     if (u.includes("generativelanguage")) { prompt = JSON.parse(o.body).contents[0].parts.at(-1).text;
-      return gemini({ vencedor: "A", manchete: "Duelo!", atributos: { A: { forca: 90 }, B: { forca: 95 } }, habilidades_B: ["Infinito", "Vazio Infinito"], vantagens_A: ["x"], vantagens_B: ["y"] }); }
+      return gemini({ vencedor: "B", confianca: 70, manchete: "Duelo!", atributos: { A: { forca: 90 }, B: { forca: 95 } }, habilidades_B: ["Infinito", "Vazio Infinito"], vantagens_A: ["x"], vantagens_B: ["y"] }); }
     const { variables } = JSON.parse(o.body);
     return { data: { Character: variables.id === 5 ? full(sukuna, "King of Curses with Malevolent Shrine.") : full(gojo, "Uses Limitless and the Six Eyes.") } };
   });
@@ -307,4 +307,19 @@ test("onde assistir não mostra o YouTube", async () => {
   const { streamingLinks } = await import("../lib/anilist.js");
   const links = streamingLinks({ externalLinks: [{ type: "STREAMING", site: "YouTube", url: "https://www.youtube.com/x" }, { type: "STREAMING", site: "Crunchyroll", url: "https://cr.com/x" }] });
   assert.deepEqual(links.map((l) => l.name), ["Crunchyroll"]);
+});
+
+test("quem ganha: as notas são ajustadas pra concordar com o veredito da IA", async () => {
+  process.env.GEMINI_API_KEY = "g";
+  const mk = (id, n) => ({ id, name: { full: n }, image: {}, favourites: 1, description: "x", media: { edges: [{ characterRole: "MAIN", node: { id, type: "ANIME", isAdult: false, title: { english: "W" + id } } }] } });
+  globalThis.fetch = fakeFetch((u, o) => {
+    if (u.includes("generativelanguage")) return gemini({ vencedor: "B", confianca: 80, atributos: { A: { forca: 99, velocidade: 99, inteligencia: 90, tecnica: 90, resistencia: 90, poderes: 90 }, B: { forca: 95, velocidade: 95, inteligencia: 80, tecnica: 80, resistencia: 90, poderes: 99 } } });
+    const { variables } = JSON.parse(o.body); return { data: { Character: mk(variables.id, "P" + variables.id) } };
+  });
+  const { default: handler } = await import("../api/versus.js");
+  const res = fakeRes();
+  await handler({ method: "GET", query: { a: "10", b: "20" } }, res);
+  assert.equal(res.body.vencedor, "b");
+  assert.ok(res.body.b.total > res.body.a.total);
+  assert.equal(res.body.confianca, 80);
 });

@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Arquivo Otaku">
 <meta property="og:title" content="Arquivo Otaku">
 <meta property="og:description" content="Pesquise por nome, poder ou descrição, descubra o personagem e veja onde assistir oficialmente.">
-<meta property="og:url" content="https://detetive-anime.howlks.com/">
+<meta property="og:url" content="https://arquivo-otaku.howlks.com/">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -397,7 +397,7 @@ textarea::placeholder{color:var(--muted);opacity:.7}
   background:color-mix(in srgb,var(--warn) 16%,var(--surface));border:1px solid color-mix(in srgb,var(--warn) 55%,transparent);color:var(--fg)}
 .server-alert b{color:var(--warn)}
 .server-alert code{font-family:var(--mono);font-size:.9em;padding:1px 6px;border-radius:6px;background:var(--surface-2)}
-h1 .logo{width:.92em;height:.92em;vertical-align:-.08em;margin-right:.18em;filter:drop-shadow(0 6px 18px var(--glow));animation:logoIn .8s cubic-bezier(.2,.8,.2,1) both}
+h1 .logo{width:.92em;height:.92em;vertical-align:-.08em;margin-right:.18em;border-radius:.22em;filter:drop-shadow(0 6px 18px var(--glow));animation:logoIn .8s cubic-bezier(.2,.8,.2,1) both}
 @keyframes logoIn{from{transform:rotate(-25deg) scale(.6);opacity:0}to{transform:none;opacity:1}}
 h1 .logo .iris-glow{transform-box:view-box;transform-origin:27.5px 28.4px;animation:irisPulse 3.2s ease-in-out infinite}
 h1 .logo .slit{transform-box:view-box;transform-origin:27.5px 28.4px;animation:slit 6s ease-in-out infinite}
@@ -2059,7 +2059,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
   </section>
   <header class="hero">
     <div class="eyebrow"><span>アニメ探し</span>busca por personagem</div>
-    <h1><svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo do Arquivo Otaku"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient><radialGradient id="lgL" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1a1424"/><stop offset="1" stop-color="#07050b"/></radialGradient><radialGradient id="lgI" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff"/><stop offset=".35" style="stop-color:var(--accent-2)"/><stop offset="1" style="stop-color:var(--accent)"/></radialGradient><clipPath id="lgEye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z"/></clipPath></defs><line x1="40" y1="40" x2="56" y2="56" stroke="url(#lgA)" stroke-width="8" stroke-linecap="round"/><circle cx="27" cy="27" r="20" fill="url(#lgL)" stroke="url(#lgA)" stroke-width="5"/><g class="eye"><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2 Q34 33.6 24.5 33.4 Z" fill="#241d2e"/><g clip-path="url(#lgEye)"><circle class="iris-glow" cx="27.5" cy="28.4" r="8" style="fill:var(--accent-2)" fill-opacity=".35"/><circle cx="27.5" cy="28.4" r="5.6" fill="url(#lgI)"/><ellipse class="slit" cx="27.5" cy="28.4" rx=".95" ry="4.6" fill="#07050b"/><path d="M8 20 L46 20 L46 26.2 Q27 22.6 8 28.6 Z" fill="#07050b" fill-opacity=".55"/></g><path d="M11.5 29.5 L19 24.6 Q27 21.8 36.5 24 L42.5 27.2" fill="none" stroke="#07050b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M12 21.5 L27 17.4 L41 20.6" fill="none" style="stroke:var(--accent)" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 14.5 L30.6 22.4 M28.6 34.6 L26.4 40.2" stroke="#fff" stroke-opacity=".55" stroke-width="1.1" stroke-linecap="round"/></svg>Arquivo <em>Otaku</em></h1>
+    <h1><img class="logo" src="/icon.svg" alt="Logo do Arquivo Otaku" width="64" height="64">Arquivo <em>Otaku</em></h1>
     <p class="sub">Ache qualquer personagem de anime, descubra de qual obra ele é e onde assistir oficialmente.</p>
   </header>
 
@@ -4852,7 +4852,7 @@ function tickNext() {
 }
 function emojiRow(c) { return COLS.map(([k]) => ({ certo: "🟩", perto: "🟨", errado: "🟥", mais: "⬆️", menos: "⬇️" }[c[k]] || "⬛")).join(""); }
 async function shareDes() {
-  const txt = `🕵️ Desafio do Arquivo Otaku nº ${D.numero} — ${D.venceu ? D.rows.length : "X"}/${MAXT}\n${D.rows.map((r) => emojiRow(r.c)).join("\n")}\nhttps://detetive-anime.howlks.com/#desafio`;
+  const txt = `🕵️ Desafio do Arquivo Otaku nº ${D.numero} — ${D.venceu ? D.rows.length : "X"}/${MAXT}\n${D.rows.map((r) => emojiRow(r.c)).join("\n")}\nhttps://arquivo-otaku.howlks.com/#desafio`;
   try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch { return; }
   try { await navigator.clipboard.writeText(txt); window.toast?.("Resultado copiado! Cole pros amigos."); } catch { window.toast?.("Não consegui copiar."); }
 }

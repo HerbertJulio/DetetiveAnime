@@ -1335,6 +1335,10 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
 .ec-eps .out{opacity:.55}
 .ec-eps .rg{flex-direction:column;align-items:flex-start;gap:1px;white-space:nowrap}
 @media (prefers-reduced-motion:reduce){.ec-layer{transition:none}}
+
+.ec-lang{display:flex;flex-wrap:wrap;gap:6px}
+.ec-lang span{font-size:.72rem;font-weight:500;padding:3px 8px;border-radius:8px;background:color-mix(in srgb,var(--fg) 6%,transparent);border:1px solid var(--line);color:var(--fg)}
+.ec-body .pl .lg{font:500 .62rem var(--mono);color:var(--muted);margin-left:2px;text-transform:uppercase}
 </style>
 <!-- Aplica o tema salvo antes de desenhar a página, sem piscar -->
 <script>
@@ -1650,7 +1654,7 @@ html{scrollbar-color:color-mix(in srgb,var(--fg) 22%,transparent) transparent}
     // Calendário
     "Calendário da temporada": "Season calendar", "Hoje": "Today", "Amanhã": "Tomorrow", "Dom": "Sun", "Seg": "Mon", "Ter": "Tue", "Qua": "Wed", "Qui": "Thu", "Sex": "Fri", "Sáb": "Sat",
     "Só os que eu acompanho": "Only the ones I follow", "Mostrar também os menos conhecidos": "Also show lesser-known ones", "já saiu": "aired", "estreia": "premiere",
-    "temporada completa": "full season", "último episódio": "final episode", "Dias da semana": "Days of the week", "Nenhum episódio nesse dia.": "No episodes on this day.",
+    "temporada completa": "full season", "Idioma original": "Original language", "Tem versão em português": "Has a Portuguese version", "🇧🇷 Em português": "🇧🇷 In Portuguese", "último episódio": "final episode", "Dias da semana": "Days of the week", "Nenhum episódio nesse dia.": "No episodes on this day.",
     "Nenhum anime que você acompanha sai nesse dia.": "None of the anime you follow air on this day.", "Sem episódio nesta semana": "No episode this week",
     "Horários de Brasília, segundo o AniList. O episódio pode chegar nas plataformas brasileiras algumas horas depois.": "Times are Brasília time (UTC−3), from AniList. Episodes may reach streaming services a few hours later.",
     "Toque na ☆ de um anime pra acompanhar. A contagem regressiva do próximo episódio aparece aqui.": "Tap the ☆ on an anime to follow it. The countdown to the next episode shows up here.",
@@ -4261,7 +4265,17 @@ async function loadCal() {
 }
 function visible(list) {
   const mine = new Set(loadFollow().map((f) => f.id));
-  return list.filter((e) => mine.has(e.id) || (!$("calMine").checked && ($("calAll").checked || e.popular >= 3000 || e.pais === "JP" && e.popular >= 1500)));
+  // Só mostra episódios que têm onde assistir oficialmente
+  return list.filter((e) => e.onde?.length).filter((e) => mine.has(e.id) || (!$("calMine").checked && ($("calAll").checked || e.popular >= 3000 || e.pais === "JP" && e.popular >= 1500)));
+}
+// Idioma em que o anime sai: áudio original (pelo país) e o idioma de cada plataforma, quando o AniList informa
+const LANGS = { Japanese: ["🇯🇵", "japonês"], Chinese: ["🇨🇳", "chinês"], Korean: ["🇰🇷", "coreano"], English: ["🇺🇸", "inglês"], Portuguese: ["🇧🇷", "português"], Spanish: ["🇪🇸", "espanhol"], French: ["🇫🇷", "francês"], German: ["🇩🇪", "alemão"], Italian: ["🇮🇹", "italiano"] };
+const AUDIO = { JP: "Japanese", CN: "Chinese", KR: "Korean", TW: "Chinese" };
+function langChip(e) {
+  const orig = LANGS[AUDIO[e.pais]];
+  const pt = (e.onde || []).some((o) => o.idioma === "Portuguese");
+  if (!orig && !pt) return "";
+  return `<span class="ec-lang">${orig ? `<span title="Idioma original">${orig[0]} Áudio em ${orig[1]}</span>` : ""}${pt ? `<span title="Tem versão em português">🇧🇷 Em português</span>` : ""}</span>`;
 }
 function drawCal() {
   if (!cal) return;
@@ -4303,7 +4317,8 @@ function drawCal() {
           if (g.length > 3 || sameTime) return `<span class="ec-eps"><span class="rg${past ? " out" : ""}"><b>Ep. ${e.ep} a ${lastEp.ep}</b><em>${sameTime ? `todos às ${hhmm(e.at)}` : `${hhmm(e.at)} até ${hhmm(lastEp.at)}`}</em></span></span>`;
           return `<span class="ec-eps">${g.map((x) => `<span class="${x.at <= now ? "out" : ""}"><b>Ep. ${x.ep}</b><em>${hhmm(x.at)}</em></span>`).join("")}</span>`;
         })() : ""}
-        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}</a>`).join("")}</span>` : ""}
+        ${langChip(e)}
+        ${e.onde?.length ? `<span class="pl">${e.onde.map((o) => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${platIcon(o.name, o.url)}${esc(o.name)}${o.idioma ? `<small class="lg">${esc(LANGS[o.idioma]?.[1] || o.idioma)}</small>` : ""}</a>`).join("")}</span>` : ""}
       </div></article>`;
   }).join("") : `<div class="empty">${$("calMine").checked ? "Nenhum anime que você acompanha sai nesse dia." : "Nenhum episódio nesse dia."}</div>`;
   drawNext();

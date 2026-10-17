@@ -60,7 +60,7 @@ const fight = route("GET", async (req, res) => {
   if (!FA?.main || !FB?.main) return res.status(404).json({ error: "Não encontrei um dos personagens." });
   const ca = card(FA), cb = card(FB);
 
-  const r = await askJson(`Batalha de fãs, só por diversão, num site brasileiro para jovens: ${ca.name} (${ca.anime}) contra ${cb.name} (${cb.anime}).
+  const prompt = `Batalha de fãs, só por diversão, num site brasileiro para jovens: ${ca.name} (${ca.anime}) contra ${cb.name} (${cb.anime}).
 Você é um especialista em "power scaling" (comparar a força de personagens de obras diferentes). Analise com cuidado e com honestidade de fã que conhece as obras.
 
 FICHA DE A — ${ca.name} (${ca.anime}):
@@ -80,7 +80,9 @@ Como analisar:
 7. Decida o vencedor pela análise acima. Depois dê as notas: a SOMA das notas do vencedor tem que ser maior que a do perdedor, e a diferença mostra o quanto ele é superior.
 Responda SOMENTE com JSON, nesta ordem:
 {"nivel_A":"escala de poder curta, ex.: nível de cidade","nivel_B":"...","habilidades_A":["3 a 5 poderes ou feitos curtos"],"habilidades_B":["3 a 5 poderes ou feitos curtos"],"explicacao":"3 a 5 frases dizendo quem ganharia e por quê, citando poderes, feitos e a escala de cada mundo, em tom de narrador de luta empolgado, sem violência pesada","vencedor":"A ou B ou empate","confianca":50 a 100,"atributos":{"A":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100},"B":{"forca":0-100,"velocidade":0-100,"inteligencia":0-100,"tecnica":0-100,"resistencia":0-100,"poderes":0-100}},"manchete":"1 frase curta e empolgante","momento_decisivo":"1 frase com o lance que decide","vantagens_A":["2 ou 3 vantagens curtas"],"vantagens_B":["2 ou 3 vantagens curtas"]}
-A é ${ca.name}. B é ${cb.name}. Português do Brasil.`, { maxTokens: 2000 });
+A é ${ca.name}. B é ${cb.name}. Português do Brasil.`;
+  // Análise longa: dá bastante espaço pra IA e tenta de novo uma vez se vier vazio
+  const r = (await askJson(prompt, { maxTokens: 8192 }).catch(() => null)) || (await askJson(prompt, { maxTokens: 8192 }).catch(() => null));
   if (!r) throw Object.assign(new Error("resposta vazia"), { publicMessage: "A IA não respondeu agora. Tente de novo." });
 
   const side = (k) => ({
